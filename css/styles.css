@@ -80,10 +80,11 @@ h3::after{content:'';position:absolute;bottom:-8px;left:0;width:60px;height:3px;
 /* About section layout */
 .about-container{display:flex;align-items:center;gap:2rem;padding:2rem 0}
 .about-photo{flex:0 0 auto}
-.profile-photo{width:180px;height:180px;border-radius:50%;object-fit:cover;box-shadow:0 8px 30px rgba(0,0,0,0.12);border:4px solid rgba(255,255,255,0.9);transition:all 0.3s ease}
-.profile-photo:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,0.15)}
+.about .profile-photo{width:200px;height:200px;object-fit:cover;border-radius:50%;border:4px solid rgba(255,255,255,0.9);box-shadow:0 8px 25px rgba(0,0,0,0.1);background:linear-gradient(145deg, #f9fafb, #e9eef2);transition:transform 0.3s ease, box-shadow 0.3s ease}
+.about .profile-photo:hover{transform:scale(1.04);box-shadow:0 10px 30px rgba(0,0,0,0.15)}
 .about-text h2{margin:0 0 16px;font-size:32px;font-weight:700;color:#1e293b}
 .about-text p{color:var(--muted);line-height:1.7;font-size:17px;margin:0}
+.profile-photo-wrapper{margin-top:2rem;display:flex;justify-content:center}
 .skills-grid{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
 .skill{background:rgba(255,255,255,0.9);padding:10px 16px;border-radius:50px;border:1px solid rgba(226,232,240,0.5);font-weight:500;color:#475569;transition:all 0.3s ease;backdrop-filter:blur(5px)}
 .skill:hover{background:var(--accent);color:white;transform:translateY(-2px);box-shadow:0 8px 15px rgba(59,130,246,0.3)}
@@ -121,7 +122,11 @@ h3::after{content:'';position:absolute;bottom:-8px;left:0;width:60px;height:3px;
 .project-tech .tech-tag{background-color:#eef6ff !important;color:#0066cc !important;border:1px solid rgba(0,102,204,0.2) !important}
 .project-links{margin-top:16px;display:flex;gap:12px;flex-wrap:wrap}
 .btn-small{padding:10px 20px;font-size:14px;display:inline-block;font-weight:500}
-.edu-grid{display:flex;gap:20px;flex-wrap:wrap}
+.edu-grid{display:flex;flex-direction:column;gap:20px}
+.edu-grid > div{background:rgba(255,255,255,0.9);padding:20px;border-radius:12px;border:1px solid rgba(226,232,240,0.5);box-shadow:var(--shadow);transition:all 0.3s ease;backdrop-filter:blur(5px)}
+.edu-grid > div:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.edu-grid h4{margin:0 0 8px;color:#1e293b;font-size:18px;font-weight:600}
+.edu-grid p{margin:0;color:var(--muted);line-height:1.6}
 
 .contact-section .small{color:var(--muted);font-size:13px}
 .social-links{margin-top:12px}
@@ -174,6 +179,7 @@ img.lazyload.lazyloaded {
   .about-container{flex-direction:column;text-align:center}
   .about-photo{margin-bottom:1.5rem}
   .about-text h2{font-size:1.75rem}
+  .about .profile-photo{display:block;margin:1.5rem auto}
 }
 
 @media (max-width:480px){
