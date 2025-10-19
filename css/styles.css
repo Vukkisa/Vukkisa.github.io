@@ -46,8 +46,10 @@ body{
 .hero-text h2{margin:0;font-size:32px}
 .hero-text p{margin:12px 0 18px;color:var(--muted);max-width:55ch}
 .cta-row .btn{display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:600}
-.btn{background:var(--accent);color:white}
+.btn{background:var(--accent);color:white;transition:all 0.2s ease}
+.btn:hover{opacity:0.9;transform:translateY(-1px)}
 .btn.ghost{background:transparent;color:var(--accent);border:1px solid rgba(11,116,255,0.12)}
+.btn.ghost:hover{background:rgba(11,116,255,0.05)}
 
 .hero-card{background:var(--card);border-radius:12px;box-shadow:0 8px 20px rgba(15,23,42,0.06);padding:18px}
 .card-inner .card-title{font-weight:700;margin:0 0 8px}
@@ -66,6 +68,9 @@ h3{margin:0 0 18px;font-size:20px}
 .edu-grid{display:flex;gap:20px;flex-wrap:wrap}
 
 .contact-section .small{color:var(--muted);font-size:13px}
+.social-links{margin-top:12px}
+.social-links a{margin-right:16px;color:var(--accent);text-decoration:none;font-weight:600}
+.social-links a:hover{text-decoration:underline}
 
 .site-footer{padding:18px 0;text-align:center;color:var(--muted);font-size:14px;border-top:1px solid #eee;background:#fff;margin-top:40px}
 
