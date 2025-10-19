@@ -55,3 +55,43 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('section, .exp-item, .project').forEach(el => {
   observer.observe(el);
 });
+
+// Enhanced lazy loading for images
+const lazyImageObserver = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const img = entry.target;
+      
+      // Load the image
+      img.src = img.dataset.src || img.src;
+      
+      // Add loaded class for smooth opacity transition
+      img.addEventListener('load', () => {
+        img.classList.add('loaded');
+        img.classList.add('lazyloaded');
+      });
+      
+      // Stop observing this image
+      lazyImageObserver.unobserve(img);
+    }
+  });
+}, {
+  rootMargin: '50px 0px',
+  threshold: 0.01
+});
+
+// Observe all lazy-loaded images
+document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+  lazyImageObserver.observe(img);
+});
+
+// Fallback for browsers that support native lazy loading
+if ('loading' in HTMLImageElement.prototype) {
+  // Browser supports native lazy loading
+  const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+  lazyImages.forEach(img => {
+    img.addEventListener('load', () => {
+      img.classList.add('loaded');
+    });
+  });
+}
