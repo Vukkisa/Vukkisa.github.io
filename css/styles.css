@@ -55,9 +55,9 @@ body{
 .hero-grid{display:grid;grid-template-columns:1fr 340px;gap:32px;align-items:start;position:relative;z-index:1}
 .hero-right{display:flex;flex-direction:column;gap:24px;align-items:center}
 .hero-photo{position:relative;display:flex;justify-content:center;margin-bottom:20px}
-.hero-photo::before{content:'';position:absolute;top:-6px;left:-6px;right:-6px;bottom:-6px;background:linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 50%, #8b5cf6 100%);border-radius:12px;opacity:0.1;z-index:-1}
-.hero-photo::after{content:'';position:absolute;top:-3px;left:-3px;right:-3px;bottom:-3px;background:linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.4) 100%);border-radius:12px;backdrop-filter:blur(10px);z-index:-1}
-.profile-image{width:180px;height:220px;border-radius:12px;object-fit:cover;object-position:center top;border:2px solid rgba(255,255,255,0.9);box-shadow:0 12px 24px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04), inset 0 1px 2px rgba(255,255,255,0.8);transition:all 0.3s ease;background:linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);position:relative;z-index:2;max-width:100%;height:auto}
+.hero-photo::before{content:'';position:absolute;top:-8px;left:-8px;right:-8px;bottom:-8px;background:linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 50%, #8b5cf6 100%);border-radius:50%;opacity:0.15;z-index:-1}
+.hero-photo::after{content:'';position:absolute;top:-4px;left:-4px;right:-4px;bottom:-4px;background:linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 100%);border-radius:50%;backdrop-filter:blur(15px);z-index:-1}
+.profile-image{width:200px;height:200px;border-radius:50%;object-fit:cover;object-position:center;border:4px solid rgba(255,255,255,0.95);box-shadow:0 20px 40px rgba(0,0,0,0.12), 0 8px 16px rgba(0,0,0,0.06), inset 0 2px 4px rgba(255,255,255,0.9);transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1);background:linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);position:relative;z-index:2;max-width:100%;height:auto}
 .profile-image:hover{transform:scale(1.02) translateY(-2px);box-shadow:0 25px 50px rgba(0,0,0,0.15), 0 12px 24px rgba(0,0,0,0.08), inset 0 1px 2px rgba(255,255,255,0.9)}
 .hero-text h2{margin:0 0 16px;font-size:36px;font-weight:700;background:linear-gradient(135deg, #1e293b 0%, #475569 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero-text p{margin:12px 0 24px;color:var(--muted);max-width:55ch;font-size:17px;line-height:1.7}
@@ -148,9 +148,9 @@ img.lazyload.lazyloaded {
   .hero-grid{grid-template-columns:1fr;gap:24px}
   .hero-right{flex-direction:row;justify-content:space-between;align-items:center}
   .hero-photo{margin-bottom:0;margin-right:20px;position:relative}
-  .hero-photo::before{top:-4px;left:-4px;right:-4px;bottom:-4px;border-radius:8px}
-  .hero-photo::after{top:-2px;left:-2px;right:-2px;bottom:-2px;border-radius:8px}
-  .profile-image{width:140px;height:170px;border-radius:8px;box-shadow:0 10px 20px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04)}
+  .hero-photo::before{top:-6px;left:-6px;right:-6px;bottom:-6px;border-radius:50%}
+  .hero-photo::after{top:-3px;left:-3px;right:-3px;bottom:-3px;border-radius:50%}
+  .profile-image{width:150px;height:150px;border-radius:50%;border:3px solid rgba(255,255,255,0.95);box-shadow:0 15px 30px rgba(0,0,0,0.1), 0 6px 12px rgba(0,0,0,0.05)}
   .hero-card{flex:1}
   .nav ul{flex-direction:column;align-items:center}
   .nav{display:none}
@@ -169,9 +169,9 @@ img.lazyload.lazyloaded {
   .hero-text h2{font-size:24px}
   .hero-right{flex-direction:column;align-items:center}
   .hero-photo{margin-bottom:16px;margin-right:0;position:relative}
-  .hero-photo::before{top:-3px;left:-3px;right:-3px;bottom:-3px;border-radius:6px}
-  .hero-photo::after{top:-1px;left:-1px;right:-1px;bottom:-1px;border-radius:6px}
-  .profile-image{width:120px;height:150px;border-radius:6px;box-shadow:0 8px 16px rgba(0,0,0,0.08), 0 3px 6px rgba(0,0,0,0.04)}
+  .hero-photo::before{top:-4px;left:-4px;right:-4px;bottom:-4px;border-radius:50%}
+  .hero-photo::after{top:-2px;left:-2px;right:-2px;bottom:-2px;border-radius:50%}
+  .profile-image{width:120px;height:120px;border-radius:50%;border:2px solid rgba(255,255,255,0.95);box-shadow:0 10px 20px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04)}
   .project-grid{grid-template-columns:1fr;gap:16px}
   .project{padding:20px}
   .skills-grid{gap:8px}
