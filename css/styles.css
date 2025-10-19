@@ -73,9 +73,9 @@ h3{margin:0 0 32px;font-size:28px;font-weight:700;color:#1e293b;position:relativ
 h3::after{content:'';position:absolute;bottom:-8px;left:0;width:60px;height:3px;background:linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);border-radius:2px}
 
 /* About section layout */
-.about-container{display:flex;align-items:center;gap:2rem;padding:2rem 0}
-.about-text h2{margin:0 0 16px;font-size:32px;font-weight:700;color:#1e293b}
-.about-text p{color:var(--muted);line-height:1.7;font-size:17px;margin:0}
+.about-content{max-width:800px;margin:0 auto}
+.about-content h2{margin:0 0 16px;font-size:32px;font-weight:700;color:#1e293b}
+.about-content p{color:var(--muted);line-height:1.7;font-size:17px;margin:0}
 .skills-grid{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
 .skill{background:rgba(255,255,255,0.9);padding:10px 16px;border-radius:50px;border:1px solid rgba(226,232,240,0.5);font-weight:500;color:#475569;transition:all 0.3s ease;backdrop-filter:blur(5px)}
 .skill:hover{background:var(--accent);color:white;transform:translateY(-2px);box-shadow:0 8px 15px rgba(59,130,246,0.3)}
@@ -162,8 +162,7 @@ img.lazyload.lazyloaded {
   .cta-row{flex-direction:column;align-items:flex-start}
   .btn{padding:12px 20px}
   .project-grid{grid-template-columns:1fr;gap:1.5rem}
-  .about-container{flex-direction:column;text-align:center}
-  .about-text h2{font-size:1.75rem}
+  .about-content h2{font-size:1.75rem}
 }
 
 @media (max-width:480px){
