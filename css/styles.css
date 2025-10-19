@@ -93,15 +93,13 @@ h3::after{content:'';position:absolute;bottom:-8px;left:0;width:60px;height:3px;
 .project:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
 .project:hover::before{opacity:1}
 .project h4{margin:0 0 16px;color:#1e293b;font-size:20px;font-weight:600}
-.project h4::before{content:"★ ";color:#FFBF00;margin-right:4px;font-size:1.1em}
 .project p{margin:0 0 20px;color:var(--muted);line-height:1.7;font-size:15px}
 .project-content{margin-bottom:auto;flex-grow:1}
 .project-content h5{margin:20px 0 12px;color:#1e293b;font-size:16px;font-weight:600;position:relative;padding-left:24px}
 .project-content h5:first-child{margin-top:0}
 .project-content h5::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:4px;height:20px;background:linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);border-radius:2px}
-.project-content ul{margin:16px 0;padding-left:24px}
-.project-content li{margin-bottom:10px;color:var(--muted);line-height:1.7;position:relative}
-.project-content li::before{content:'▶';position:absolute;left:-20px;color:var(--accent);font-size:12px}
+.project-content ul{margin:16px 0;padding-left:20px}
+.project-content li{margin-bottom:10px;color:var(--muted);line-height:1.7}
 .project-content p{line-height:1.7;margin-bottom:16px}
 .project-tech{margin:20px 0 0 0;display:flex;flex-wrap:wrap;gap:10px}
 .tech-tag{background:linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(59,130,246,0.05) 100%);color:var(--accent);padding:8px 16px;border-radius:25px;font-size:12px;font-weight:500;border:1px solid rgba(59,130,246,0.2);transition:all 0.3s ease;box-shadow:0 2px 4px rgba(59,130,246,0.1)}
@@ -167,8 +165,7 @@ img.lazyload.lazyloaded {
 @media (max-width:768px){
   .hero-grid{grid-template-columns:1fr;gap:24px}
   .hero-card{flex:1}
-  .nav ul{flex-direction:column;align-items:center}
-  .nav{display:none}
+  .nav a{margin-left:15px;font-size:13px}
   .brand h1{font-size:18px}
   .hero-text h2{font-size:28px}
   .hero-card{padding:20px}
@@ -184,6 +181,7 @@ img.lazyload.lazyloaded {
 @media (max-width:480px){
   .hero-text h2{font-size:24px}
   .hero-right{flex-direction:column;align-items:center}
+  .nav a{margin-left:10px;font-size:12px}
   .project-grid{grid-template-columns:1fr;gap:16px}
   .project{padding:20px}
   .skills-grid{gap:8px}
