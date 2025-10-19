@@ -73,7 +73,10 @@ h3{margin:0 0 32px;font-size:28px;font-weight:700;color:#1e293b;position:relativ
 h3::after{content:'';position:absolute;bottom:-8px;left:0;width:60px;height:3px;background:linear-gradient(90deg, var(--accent) 0%, var(--accent-hover) 100%);border-radius:2px}
 
 /* About section layout */
-.about-content{max-width:800px;margin:0 auto}
+.about-content{max-width:800px;margin:0 auto;text-align:center}
+.about-image{margin-bottom:2rem;display:flex;justify-content:center}
+.profile-photo{width:180px;height:180px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,0.9);box-shadow:0 8px 25px rgba(0,0,0,0.12);transition:transform 0.3s ease, box-shadow 0.3s ease}
+.profile-photo:hover{transform:scale(1.03);box-shadow:0 10px 30px rgba(0,0,0,0.15)}
 .about-content h2{margin:0 0 16px;font-size:32px;font-weight:700;color:#1e293b}
 .about-content p{color:var(--muted);line-height:1.7;font-size:17px;margin:0}
 .skills-grid{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
@@ -163,6 +166,7 @@ img.lazyload.lazyloaded {
   .btn{padding:12px 20px}
   .project-grid{grid-template-columns:1fr;gap:1.5rem}
   .about-content h2{font-size:1.75rem}
+  .profile-photo{width:150px;height:150px}
 }
 
 @media (max-width:480px){
