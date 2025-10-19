@@ -122,6 +122,40 @@ h3::after{content:'';position:absolute;bottom:-8px;left:0;width:60px;height:3px;
 .edu-grid h4{margin:0 0 8px;color:#1e293b;font-size:18px;font-weight:600}
 .edu-grid p{margin:0;color:var(--muted);line-height:1.6}
 
+/* Contact section layout */
+.contact-content {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.contact-info {
+  flex: 1;
+}
+
+.contact-image {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.contact-photo {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-photo:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
 .contact-section .small{color:var(--muted);font-size:13px}
 .social-links{margin-top:12px}
 .social-links a{margin-right:16px;color:var(--accent);text-decoration:none;font-weight:600}
@@ -130,7 +164,7 @@ h3::after{content:'';position:absolute;bottom:-8px;left:0;width:60px;height:3px;
 .site-footer{padding:24px 0;text-align:center;color:var(--muted);font-size:14px;border-top:1px solid rgba(226,232,240,0.5);background:rgba(255,255,255,0.9);margin-top:60px;backdrop-filter:blur(10px)}
 
 /* Image optimization and lazy loading */
-img[loading="lazy"] {
+img[loading="lazy"]:not(.profile-photo):not(.contact-photo) {
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -138,6 +172,11 @@ img[loading="lazy"] {
 img[loading="lazy"].loaded,
 img.lazyloaded {
   opacity: 1;
+}
+
+.profile-photo,
+.contact-photo {
+  opacity: 1 !important;
 }
 
 img {
@@ -183,6 +222,8 @@ img.lazyload.lazyloaded {
   .project-grid{grid-template-columns:1fr;gap:1.5rem}
   .about-content h2{font-size:1.75rem}
   .profile-photo, picture img{width:150px;height:150px}
+  .contact-content{flex-direction:column;gap:2rem;text-align:center}
+  .contact-photo{width:140px;height:140px}
 }
 
 @media (max-width:480px){
@@ -193,4 +234,5 @@ img.lazyload.lazyloaded {
   .skills-grid{gap:8px}
   .skill{padding:8px 14px;font-size:14px}
   .profile-photo, picture img{width:120px;height:120px}
+  .contact-photo{width:120px;height:120px}
 }
