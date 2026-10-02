@@ -1,260 +1,553 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Jayanth Vukkisa — AI & Data Science Portfolio</title>
-  <meta name="description" content="Portfolio of Jayanth Vukkisa — SQL Developer transitioning to AI & Data Science. Building intelligent systems through code, data, and machine learning." />
-  <link rel="stylesheet" href="css/styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Jayanth Vukkisa — from writing queries to teaching machines</title>
+  <meta name="description" content="Jayanth Vukkisa's portfolio, told as a story: SQL → data → machine learning → generative AI. RAG, computer vision, AI agents and the experiments in between.">
+  <meta name="theme-color" content="#f2ede3">
+  <meta property="og:title" content="Jayanth Vukkisa — from writing queries to teaching machines">
+  <meta property="og:description" content="SQL → Data → ML → Deep Learning → LLMs → RAG → AI Agents. A portfolio you can poke at.">
+  <meta property="og:type" content="website">
+  <script>document.documentElement.classList.add('js')</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,100..900,0..100;1,9..144,100..900,0..100&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <div class="brand">
-        <h1>Jayanth <span class="muted">Vukkisa</span></h1>
-        <p class="role">SQL Developer → AI & Data Science Practitioner</p>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="bar">
+  <a class="mark" href="#top" aria-label="Jayanth Vukkisa — back to top">J<span>.</span>V</a>
+  <div class="loss" aria-hidden="true" title="Your reading progress, as a training run">
+    <svg viewBox="0 0 120 28" preserveAspectRatio="none"><polyline id="lossLine" points=""/></svg>
+    <span id="lossText" class="mono">epoch 0 · loss 0.93</span>
+  </div>
+  <button class="hint mono" id="paletteBtn" type="button">jump <kbd>/</kbd></button>
+</header>
+
+<main id="main">
+
+<!-- 00 · HERO -->
+<section class="hero" id="top" data-nav="Opening">
+  <div class="wrap">
+    <p class="sqlline mono" aria-hidden="true"><span class="pr">&gt;</span> <span id="typed"></span><span class="caret"></span></p>
+    <p class="sqlres mono" id="sqlres" aria-hidden="true">1 row returned · 0.024 sec</p>
+
+    <h1 class="display">
+      <span class="ln rv">I started with <span class="sqlword">SQL.</span></span>
+      <span class="ln rv" style="--d:.15s">Somewhere along the way, I started <em>teaching&nbsp;machines.</em></span>
+    </h1>
+
+    <p class="sub rv" style="--d:.3s">Software developer <b>→</b> data <b>→</b> machine learning <b>→</b> generative AI.</p>
+    <p class="whisper mono rv" style="--d:.4s">Jayanth Vukkisa · Hyderabad, India</p>
+
+    <div class="teach rv" style="--d:.5s">
+      <div class="teach-head">
+        <span class="mono dim">// teach it something — click to add a point, click a point to remove it</span>
+        <span class="ctl">
+          <button type="button" class="pill" id="tLine" aria-pressed="true">line</button>
+          <button type="button" class="pill" id="tCurve" aria-pressed="false">curve</button>
+          <button type="button" class="pill" id="tReset">reset</button>
+          <button type="button" class="pill" id="tClear">clear</button>
+        </span>
       </div>
-      <nav class="nav">
-        <a href="#about" class="nav-link">About</a>
-        <a href="#experience" class="nav-link">Experience</a>
-        <a href="#projects" class="nav-link">Projects</a>
-        <a href="#education" class="nav-link">Education</a>
-        <a href="#contact" class="nav-link">Contact</a>
-      </nav>
+      <canvas id="teach" aria-label="A tiny machine-learning model fitting the points you click, using gradient descent"></canvas>
+      <p class="readout mono" id="readout">epoch 0000 · loss —</p>
     </div>
-  </header>
+    <p class="scrollcue mono dim" aria-hidden="true">scroll ↓ the story is a little long</p>
+  </div>
+</section>
 
-  <main>
-    <!-- Hero -->
-    <section class="hero">
-      <div class="container hero-grid">
-        <div class="hero-text">
-          <h2>Hi — I'm Jayanth.</h2>
-          <p>
-            <!-- EDIT ME: this is the single most important sentence on the page.
-                 Replace with your real numbers/specifics. Two placeholder options below —
-                 pick one, or write your own using this pattern: what you do + proof + where you're headed. -->
-            I build and maintain the data systems behind large-scale telecom billing —
-            work that has to be accurate down to the record, every time. I'm now applying that same
-            rigor to machine learning and data science, turning production discipline into predictive systems.
-          </p>
-          <div class="cta-row">
-            <a href="#projects" class="btn">See Projects</a>
-            <a href="assests/Jayanth_Vukkisa_Resume.pdf" class="btn ghost">Download Resume</a>
-          </div>
-        </div>
-        <div class="hero-right">
-          <img class="profile-photo" src="assests/IMG_3578.jpg" alt="Jayanth Vukkisa" loading="lazy" />
-          <div class="hero-card hero-card-compact">
-            <div class="card-inner">
-              <p>Hyderabad, India</p>
-              <p><a href="mailto:vukkisajayanth@gmail.com">vukkisajayanth@gmail.com</a></p>
-              <p><a href="tel:+917093457687">+91-7093457687</a></p>
-            </div>
-          </div>
-        </div>
+<!-- 01 · SHORT VERSION -->
+<section class="sec" id="short" data-nav="The short version">
+  <div class="wrap grid-2">
+    <div class="rv">
+      <p class="eyebrow">-- 01 / the short version</p>
+      <h2 class="h2">Same person.<br><em>Two compressions.</em></h2>
+      <div class="switch" role="group" aria-label="Choose a version of the introduction">
+        <button type="button" id="mHuman" aria-pressed="true">Human</button>
+        <button type="button" id="mResume" aria-pressed="false">Résumé</button>
       </div>
-    </section>
-
-    <!-- About -->
-    <section id="about" class="section about">
-      <div class="container">
-        <h3>About</h3>
-        <div class="about-content">
-          <h2>About Me</h2>
-          <p>
-            <!-- EDIT ME: replace with a real, specific detail only you would know —
-                 e.g. what pulled you toward ML specifically, a moment at TCS that sparked it,
-                 or the kind of problem you enjoy most. One concrete sentence beats three generic ones. -->
-            I got into data by way of billing systems that touch millions of customer records —
-            work where a single wrong field means a wrong invoice. That taught me to care about
-            correctness first. Now I'm channeling that same attention to detail into machine learning,
-            because I'd rather build systems that predict problems than ones that just report them.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Skills -->
-    <section class="section alt">
-      <div class="container">
-        <h3>Skills</h3>
-
-        <div class="skill-group">
-          <p class="skill-group-title">Core — used daily</p>
-          <div class="skills-grid">
-            <div class="skill">SQL & Data Analysis</div>
-            <div class="skill">Python</div>
-            <div class="skill">Linux / Shell</div>
-            <div class="skill">Git</div>
-            <div class="skill">Data Migration</div>
-            <div class="skill">Django</div>
-          </div>
-        </div>
-
-        <div class="skill-group">
-          <p class="skill-group-title">Currently building</p>
-          <div class="skills-grid">
-            <div class="skill">Pandas & NumPy</div>
-            <div class="skill">Scikit-learn</div>
-            <div class="skill">Data Visualization</div>
-            <div class="skill">Statistical Analysis</div>
-            <div class="skill">AWS (Foundations)</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Experience -->
-    <section id="experience" class="section">
-      <div class="container">
-        <h3>Experience</h3>
-
-        <article class="exp-item">
-          <h4>Assistant System Engineer — TCS</h4>
-          <p class="meta">Sep 2023 – Present • Data Developer & AI Aspirant (Telecom billing / Kenan)</p>
-          <ul>
-            <!-- EDIT ME: bracketed items are placeholders — replace [ ] with your real numbers.
-                 Don't guess; if you don't know the exact figure, use your best honest estimate
-                 (e.g. "~2M records," "dozens of feed configs") rather than leaving it vague. -->
-            <li>Migrated legacy billing data into the Kenan billing platform for [X million] customer records, maintaining 100% billing accuracy with zero revenue loss during cutover.</li>
-            <li>Built and enhanced pre-migration scripts to handle bulk CDR loads, cutting processing time by [X%] / handling [X] records per run.</li>
-            <li>Diagnosed and resolved feed-handling issues that were causing [describe impact — delayed invoices, failed feeds, etc.], restoring on-time data delivery to downstream billing teams.</li>
-            <li>Enhanced Financial Feeds with new required fields to support SSBS product launches, preventing billing errors across [X] product lines.</li>
-            <li>Implemented legal entity alignment updates, correcting entity mapping across [X] customer accounts to ensure accurate invoicing.</li>
-            <li>Built charge inventory validation reports used by the team to catch billing discrepancies before they reached customers.</li>
-            <li>Technologies: SQL, Data Analysis, Shell Scripting, Linux, Azure, Data Migration, Business Intelligence</li>
-          </ul>
-        </article>
-
-        <article class="exp-item">
-          <h4>Intern — TalentSprint</h4>
-          <p class="meta">Mar 2023 – Sep 2023</p>
-          <p>Built Ez-Learn, an interactive e-learning platform, from scratch using Python, Django, HTML/CSS and JS — later extended into the full project featured below.</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- Projects -->
-    <section id="projects" class="section alt">
-      <div class="container">
-        <h3>Projects</h3>
-
-        <div class="project-grid">
-          <div class="project">
-            <h4>🧠 Ez-Learn — AI-Powered E-Learning Platform</h4>
-            <!-- EDIT ME: add a real screenshot of the dashboard or course catalog here.
-                 <img src="assests/ezlearn-screenshot.png" alt="Ez-Learn student dashboard" loading="lazy" class="project-image" /> -->
-            <div class="project-content">
-              <h5>Problem</h5>
-              <p>Traditional e-learning platforms create disconnected experiences across multiple systems for videos, progress tracking, payments, and instructor interaction, limiting scalability and user engagement.</p>
-
-              <h5>Solution</h5>
-              <p>Built a centralized, intelligent learning platform integrating course management, secure payments, and personalized progress tracking in one unified experience. Used Cursor AI-assisted development throughout, applying it to speed up boilerplate work while making the architecture decisions myself.</p>
-
-              <h5>Key Features</h5>
-              <ul>
-                <li>Dynamic course catalog with enrollment system</li>
-                <li>Secure payment processing for transactions</li>
-                <li>Student dashboard for course tracking and progress</li>
-                <li>Admin panel for comprehensive management</li>
-                <li>AI-ready module architecture for future recommendation engines</li>
-              </ul>
-            </div>
-            <div class="project-tech">
-              <span class="tech-tag">Django</span>
-              <span class="tech-tag">Cursor AI</span>
-              <span class="tech-tag">AI-Ready</span>
-              <span class="tech-tag">Full-Stack</span>
-              <span class="tech-tag">Render</span>
-            </div>
-            <div class="project-links">
-              <a href="https://github.com/Vukkisa/Ez-Learn" target="_blank" rel="noopener" class="btn btn-small">View Code</a>
-              <a href="https://ez-learn.onrender.com" target="_blank" rel="noopener" class="btn btn-small ghost">Live Demo</a>
-            </div>
-          </div>
-
-          <div class="project">
-            <h4>🏢 Billing Platform Migration — Tata Consultancy Services</h4>
-            <div class="project-content">
-              <h5>Context</h5>
-              <p>Confidential enterprise engagement — migrating a live telecom billing system to the Kenan platform for [X million] active customer accounts, with zero tolerance for billing errors during cutover. Full details on my specific contributions are in the Experience section above; this project can't be linked or screenshotted due to client confidentiality.</p>
-
-              <h5>My role & constraints</h5>
-              <p>One of a team of [X] engineers, focused on CDR (call detail record) processing, financial feed accuracy, and legal entity alignment. Every change had to be validated against production billing data before deployment — no room for a "fix it in the next release" approach.</p>
-
-              <h5>Outcome</h5>
-              <p>Migration completed with 100% billing accuracy and zero revenue loss across the accounts I worked on.</p>
-            </div>
-            <div class="project-tech">
-              <span class="tech-tag">SQL</span>
-              <span class="tech-tag">Data Migration</span>
-              <span class="tech-tag">CDR Processing</span>
-              <span class="tech-tag">Revenue Assurance</span>
-              <span class="tech-tag">Kenan Billing</span>
-            </div>
-            <div class="project-links">
-              <span class="btn btn-small ghost" style="opacity:0.8">Confidential — details on request</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- Education -->
-    <section id="education" class="section">
-      <div class="container">
-        <h3>Education</h3>
-        <div class="edu-grid">
-          <div>
-            <h4>B.Tech — CSE</h4>
-            <p>B.V. Raju Institute of Technology — CGPA 8.17 (2022).</p>
-          </div>
-          <div>
-            <h4>12th — Sri Chaitanya Junior College</h4>
-            <p>Percentage: 94.40%</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- AI Focus -->
-    <section class="section alt">
-      <div class="container">
-        <h3>AI & Machine Learning Focus</h3>
-        <p>
-          I'm actively pursuing opportunities in AI and Data Science, combining my strong foundation in SQL development and data handling with emerging skills in machine learning and artificial intelligence. My goal is to transition into a Data Scientist or AI Engineer role where I can leverage data to build intelligent systems, predictive models, and automated solutions that drive business value and innovation.
-        </p>
-        <p>
-          Currently expanding my expertise in Python-based ML libraries, statistical analysis, and deep learning frameworks while applying analytical thinking from my telecom billing experience to solve complex data challenges.
-        </p>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="section contact-section">
-      <div class="container">
-        <h3>Contact</h3>
-        <p>If you'd like to connect: <a href="mailto:vukkisajayanth@gmail.com">vukkisajayanth@gmail.com</a></p>
-        <p class="small">Connect with me on social media:</p>
-        <div class="social-links">
-          <a href="https://github.com/Vukkisa" target="_blank" rel="noopener">GitHub</a>
-          <a href="https://linkedin.com/in/jayanthvukkisa" target="_blank" rel="noopener">LinkedIn</a>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <p>© <span id="year"></span> Jayanth Vukkisa — Built with ❤️</p>
     </div>
-  </footer>
+    <div class="rv" style="--d:.12s">
+      <div class="short" id="shortHuman">
+        <p>I like knowing <button type="button" class="fn" data-note="A habit from SQL: every number should have a lineage. It's why I'm fussy about sources in RAG, too.">why a number is what it is</button>. For a couple of years I worked where data actually lives — Oracle, PL/SQL, Linux, billing systems where <button type="button" class="fn" data-note="Telecom billing data at TCS. Correctness first became a reflex. It's the best thing that job taught me.">one wrong field means one wrong invoice</button>.</p>
+        <p>Then I got curious about what happens when the numbers start <button type="button" class="fn" data-note="The pivot. Forecasting and recommender experiments were the first time data stopped being a report and started being a guess worth defending.">predicting instead of reporting</button>. So now I build things that retrieve, reason and <button type="button" class="fn" data-note="KnowYourRules is designed to say &quot;I can't answer that from these documents&quot; — and I think that sentence is underrated.">refuse to guess</button>: RAG systems, vision pipelines, small agents. And I write down what broke.</p>
+      </div>
+      <div class="short plain" id="shortResume" hidden>
+        <p>Software developer with hands-on experience in SQL, Oracle, PL/SQL, Linux and backend data systems. Currently building projects in Machine Learning, Generative AI, RAG, Computer Vision and AI Agents, and transitioning into an AI/ML &amp; Data Science role.</p>
+        <p class="dim mono">— accurate. complete. slightly asleep.</p>
+      </div>
+      <aside class="note mono" id="note" aria-live="polite">↑ tap the underlined bits</aside>
+    </div>
+  </div>
+</section>
 
-  <script src="css/js/main.js"></script>
+<!-- 02 · EVOLUTION -->
+<section class="sec dark" id="evolution" data-nav="My evolution">
+  <div class="wrap">
+    <p class="eyebrow rv">-- 02 / my evolution</p>
+    <h2 class="h2 rv">From writing queries<br><em>to teaching machines.</em></h2>
+
+    <div class="rail rv" id="rail" role="tablist" aria-label="Stages of my evolution">
+      <span class="rail-line"><span class="rail-fill" id="railFill"></span></span>
+      <button type="button" role="tab" data-i="0"><span class="dot"></span><span class="yr mono">2022</span><span class="lbl">Software / Engineering</span></button>
+      <button type="button" role="tab" data-i="1"><span class="dot"></span><span class="yr mono">2023</span><span class="lbl">SQL / PL-SQL / Data systems</span></button>
+      <button type="button" role="tab" data-i="2"><span class="dot"></span><span class="yr mono">2024</span><span class="lbl">Backend / Development</span></button>
+      <button type="button" role="tab" data-i="3"><span class="dot"></span><span class="yr mono">2025</span><span class="lbl">Machine Learning / Data Science</span></button>
+      <button type="button" role="tab" data-i="4"><span class="dot"></span><span class="yr mono">2026</span><span class="lbl">GenAI / RAG / Agents</span></button>
+      <button type="button" role="tab" data-i="5"><span class="dot"></span><span class="yr mono">Next</span><span class="lbl">Building intelligent systems</span></button>
+    </div>
+
+    <div class="evo">
+      <div class="evo-art" aria-hidden="true">
+        <svg class="motif" viewBox="0 0 200 160" data-i="0"><path pathLength="1" d="M62 48 28 80l34 32"/><path pathLength="1" d="M138 48l34 32-34 32"/><path pathLength="1" d="M116 38 84 122"/></svg>
+        <svg class="motif" viewBox="0 0 200 160" data-i="1"><rect pathLength="1" x="28" y="26" width="144" height="108" rx="4"/><path pathLength="1" d="M28 54h144M28 82h144M28 110h144M76 26v108M124 26v108"/><rect class="fill" x="77" y="83" width="46" height="26"/></svg>
+        <svg class="motif" viewBox="0 0 200 160" data-i="2"><rect pathLength="1" x="56" y="24" width="88" height="28" rx="3"/><rect pathLength="1" x="56" y="66" width="88" height="28" rx="3"/><rect pathLength="1" x="56" y="108" width="88" height="28" rx="3"/><path pathLength="1" d="M100 52v14M100 94v14M28 80h28M144 80h28M28 38h28M144 122h28"/><circle class="fill" cx="72" cy="38" r="3"/><circle class="fill" cx="72" cy="80" r="3"/><circle class="fill" cx="72" cy="122" r="3"/></svg>
+        <svg class="motif" viewBox="0 0 200 160" data-i="3"><path pathLength="1" d="M24 136h156M24 136V24"/><path pathLength="1" d="M34 120 176 40"/><circle class="fill" cx="46" cy="112" r="4"/><circle class="fill" cx="64" cy="108" r="4"/><circle class="fill" cx="82" cy="94" r="4"/><circle class="fill" cx="100" cy="92" r="4"/><circle class="fill" cx="118" cy="72" r="4"/><circle class="fill" cx="140" cy="66" r="4"/><circle class="fill" cx="160" cy="46" r="4"/></svg>
+        <svg class="motif" viewBox="0 0 200 160" data-i="4"><path pathLength="1" d="M22 40h22v28H22zM22 92h22v28H22zM60 62h22v28H60z"/><path pathLength="1" d="M44 54l16 22M44 106l16-30M82 76 112 40M82 76l30 36M82 76l30 4M112 40l36 40M112 80h36M112 112l36-32M148 80h30"/><circle class="fill" cx="112" cy="40" r="6"/><circle class="fill" cx="112" cy="80" r="6"/><circle class="fill" cx="112" cy="112" r="6"/><circle class="fill accent" cx="148" cy="80" r="8"/></svg>
+        <svg class="motif" viewBox="0 0 200 160" data-i="5"><path pathLength="1" stroke-dasharray=".02 .02" d="M30 120 64 70 104 96 134 40 176 62"/><circle class="fill" cx="30" cy="120" r="4"/><circle class="fill" cx="64" cy="70" r="4"/><circle class="fill" cx="104" cy="96" r="4"/><circle class="fill" cx="134" cy="40" r="4"/><circle class="fill accent pulse" cx="176" cy="62" r="7"/></svg>
+        <p class="bigyr mono" id="bigYr">2022</p>
+      </div>
+
+      <div class="evo-body" id="evoBody">
+        <article class="stage" data-i="0">
+          <h3>Software / Engineering</h3>
+          <div class="cols">
+            <div><h4 class="mono">what I learned</h4><p>How programs are shaped: data structures, OOP, Python — and how to read an error message calmly. B.Tech in CSE, finished in 2022.</p></div>
+            <div><h4 class="mono">what I built</h4><p>Coursework and small projects. The kind where you find out that "it runs" and "it's right" are two different sentences.</p></div>
+            <div><h4 class="mono">what changed in my head</h4><p>Code was a way to make a computer do things. I hadn't yet noticed the interesting part was the <em>data</em> it did them to.</p></div>
+          </div>
+        </article>
+        <article class="stage" data-i="1" hidden>
+          <h3>SQL / PL-SQL / Data systems</h3>
+          <div class="cols">
+            <div><h4 class="mono">what I learned</h4><p>Oracle, PL/SQL, Linux and shell. How to read a plan, why indexes exist, how one careless join quietly ruins a month-end.</p></div>
+            <div><h4 class="mono">what I built</h4><p>Pre-migration scripts, feed enhancements and validation reports for a telecom billing platform at TCS. (And Ez-Learn v0.1, as a TalentSprint intern.)</p></div>
+            <div><h4 class="mono">what changed in my head</h4><p>Correctness stopped being a nice-to-have. Every number came from somewhere, and I should be able to say where.</p></div>
+          </div>
+        </article>
+        <article class="stage" data-i="2" hidden>
+          <h3>Backend / Development</h3>
+          <div class="cols">
+            <div><h4 class="mono">what I learned</h4><p>Django, request lifecycles, auth, payments, deployment on Render, Git discipline.</p></div>
+            <div><h4 class="mono">what I built</h4><p>Ez-Learn, grown up: a deployed learning platform with a catalogue, enrolment, a student dashboard, payments and an admin panel.</p></div>
+            <div><h4 class="mono">what changed in my head</h4><p>A query answers a question. A backend answers a thousand of them, for strangers, at the same time, politely.</p></div>
+          </div>
+        </article>
+        <article class="stage" data-i="3" hidden>
+          <h3>Machine Learning / Data Science</h3>
+          <div class="cols">
+            <div><h4 class="mono">what I learned</h4><p>pandas, NumPy, scikit-learn, evaluation metrics, time-series forecasting, recommender systems — and my first YOLOv8 models.</p></div>
+            <div><h4 class="mono">what I built</h4><p>Forecasting and recommendation experiments, and a real-time unauthorised-person detection pipeline.</p></div>
+            <div><h4 class="mono">what changed in my head</h4><p>I stopped asking "what happened?" and started asking "what will happen — and how wrong might I be?"</p></div>
+          </div>
+        </article>
+        <article class="stage" data-i="4" hidden>
+          <h3>GenAI / RAG / AI Agents</h3>
+          <div class="cols">
+            <div><h4 class="mono">what I learned</h4><p>Embeddings, vector search, chunking, LangChain LCEL, grounding, the first principles of evaluation, and small agent loops.</p></div>
+            <div><h4 class="mono">what I built</h4><p>KnowYourRules: a RAG assistant that answers Indian traffic-law questions only from official documents — and says so when it can't.</p></div>
+            <div><h4 class="mono">what changed in my head</h4><p>Fluent is not the same as correct. Sometimes the most valuable thing a model can say is "I don't know."</p></div>
+          </div>
+        </article>
+        <article class="stage" data-i="5" hidden>
+          <h3>Building intelligent systems</h3>
+          <div class="cols">
+            <div><h4 class="mono">what I want to learn</h4><p>Rigorous LLM evaluation, multimodal models, agent reliability, and the unglamorous parts of production ML.</p></div>
+            <div><h4 class="mono">what I want to build</h4><p>Systems that perceive, retrieve, reason and act — and survive contact with real users.</p></div>
+            <div><h4 class="mono">what I'm betting on</h4><p>The goal isn't smarter demos. It's systems you can trust at 3 a.m.</p></div>
+          </div>
+        </article>
+      </div>
+    </div>
+    <div class="evo-nav">
+      <button type="button" class="pill" id="evoPrev">← earlier</button>
+      <button type="button" class="pill" id="evoNext">later →</button>
+    </div>
+  </div>
+</section>
+
+<!-- 03 · THINGS I BUILD -->
+<section class="sec" id="builds" data-nav="Things I build">
+  <div class="wrap">
+    <p class="eyebrow rv">-- 03 / things I build</p>
+    <h2 class="h2 rv">A result set,<br><em>ordered by curiosity.</em></h2>
+    <div class="rs rv">
+      <p class="rs-q mono"><span class="k">SELECT</span> * <span class="k">FROM</span> things_i_build <span class="k">ORDER BY</span> curiosity <span class="k">DESC</span>;</p>
+      <div class="rs-head mono" aria-hidden="true"><span>#</span><span>name</span><span>what it does</span><span>stack</span><span>status</span></div>
+      <ol class="rs-rows">
+        <li><a href="#deep" data-go="kyr"><span class="n mono">1</span><span class="nm">KnowYourRules</span><span class="ds">Answers Indian traffic-law questions — only from sources it can show you.</span><span class="st mono">RAG · LangChain · Chroma · Groq · FastAPI</span><span class="ss mono">built</span></a></li>
+        <li><a href="#deep" data-go="cv"><span class="n mono">2</span><span class="nm">Unauthorized Human Detection</span><span class="ds">Watches a live feed, lets you draw a zone, flags who shouldn't be in it.</span><span class="st mono">YOLOv8 · OpenCV · CUDA</span><span class="ss mono">~35 FPS</span></a></li>
+        <li><a href="#deep" data-go="ez"><span class="n mono">3</span><span class="nm">Ez-Learn</span><span class="ds">A learning platform: catalogue, dashboard, payments and an admin panel.</span><span class="st mono">Django · Render</span><span class="ss mono">live</span></a></li>
+        <li><a href="#lab"><span class="n mono">4</span><span class="nm">The experiment drawer</span><span class="ds">Forecasts, recommenders, NLP, agents. Many small failures, documented.</span><span class="st mono">Python · scikit-learn</span><span class="ss mono">ongoing</span></a></li>
+      </ol>
+      <p class="rs-foot mono">4 rows returned (0.024 sec) · click a row</p>
+    </div>
+  </div>
+</section>
+
+<!-- 04 · DEEP DIVES -->
+<section class="sec alt" id="deep" data-nav="Deep dives">
+  <div class="wrap">
+    <p class="eyebrow rv">-- 04 / deep dives</p>
+    <h2 class="h2 rv">Projects,<br><em>told as stories.</em></h2>
+
+    <div class="tabs rv" role="tablist" aria-label="Choose a project">
+      <button type="button" role="tab" id="t-kyr" data-p="kyr" aria-selected="true" aria-controls="p-kyr"><span class="mono">01</span> KnowYourRules</button>
+      <button type="button" role="tab" id="t-cv" data-p="cv" aria-selected="false" aria-controls="p-cv"><span class="mono">02</span> Unauthorized Human Detection</button>
+      <button type="button" role="tab" id="t-ez" data-p="ez" aria-selected="false" aria-controls="p-ez"><span class="mono">03</span> Ez-Learn</button>
+    </div>
+
+    <!-- KnowYourRules -->
+    <div class="panel" id="p-kyr" role="tabpanel" aria-labelledby="t-kyr">
+      <p class="story">400+ documents went in.<br><em>A smaller curated knowledge base came out.</em><br>Then came retrieval.</p>
+
+      <div class="docs-wrap">
+        <div class="docs" id="docs" aria-hidden="true"></div>
+        <div class="docs-cap mono">
+          <button type="button" class="pill" id="curate">↺ replay the curation</button>
+          <span class="dim">each square = a document · <b class="keep">kept</b> / <b class="drop">dropped</b> · proportions illustrative</span>
+        </div>
+      </div>
+
+      <h3 class="sub-h">Walk the pipeline</h3>
+      <div class="stepper" data-stepper="kyr"></div>
+
+      <h3 class="sub-h">Ask it something</h3>
+      <div class="ask">
+        <form id="askForm" autocomplete="off">
+          <label class="sr" for="askQ">Question</label>
+          <input id="askQ" type="text" placeholder="Ask about Indian traffic rules…" maxlength="120">
+          <button type="submit" class="btn">Retrieve</button>
+        </form>
+        <div class="chips" id="askChips"></div>
+        <div class="ask-out" id="askOut" aria-live="polite"></div>
+        <p class="fine mono">A toy keyword retriever over 7 paraphrased sample chunks, standing in for embeddings + Chroma, so you can see the retrieve-or-refuse decision. Not the live system. Not legal advice.</p>
+      </div>
+
+      <h3 class="sub-h">The five questions</h3>
+      <div class="qa">
+        <details name="qa-kyr" open><summary><span class="qn mono">01</span>What problem was I trying to solve?</summary><p>Traffic rules in India live in dense legal documents. People ask forwarded messages and search engines instead, and get confident, half-remembered answers. I wanted something that answers from the official text and can show where each answer came from.</p></details>
+        <details name="qa-kyr"><summary><span class="qn mono">02</span>What did I build?</summary><p>A RAG assistant. Official government documents are cleaned, chunked and embedded (<span class="mono">nomic-embed-text</span> via Ollama) into Chroma. A LangChain LCEL chain retrieves context and hands it to a Groq-hosted LLM. FastAPI serves it; a plain HTML/JavaScript frontend sits on top.</p></details>
+        <details name="qa-kyr"><summary><span class="qn mono">03</span>What was technically difficult?</summary><p>Not the happy path — the <em>refusal</em> path. Getting a model to say "I can't answer that from these documents" reliably, instead of helpfully inventing something. And the data: 400+ documents isn't a knowledge base until you decide what stays.</p></details>
+        <details name="qa-kyr"><summary><span class="qn mono">04</span>What did I learn?</summary><p>Retrieval quality is mostly decided before the model ever runs — in extraction, cleaning and chunking. And a good "no" is a feature you have to design and test, not a side effect.</p></details>
+        <details name="qa-kyr"><summary><span class="qn mono">05</span>What would I improve?</summary><p>A proper evaluation set (questions with known answers <em>and</em> known refusals), hybrid search with a reranker, page-level citations, and tracking retrieval hit-rate over time.</p></details>
+      </div>
+      <p class="links"><a class="btn ghost" href="https://github.com/Vukkisa" target="_blank" rel="noopener">See my GitHub ↗</a></p>
+    </div>
+
+    <!-- Computer vision -->
+    <div class="panel" id="p-cv" role="tabpanel" aria-labelledby="t-cv" hidden>
+      <p class="story">A camera sees everything.<br><em>Almost none of it matters.</em><br>The work is deciding what does.</p>
+
+      <div class="stats">
+        <div><b class="mono">~35</b><span>frames per second</span></div>
+        <div><b class="mono">24 ms</b><span>latency per frame</span></div>
+        <div><b class="mono">3</b><span>sources: webcam · video · RTSP</span></div>
+      </div>
+
+      <h3 class="sub-h">Draw the zone</h3>
+      <div class="sim">
+        <div class="chips" id="srcChips"></div>
+        <canvas id="zoneSim" aria-label="A simulation of people walking around a camera view. Drag the corners of the red zone to redraw it; anyone standing inside is flagged."></canvas>
+        <div class="sim-side">
+          <p class="mono dim sim-t">event log</p>
+          <ol class="log mono" id="evLog"></ol>
+          <button type="button" class="pill" id="addPerson">+ person</button>
+        </div>
+        <p class="fine mono">Simulation: random walkers, a polygon you can reshape, and a point-in-polygon test. The real system runs YOLOv8 on actual video; the 35 FPS / 24 ms figures are its measured benchmark.</p>
+      </div>
+
+      <h3 class="sub-h">Walk the pipeline</h3>
+      <div class="stepper" data-stepper="cv"></div>
+
+      <h3 class="sub-h">The five questions</h3>
+      <div class="qa">
+        <details name="qa-cv" open><summary><span class="qn mono">01</span>What problem was I trying to solve?</summary><p>Spaces that should be empty sometimes aren't, and nobody watches a camera feed all day. I wanted a system that watches for me and speaks up only when a person is somewhere they shouldn't be.</p></details>
+        <details name="qa-cv"><summary><span class="qn mono">02</span>What did I build?</summary><p>A real-time pipeline: YOLOv8 + OpenCV over a webcam, video file or RTSP stream; zones that can be redefined on the fly; event logging with snapshots and clips saved as evidence. CUDA-optimised to roughly 35 FPS, about 24 ms per frame.</p></details>
+        <details name="qa-cv"><summary><span class="qn mono">03</span>What was technically difficult?</summary><p>Latency, not accuracy. Keeping frame capture, inference and logging from blocking each other — and stopping one person standing still from producing a hundred events.</p></details>
+        <details name="qa-cv"><summary><span class="qn mono">04</span>What did I learn?</summary><p>The model is a small part of a vision system. The rest is I/O, threading, thresholds and deciding what counts as an "event".</p></details>
+        <details name="qa-cv"><summary><span class="qn mono">05</span>What would I improve?</summary><p>Tracking IDs across frames, person re-identification so "unauthorised" can mean a specific someone, a small dashboard for reviewing events, and a lighter build for edge devices.</p></details>
+      </div>
+    </div>
+
+    <!-- Ez-Learn -->
+    <div class="panel" id="p-ez" role="tabpanel" aria-labelledby="t-ez" hidden>
+      <p class="story">One tab for videos. One for payments. One for progress.<br><em>I wanted one door.</em></p>
+
+      <h3 class="sub-h">Follow one purchase</h3>
+      <div class="stepper" data-stepper="ez"></div>
+
+      <h3 class="sub-h">The five questions</h3>
+      <div class="qa">
+        <details name="qa-ez" open><summary><span class="qn mono">01</span>What problem was I trying to solve?</summary><p>Learning platforms often scatter videos, progress, payments and instructor interaction across disconnected tools. I wanted the student's journey to be a single flow.</p></details>
+        <details name="qa-ez"><summary><span class="qn mono">02</span>What did I build?</summary><p>A Django platform with a course catalogue and enrolment, secure payments, a student dashboard for progress and an admin panel — deployed on Render. It started as an internship project at TalentSprint and grew from there.</p></details>
+        <details name="qa-ez"><summary><span class="qn mono">03</span>What was technically difficult?</summary><p>Payments. The happy path is a button; the real work is everything around it — confirming success on the server, handling failure, and never unlocking a course for an unpaid order.</p></details>
+        <details name="qa-ez"><summary><span class="qn mono">04</span>What did I learn?</summary><p>How a web app really behaves in production: environment config, migrations, static files — and that deploying is part of building, not a step after it.</p></details>
+        <details name="qa-ez"><summary><span class="qn mono">05</span>What would I improve?</summary><p>Tests around the payment flow, a recommendation module (the architecture is already AI-ready), and better progress analytics.</p></details>
+      </div>
+      <p class="links">
+        <a class="btn" href="https://ez-learn.onrender.com" target="_blank" rel="noopener">Live demo ↗</a>
+        <a class="btn ghost" href="https://github.com/Vukkisa/Ez-Learn" target="_blank" rel="noopener">View code ↗</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- 05 · OBSESSION -->
+<section class="sec dark" id="obsession" data-nav="Current obsession">
+  <div class="wrap">
+    <p class="eyebrow rv">-- 05 / currently obsessed with</p>
+    <h2 class="h2 rv">A live notebook,<br><em>not a skill list.</em></h2>
+    <p class="lede rv">Run the cells. Outputs are illustrative — this is how I think about each topic, not a benchmark report.</p>
+
+    <div class="nb rv">
+      <div class="nb-bar mono">
+        <span class="nb-title">currently_obsessed.ipynb</span>
+        <span class="nb-ctl">
+          <button type="button" class="pill" id="runAll">▶ run all</button>
+          <button type="button" class="pill" id="clearAll">clear outputs</button>
+          <span class="kernel"><i></i> kernel: curious</span>
+        </span>
+      </div>
+
+      <div class="cell">
+        <p class="md"><b>RAG</b> — retrieval is where most of the bugs live.</p>
+        <div class="cin"><span class="prompt mono">In [ ]:</span><pre class="code" data-hl># is the right chunk even being retrieved?
+hits = vectordb.similarity_search_with_score("helmet rules for pillion riders", k=3)
+for doc, dist in hits:
+    print(round(dist, 2), doc.metadata["source"])</pre><button type="button" class="run" aria-label="Run cell">▶</button></div>
+        <pre class="cout mono" hidden>0.31  motor_vehicles_act.pdf
+0.44  mv_amendment_act.pdf
+0.58  central_mv_rules.pdf
+# lower distance = closer. If the wrong chunk shows up here,
+# no prompt in the world will save the answer.</pre>
+      </div>
+
+      <div class="cell">
+        <p class="md"><b>LLM evaluation</b> — if I can't measure it, I'm just vibing.</p>
+        <div class="cin"><span class="prompt mono">In [ ]:</span><pre class="code" data-hl>golden = load("golden_questions.jsonl")  # answers + required refusals
+ok = [is_grounded(ask(q.text), q.sources) for q in golden]
+print(f"{sum(ok)}/{len(ok)} grounded")</pre><button type="button" class="run" aria-label="Run cell">▶</button></div>
+        <pre class="cout mono err" hidden>FileNotFoundError: golden_questions.jsonl
+→ writing it is the actual work:
+   · answerable questions (with the source they should cite)
+   · questions it must refuse
+   · trick questions that sound answerable</pre>
+      </div>
+
+      <div class="cell">
+        <p class="md"><b>AI agents</b> — a loop with tools and a budget.</p>
+        <div class="cin"><span class="prompt mono">In [ ]:</span><pre class="code" data-hl>agent = Agent(tools=[sql, search_docs, calculator], max_steps=6)
+result = agent.run("Which month had the most failed payments?")</pre><button type="button" class="run" aria-label="Run cell">▶</button></div>
+        <pre class="cout mono" hidden>thought  → I need payment counts per month
+tool     → sql("SELECT month, COUNT(*) … GROUP BY month")
+observed → 12 rows
+thought  → sort descending, take the top row
+answer   → the month, plus the SQL that produced it
+# the interesting question isn't "does it work?"
+# it's "what does it do when a tool returns garbage?"</pre>
+      </div>
+
+      <div class="cell">
+        <p class="md"><b>Multimodal AI</b> — one model that sees <em>and</em> explains?</p>
+        <div class="cin"><span class="prompt mono">In [ ]:</span><pre class="code" data-hl>msg = [image("camera_frame.jpg"), "Is anyone inside the marked zone?"]
+print(model.generate(msg))</pre><button type="button" class="run" aria-label="Run cell">▶</button></div>
+        <pre class="cout mono" hidden>→ YOLO: fast and narrow. Vision-language models: broad and slow.
+→ Where's the crossover? That's the experiment.</pre>
+      </div>
+
+      <div class="cell">
+        <p class="md"><b>Computer vision</b> — the part where the data moves.</p>
+        <div class="cin"><span class="prompt mono">In [ ]:</span><pre class="code" data-hl>model = YOLO("yolov8n.pt")
+for frame in stream(source):            # webcam | file | rtsp
+    boxes = model(frame, classes=[0], device="cuda")[0].boxes
+    if any_inside(zone, boxes):
+        log_event(frame)</pre><button type="button" class="run" aria-label="Run cell">▶</button></div>
+        <pre class="cout mono" hidden>~35 FPS · ~24 ms per frame (GPU)
+events/ → snapshots + clips, timestamped</pre>
+      </div>
+
+      <div class="cell">
+        <p class="md"><b>Production AI systems</b> — the demo is the easy 20%.</p>
+        <div class="cin"><span class="prompt mono">In [ ]:</span><pre class="code" data-hl># next: structured logs · timeouts · retries · cost per query · evals in CI
+$ docker build -t rag-api .
+$ uvicorn app:app --host 0.0.0.0 --port 8000</pre><button type="button" class="run" aria-label="Run cell">▶</button></div>
+        <pre class="cout mono" hidden>INFO:     Uvicorn running on http://0.0.0.0:8000
+# it runs on my machine. now make it boring everywhere else.</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 · LEARNING MAP -->
+<section class="sec" id="learning" data-nav="Things I'm learning">
+  <div class="wrap">
+    <p class="eyebrow rv">-- 06 / things I'm learning</p>
+    <h2 class="h2 rv">The edge<br><em>of my map.</em></h2>
+    <p class="lede rv">Centre = comfortable. Edge = where I'm still getting things wrong. Hover or tab through the dots.</p>
+    <div class="map rv">
+      <svg id="mapSvg" viewBox="0 0 560 560" role="img" aria-label="A radial map of skills: daily tools at the centre, frontier topics at the edge"></svg>
+      <div class="map-side">
+        <p class="mono dim">ring</p>
+        <h3 id="mapRing">—</h3>
+        <p id="mapName" class="map-name">Pick a dot.</p>
+        <p id="mapNote" class="map-note">Each one has a one-line honest note.</p>
+        <ul class="legend mono">
+          <li><i class="r0"></i>daily</li><li><i class="r1"></i>working</li><li><i class="r2"></i>learning</li><li><i class="r3"></i>frontier</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 07 · EXPERIMENTS -->
+<section class="sec alt" id="lab" data-nav="Experiments">
+  <div class="wrap">
+    <p class="eyebrow rv">-- 07 / experiments &amp; playground</p>
+    <h2 class="h2 rv">Small experiments.<br><em>Some of them are even right.</em></h2>
+    <p class="lede rv">Each one is a tiny working model on synthetic or hand-made data. Poke it. Break it. That's what the “broke” line is for.</p>
+
+    <div class="labgrid">
+      <article class="exp rv" id="exp-fc">
+        <header><span class="tag mono">EXP—01 · time series</span><span class="status mono s-ok">works (mostly)</span></header>
+        <h3>Forecast shootout</h3>
+        <p class="blurb">Four ways to predict the next 12 months. Train on 36, hide 12. Toggle models, then re-roll the noise and watch the winner change.</p>
+        <canvas class="exp-canvas" id="fc" aria-label="Line chart comparing four forecasting methods"></canvas>
+        <div class="chips" id="fcChips"></div>
+        <p class="verdict mono" id="fcVerdict"></p>
+        <details class="post"><summary class="mono">tried · broke · learned</summary>
+          <dl><dt>tried</dt><dd>naive, seasonal-naive, linear trend, trend + seasonality.</dd><dt>broke</dt><dd>my "clever" model lost to <em>copy last year</em> more often than I'd like.</dd><dt>learned</dt><dd>always beat the dumb baseline before you earn the right to be fancy.</dd></dl></details>
+      </article>
+
+      <article class="exp rv" id="exp-rec" style="--d:.08s">
+        <header><span class="tag mono">EXP—02 · recommender</span><span class="status mono s-warn">half-works</span></header>
+        <h3>Taste engine</h3>
+        <p class="blurb">Pick one to three films you like. Content-based cosine similarity does the rest — and tells you why.</p>
+        <div class="chips pick" id="recPick"></div>
+        <ol class="recs" id="recOut"></ol>
+        <details class="post"><summary class="mono">tried · broke · learned</summary>
+          <dl><dt>tried</dt><dd>hand-tagged feature vectors, cosine similarity to a summed profile.</dd><dt>broke</dt><dd>cold start: with one like, everything recommended is a near-clone.</dd><dt>learned</dt><dd>"because you liked X" is half the product. Explanations build trust.</dd></dl></details>
+      </article>
+
+      <article class="exp rv" id="exp-nlp">
+        <header><span class="tag mono">EXP—03 · NLP</span><span class="status mono s-bad">humbling</span></header>
+        <h3>Which words moved the needle?</h3>
+        <p class="blurb">A tiny sentiment model with a hand-written lexicon and one rule: “not” flips the next word. Type anything.</p>
+        <label class="sr" for="nlpIn">Sentence</label>
+        <textarea id="nlpIn" rows="2" maxlength="160">The retriever is fast but the answer is not good.</textarea>
+        <div class="words" id="nlpWords" aria-live="polite"></div>
+        <p class="verdict mono" id="nlpVerdict"></p>
+        <p><button type="button" class="pill" id="nlpSarcasm">try sarcasm</button></p>
+        <details class="post"><summary class="mono">tried · broke · learned</summary>
+          <dl><dt>tried</dt><dd>bag of weighted words, plus negation.</dd><dt>broke</dt><dd>sarcasm, obviously. "Oh great, another bug" scores as <em>positive</em>.</dd><dt>learned</dt><dd>why context-aware models exist — and why I should still look at the errors.</dd></dl></details>
+      </article>
+
+      <article class="exp rv" id="exp-cv" style="--d:.08s">
+        <header><span class="tag mono">EXP—04 · vision</span><span class="status mono s-warn">fragile</span></header>
+        <h3>Pixel brain</h3>
+        <p class="blurb">Draw a digit on a 5×7 grid. A nearest-template classifier guesses. Try drawing it badly.</p>
+        <div class="pix">
+          <canvas id="pix" aria-label="A 5 by 7 drawing grid. Click or drag to toggle cells."></canvas>
+          <div class="pix-out">
+            <p class="guess mono" id="pixGuess">?</p>
+            <ol class="bars mono" id="pixBars"></ol>
+            <p class="row"><button type="button" class="pill" id="pixClear">clear</button> <button type="button" class="pill" id="pixNoisy">noisy 7</button></p>
+          </div>
+        </div>
+        <details class="post"><summary class="mono">tried · broke · learned</summary>
+          <dl><dt>tried</dt><dd>Jaccard overlap against ten template digits.</dd><dt>broke</dt><dd>shift a stroke by one cell and it changes its mind.</dd><dt>learned</dt><dd>that's the problem convolutions solve. I felt it before I read it.</dd></dl></details>
+      </article>
+
+      <article class="exp rv wide" id="exp-ag">
+        <header><span class="tag mono">EXP—05 · agents</span><span class="status mono s-ok">scripted replay</span></header>
+        <h3>The agent loop, slowed down</h3>
+        <p class="blurb">Thought → action → observation, replayed step by step for two goals. One is possible. One isn't. The second is the interesting one.</p>
+        <div class="chips" id="agChips"></div>
+        <ol class="trace mono" id="agTrace" aria-live="polite"></ol>
+        <details class="post"><summary class="mono">tried · broke · learned</summary>
+          <dl><dt>tried</dt><dd>a tool-using loop with a step budget.</dd><dt>broke</dt><dd>it wanted to be helpful with tools it didn't have.</dd><dt>learned</dt><dd>knowing what you <em>can't</em> do is the whole safety story. Same lesson as the RAG refusal.</dd></dl></details>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 08 · TOOLBOX -->
+<section class="sec dark" id="toolbox" data-nav="Technical toolbox">
+  <div class="wrap">
+    <p class="eyebrow rv">-- 08 / technical toolbox</p>
+    <h2 class="h2 rv">Not a logo wall.<br><em>A bag that grew.</em></h2>
+    <p class="lede rv">Pick a stage. Everything from earlier stages is still in the bag.</p>
+    <div class="chain rv" id="chain" role="tablist" aria-label="Stages of the toolbox"></div>
+    <div class="bag rv">
+      <ul class="tools" id="tools"></ul>
+      <div class="tool-note" id="toolNote" aria-live="polite"><p class="mono dim">hover or focus a tool</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 09 · TIMELINE -->
+<section class="sec" id="timeline" data-nav="Timeline">
+  <div class="wrap">
+    <p class="eyebrow rv">-- 09 / timeline</p>
+    <h2 class="h2 rv">git log<br><em>--oneline --me</em></h2>
+    <ol class="gitlog">
+      <li class="rv"><span class="hash mono">a3f9c21</span><div><p class="msg"><span class="ref head mono">HEAD → main</span>feat: agents, evaluation, production habits</p><p class="when mono">now</p><details><summary class="mono">git show</summary><p>Building toward systems I'd trust in production: evals first, then more autonomy.</p></details></div></li>
+      <li class="rv"><span class="hash mono">7be41d0</span><div><p class="msg"><span class="ref mono">2026</span>merge: KnowYourRules — RAG, LangChain LCEL, Chroma, Groq</p><p class="when mono">2026</p><details><summary class="mono">git show</summary><p>400+ documents in, a curated knowledge base out. An assistant that refuses to guess.</p></details></div></li>
+      <li class="rv"><span class="hash mono">c19d7aa</span><div><p class="msg"><span class="ref mono">2025</span>feat: machine learning &amp; data science</p><p class="when mono">2025</p><details><summary class="mono">git show</summary><p>pandas, scikit-learn, forecasting, recommenders — and a YOLOv8 pipeline running around 35 FPS.</p></details></div></li>
+      <li class="rv"><span class="hash mono">5d2b8f3</span><div><p class="msg"><span class="ref tag mono">tag: ez-learn</span>feat: Ez-Learn goes live — Django, payments, Render</p><p class="when mono">2024</p><details><summary class="mono">git show</summary><p>From internship prototype to a deployed platform with an admin panel and a payment flow.</p></details></div></li>
+      <li class="rv"><span class="hash mono">90e1c44</span><div><p class="msg"><span class="ref mono">Sep 2023</span>feat: Assistant System Engineer, TCS</p><p class="when mono">Sep 2023</p><details><summary class="mono">git show</summary><p>SQL, Oracle, PL/SQL, Linux and shell on telecom billing data: migration scripts, feeds, validation reports.</p></details></div></li>
+      <li class="rv"><span class="hash mono">2a7f6d5</span><div><p class="msg"><span class="ref mono">Mar 2023</span>feat: TalentSprint internship — Ez-Learn v0.1</p><p class="when mono">Mar 2023</p><details><summary class="mono">git show</summary><p>Python, Django, HTML/CSS/JS. The first thing I built that strangers could use.</p></details></div></li>
+      <li class="rv"><span class="hash mono">0000001</span><div><p class="msg"><span class="ref mono">2022</span>init: B.Tech CSE, B.V. Raju Institute of Technology</p><p class="when mono">2022</p><details><summary class="mono">git show</summary><p>CGPA 8.17. Where "it compiles" first met "it's correct".</p></details></div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 10 · CONTACT -->
+<section class="sec hot" id="contact" data-nav="Contact">
+  <div class="wrap">
+    <p class="eyebrow rv">-- 10 / contact</p>
+    <h2 class="h2 rv">Let's <em>INSERT</em><br>a conversation.</h2>
+    <div class="grid-2 contact">
+      <form id="cForm" class="rv" autocomplete="off">
+        <label>name<input id="cName" type="text" placeholder="Ada" maxlength="60"></label>
+        <label>reply-to<input id="cMail" type="email" placeholder="ada@example.com" maxlength="80"></label>
+        <label>message<textarea id="cMsg" rows="3" placeholder="I have a problem that needs retrieval…" maxlength="400"></textarea></label>
+        <pre class="sqlprev mono" id="cPrev" aria-live="off"></pre>
+        <button type="submit" class="btn solid">COMMIT;</button>
+        <p class="fine mono" id="cMsgOut">Opens your mail app. No server, no tracking.</p>
+      </form>
+      <div class="rv" style="--d:.1s">
+        <ul class="reach">
+          <li><span class="mono">email</span><a href="mailto:vukkisajayanth@gmail.com">vukkisajayanth@gmail.com</a></li>
+          <li><span class="mono">github</span><a href="https://github.com/Vukkisa" target="_blank" rel="noopener">github.com/Vukkisa</a></li>
+          <li><span class="mono">linkedin</span><a href="https://linkedin.com/in/jayanthvukkisa" target="_blank" rel="noopener">in/jayanthvukkisa</a></li>
+          <li><span class="mono">résumé</span><a href="assests/Jayanth_Vukkisa_Resume.pdf">Download PDF</a></li>
+        </ul>
+        <p class="sign">Open to AI / ML and data-science roles — and to interesting problems.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot mono">
+  <span>© <span id="year"></span> Jayanth Vukkisa</span>
+  <span>hand-built · no framework · <kbd>/</kbd> to jump · ROLLBACK not supported</span>
+</footer>
+
+<div class="palette" id="palette" hidden>
+  <div class="pal-box" role="dialog" aria-modal="true" aria-label="Jump to a section">
+    <input id="palIn" type="text" placeholder="jump to… (try “evo”, “lab”, “git”)" autocomplete="off" aria-label="Filter sections">
+    <ul id="palList" role="listbox"></ul>
+    <p class="mono dim">↑↓ to move · enter to go · esc to close</p>
+  </div>
+</div>
+
+<noscript><p class="noscript">This portfolio is interactive and needs JavaScript for its demos. The text content is all here, and my email is vukkisajayanth@gmail.com.</p></noscript>
+<script src="css/js/main.js"></script>
 </body>
 </html>
