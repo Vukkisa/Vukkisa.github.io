@@ -42,22 +42,33 @@
 
 <!-- Who is this person? -->
 <section class="sec" id="who" data-nav="Who is this?" data-layout="1" data-here="who">
-  <div class="wrap who">
+  <div class="wrap">
     <p class="q mono rv">who is this person?</p>
+    <div class="who">
     <div class="rv" style="--d:.1s">
       <div class="short" id="shortHuman">
-        <p>I like knowing <button type="button" class="fn" data-note="A habit from SQL: every number should have a lineage. It's why I'm fussy about sources in RAG, too.">why a number is what it is</button>. For a couple of years I worked where data actually lives: Oracle, PL/SQL, Linux, telecom billing, where <button type="button" class="fn" data-note="Billing data migration at TCS. Correctness first became a reflex. It's the best thing that job taught me.">one wrong field means one wrong invoice</button>.</p>
+        <p>I like knowing <button type="button" class="fn" data-note="A habit from SQL: every number should have a lineage. It's why I'm fussy about sources in RAG, too.">why a number is what it is</button>. For a couple of years I worked where data actually lives: Oracle, PL/SQL, Linux, telecom billing, where <button type="button" class="fn" data-note="Billing data migration at TCS. Correctness first became a reflex. It's the best thing that job taught me.">one wrong field means one wrong invoice.</button></p>
         <p>Then I got curious about what happens when numbers start <button type="button" class="fn" data-note="Forecasting and recommender experiments were the first time data stopped being a report and became a guess I had to defend.">predicting instead of reporting</button>. Now I build things that retrieve, reason and <button type="button" class="fn" data-note="KnowYourRules is built to say &quot;I can't answer that from these documents.&quot; I think that sentence is underrated.">refuse to guess</button>. RAG, computer vision, small agents. I write down what broke.</p>
       </div>
       <div class="short plain" id="shortResume" hidden>
         <p>Software developer with hands-on experience in SQL, Oracle, PL/SQL, Linux and backend data systems. Currently building projects in Machine Learning, Generative AI, RAG, Computer Vision and AI Agents, and transitioning into an AI/ML and Data Science role.</p>
       </div>
       <p class="whonote mono"><span id="note" aria-live="polite">tap an underlined phrase.</span> <button type="button" class="link" id="toggle" aria-pressed="false">read the résumé version instead ↔</button></p>
+      <p class="fact mono">Assistant System Engineer at TCS since Sep 2023 · B.Tech CSE, 2022 · Hyderabad</p>
+    </div>
+    <figure class="portrait rv" style="--d:.2s">
+      <button type="button" class="portrait-btn" id="portrait" aria-pressed="false" aria-label="Portrait of Jayanth. Press to switch between the dot version and the photo.">
+        <img src="assests/jayanth.jpg" width="640" height="800" alt="Jayanth smiling, standing by a car on a forest road in the hills, with a red STOP sign behind him" loading="lazy">
+        <canvas id="portraitCv" aria-hidden="true"></canvas>
+      </button>
+      <figcaption class="mono dim" id="portraitCap">that's me, made of dots. tap to see the photo. (the STOP sign is a coincidence. I build traffic-law tools.)</figcaption>
+    </figure>
     </div>
   </div>
 </section>
 
 <!-- How did he get here? -->
+<!-- EDIT ME: each chapter's struck-through "I used to think" line is a first draft in Jayanth's voice. Replace with what you really believed. -->
 <section class="journey" id="journey" data-nav="The journey">
   <div class="wrap">
     <p class="q mono rv">how did he get here?</p>
@@ -234,15 +245,15 @@
           <div class="cin"><pre class="code" data-hl>golden = load("golden_questions.jsonl")  # answers + required refusals
 ok = [is_grounded(ask(q.text), q.sources) for q in golden]
 print(f"{sum(ok)}/{len(ok)} grounded")</pre><button type="button" class="run" id="runEval" aria-label="Run cell">▶</button></div>
-          <pre class="cout mono" id="evalOut" hidden>FileNotFoundError: golden_questions.jsonl
-
-so that's the actual work, before the next feature:
+          <pre class="cout mono" id="evalOut" hidden># the plan, not a result. golden_questions.jsonl needs:
   · questions it should answer, with the source it must cite
   · questions it must refuse
-  · trick questions that sound answerable</pre>
+  · trick questions that sound answerable
+
+then: run it on every change, and watch the refusals most closely.</pre>
         </div>
       </div>
-      <p class="got"><span class="mono">instead</span> I can't prove it yet. Evaluation comes before the next feature.</p>
+      <p class="got"><span class="mono">instead</span> "it works" isn't a claim until it's measured. So the question set comes before the next feature, and the refusal cases come first.</p>
     </div>
   </div>
 </section>
@@ -251,16 +262,23 @@ so that's the actual work, before the next feature:
 <section class="sec" id="learning" data-nav="What he's learning" data-layout="5" data-here="learning">
   <div class="wrap">
     <p class="q mono rv">what is he learning?</p>
+    <!-- EDIT ME: the status words below are a first draft of how Jayanth would describe each topic. Change them freely. -->
     <ul class="now-list">
-      <li class="rv" style="--s:2"><span class="topic">RAG</span><span class="state mono" data-s="2">getting there</span><span class="line">Built one end to end. Now learning why they fail quietly.</span></li>
-      <li class="rv" style="--s:1"><span class="topic">LLM evaluation</span><span class="state mono" data-s="1">lost, but curious</span><span class="line">Writing the golden questions first. Measuring beats vibing.</span></li>
-      <li class="rv" style="--s:1"><span class="topic">AI agents</span><span class="state mono" data-s="1">lost, but curious</span><span class="line">Loops, tools, budgets, and knowing when to stop.</span></li>
-      <li class="rv" style="--s:0"><span class="topic">Multimodal AI</span><span class="state mono" data-s="0">just starting</span><span class="line">Where does a vision-language model beat YOLO, and where is it just slower?</span></li>
-      <li class="rv" style="--s:3"><span class="topic">Computer vision</span><span class="state mono" data-s="3">on solid ground</span><span class="line">Real-time detection is the part I trust most.</span></li>
-      <li class="rv" style="--s:2"><span class="topic">Production AI</span><span class="state mono" data-s="2">getting there</span><span class="line">Logging, latency, cost. Making it boring everywhere else.</span></li>
+      <li class="rv" style="--s:3"><span class="topic">RAG</span><span class="state mono" data-s="3">built one</span><span class="line">Built one end to end. Now learning why they fail quietly.</span></li>
+      <li class="rv" style="--s:1"><span class="topic">LLM evaluation</span><span class="state mono" data-s="1">starting</span><span class="line">Writing the golden questions first. Measuring beats vibing.</span></li>
+      <li class="rv" style="--s:1"><span class="topic">AI agents</span><span class="state mono" data-s="1">starting</span><span class="line">Loops, tools, budgets, and knowing when to stop.</span></li>
+      <li class="rv" style="--s:0"><span class="topic">Multimodal AI</span><span class="state mono" data-s="0">curious</span><span class="line">Where does a vision-language model beat YOLO, and where is it just slower?</span></li>
+      <li class="rv" style="--s:3"><span class="topic">Computer vision</span><span class="state mono" data-s="3">built one</span><span class="line">Real-time detection is the part I trust most.</span></li>
+      <li class="rv" style="--s:2"><span class="topic">Production AI</span><span class="state mono" data-s="2">learning</span><span class="line">Logging, latency, cost. Making it boring everywhere else.</span></li>
     </ul>
-    <p class="tools mono rv">tools I reach for<br>
-      <b>SQL</b> Oracle, PL/SQL, Linux, Git <i>→</i> <b>data</b> Python, pandas, NumPy, Django <i>→</i> <b>ML</b> scikit-learn, forecasting, recommenders <i>→</i> <b>vision</b> YOLOv8, OpenCV, CUDA <i>→</i> <b>LLMs &amp; RAG</b> LangChain, Chroma, Ollama, Groq, FastAPI <i>→</i> <b>shipping</b> Docker, Render</p>
+    <dl class="toolgrid rv">
+      <dt class="mono">SQL</dt><dd>Oracle, PL/SQL, Linux, Git</dd>
+      <dt class="mono">data</dt><dd>Python, pandas, NumPy, Django</dd>
+      <dt class="mono">ML</dt><dd>scikit-learn, forecasting, recommenders</dd>
+      <dt class="mono">vision</dt><dd>YOLOv8, OpenCV, CUDA</dd>
+      <dt class="mono">LLMs + RAG</dt><dd>LangChain, Chroma, Ollama, Groq, FastAPI</dd>
+      <dt class="mono">shipping</dt><dd>Docker, Render</dd>
+    </dl>
   </div>
 </section>
 

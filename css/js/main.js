@@ -127,7 +127,7 @@ const Field = (() => {
       ox[i] *= .86; oy[i] *= .86;
       if (ptr.on) { const dx = xs[i] * W - ptr.x, dy = ys[i] * H - ptr.y, d = Math.hypot(dx, dy); if (d < 120 && d > .1) { const f = (1 - d / 120) ** 2 * 5; ox[i] += dx / d * f; oy[i] += dy / d * f; } }
     }
-    mix.forEach((m, k) => { mix[k] += ((k === cur ? 1 : 0) - m) * (reduced ? 1 : .06); });
+    mix.forEach((m, k) => { mix[k] += ((k === cur ? 1 : 0) - m) * (reduced ? 1 : k === cur ? .03 : .18); });   // old structure vanishes fast, new one appears once the dots settle
     ctx.clearRect(0, 0, W, H);
     const P = i => [xs[i] * W + ox[i], ys[i] * H + oy[i]];
     ctx.lineWidth = 1;
@@ -181,6 +181,49 @@ const Field = (() => {
     note.style.opacity = 0;
     setTimeout(() => { note.textContent = b.dataset.note; note.style.opacity = 1; }, 120);
   }));
+})();
+
+/* ───────────── portrait: me, made of dots ───────────── */
+(() => {
+  const btn = $('#portrait'), cv = $('#portraitCv'), cap = $('#portraitCap'); if (!btn) return;
+  const COLS = 58, ROWS = Math.round(COLS * 1.25);
+  let lum = null, p = reduced ? 1 : 0, seen = false;
+  const st = canvas2d(cv, () => draw());
+  const im = new Image();
+  im.onload = () => {
+    const o = document.createElement('canvas'); o.width = COLS; o.height = ROWS;
+    const x = o.getContext('2d'); x.drawImage(im, 0, 0, COLS, ROWS);
+    const d = x.getImageData(0, 0, COLS, ROWS).data, raw = [];
+    for (let i = 0; i < COLS * ROWS; i++) raw.push((.299 * d[i * 4] + .587 * d[i * 4 + 1] + .114 * d[i * 4 + 2]) / 255);
+    const s = [...raw].sort((a, b) => a - b), lo = s[s.length * .04 | 0], hi = s[s.length * .96 | 0];
+    lum = raw.map(v => clamp((v - lo) / (hi - lo || 1), 0, 1));
+    draw();
+  };
+  im.src = $('img', btn).getAttribute('src');
+  function draw() {
+    const { ctx: c, w: W, h: H } = st; if (!W || !lum) return;
+    const cw = W / COLS, ch = H / ROWS;
+    c.clearRect(0, 0, W, H); c.fillStyle = css(cv, '--ink');
+    for (let r = 0; r < ROWS; r++) {
+      const t = clamp(p * 1.9 - r / ROWS * .9, 0, 1), e = 1 - (1 - t) ** 3;
+      if (!e) continue;
+      for (let k = 0; k < COLS; k++) {
+        const dark = 1 - lum[r * COLS + k], rad = cw * .62 * dark ** .75 * e;
+        if (rad < .25) continue;
+        c.beginPath(); c.arc((k + .5) * cw, (r + .5) * ch, rad, 0, 7); c.fill();
+      }
+    }
+  }
+  whenVisible(btn, v => {
+    if (!v || seen || reduced) return; seen = true;
+    const t0 = performance.now(), run = now => { p = clamp((now - t0) / 1800, 0, 1); draw(); if (p < 1) requestAnimationFrame(run); };
+    requestAnimationFrame(run);
+  }, { threshold: .35 });
+  btn.addEventListener('click', () => {
+    const on = btn.getAttribute('aria-pressed') !== 'true';
+    btn.setAttribute('aria-pressed', on);
+    cap.textContent = on ? 'and that\'s the actual photo. tap again for the dots.' : 'that\'s me, made of dots. tap to see the photo. (the STOP sign is a coincidence. I build traffic-law tools.)';
+  });
 })();
 
 /* ───────────── KnowYourRules ───────────── */

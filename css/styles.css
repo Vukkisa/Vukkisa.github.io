@@ -34,6 +34,12 @@ main{position:relative;z-index:1}
 .wrap{max-width:var(--max);margin:0 auto}
 .sec{padding:clamp(90px,12vw,170px) var(--pad)}
 
+/* reading halo: text sits on a soft patch of paper so the dot field never fights it */
+.display,.sub,.whisper,.sqlline,.short,.whonote,.fact,.cap,.was,.now,.pt,.big,.pl,.story,.lead,.expect,.got,.topic,.line,.state,.toolgrid,.thesis,.because,.reach,.elsewhere,.portrait figcaption{
+  --halo:color-mix(in srgb,var(--paper) 86%,transparent);
+  background-color:var(--halo);box-shadow:0 0 18px 12px var(--halo);border-radius:6px}
+.display .ln,.display em,.display .sql,.was s{background-color:transparent;box-shadow:none}
+
 /* chrome */
 .bar{position:fixed;top:0;left:0;right:0;z-index:80;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px var(--pad);background:color-mix(in srgb,var(--paper) 82%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .mark{font-family:var(--serif);font-weight:600;font-size:1.25rem;text-decoration:none;letter-spacing:-.02em}
@@ -78,7 +84,14 @@ main{position:relative;z-index:1}
 .whisper{color:var(--mute);margin:0;transition:opacity .6s}
 
 /* who */
-.who{max-width:860px}
+.who{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,3.4fr);gap:clamp(28px,5vw,80px);align-items:start}
+.fact{margin:22px 0 0;color:var(--mute);font-size:.74rem}
+.portrait{margin:0;position:sticky;top:90px}
+.portrait-btn{display:block;position:relative;width:100%;aspect-ratio:4/5;padding:0;border:0;background:var(--paper-2);border-radius:6px;overflow:hidden;cursor:pointer}
+.portrait-btn img,.portrait-btn canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .6s var(--ease)}
+.portrait-btn canvas{background:var(--paper)}
+.portrait-btn[aria-pressed=true] canvas{opacity:0}
+.portrait figcaption{margin-top:12px;font-size:.7rem;line-height:1.5}
 .short p{font-family:var(--serif);font-weight:330;font-size:clamp(1.45rem,3vw,2.4rem);line-height:1.28;letter-spacing:-.015em;margin:0 0 .8em;font-variation-settings:"opsz" 48,"SOFT" 30}
 .short.plain p{font-family:var(--sans);font-size:1.05rem;color:var(--mute);letter-spacing:0;font-weight:400}
 .short[hidden]{display:none}
@@ -90,7 +103,7 @@ main{position:relative;z-index:1}
 /* journey */
 .journey{padding-top:clamp(60px,8vw,110px)}
 .journey>.wrap:first-child{padding:0 var(--pad)}
-.chapter{min-height:72vh;display:flex;align-items:center;padding:8vh var(--pad)}
+.chapter{min-height:44vh;display:flex;align-items:center;padding:5vh var(--pad)}
 .ch{width:100%;display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(24px,5vw,80px);align-items:center}
 .cap{margin:0;color:var(--mute);line-height:1.5}
 .cap b{display:block;font:300 clamp(2.6rem,6vw,5rem)/1 var(--serif);letter-spacing:-.03em;color:var(--ink);margin-bottom:10px}
@@ -102,7 +115,7 @@ main{position:relative;z-index:1}
 .js .chapter .now{transition-delay:1.1s}
 .js .chapter.in .cap,.js .chapter.in .was,.js .chapter.in .now{opacity:1;transform:none}
 .chapter.in .was s{background-size:100% 2px}
-.chapter.last{padding-bottom:12vh}
+.chapter.last{padding-bottom:8vh}
 
 /* work */
 .project{margin-top:clamp(110px,14vw,210px)}
@@ -205,9 +218,11 @@ main{position:relative;z-index:1}
 .state::before{content:"";position:absolute;left:0;top:0;height:3px;width:calc((var(--s) + 1) * 25%);background:var(--hot);transform-origin:left;animation:grow 1.2s var(--ease) backwards}
 @keyframes grow{from{transform:scaleX(0)}}
 .line{color:var(--ink-2);font-size:.95rem}
-.tools{margin:clamp(56px,8vw,96px) 0 0;color:var(--mute);line-height:2;max-width:78ch;font-size:.78rem}
-.tools b{color:var(--ink);font-weight:500;margin-right:4px}
-.tools i{font-style:normal;color:var(--hot);margin:0 6px}
+.toolgrid{display:grid;grid-template-columns:7.5rem minmax(0,1fr);margin:clamp(56px,8vw,96px) 0 0;max-width:720px}
+.toolgrid dt,.toolgrid dd{margin:0;padding:10px 0;border-top:1px solid var(--rule)}
+.toolgrid dt{color:var(--hot);font-size:.74rem;padding-top:13px}
+.toolgrid dd{color:var(--ink-2);font-size:.95rem}
+.toolgrid dd:last-of-type,.toolgrid dt:last-of-type{border-bottom:1px solid var(--rule)}
 
 /* remember */
 .remember{padding-bottom:clamp(110px,14vw,200px)}
@@ -236,7 +251,9 @@ main{position:relative;z-index:1}
 
 @media (max-width:900px){
   .ch,.sim{grid-template-columns:minmax(0,1fr)}
-  .chapter{min-height:60vh}
+  .chapter{min-height:34vh}
+  .who{grid-template-columns:1fr}
+  .portrait{position:static;max-width:340px}
   .story{grid-template-columns:1fr}
   .story dt{border-bottom:0;padding-bottom:0}
   .story dd{border-top:0;padding-top:4px}
@@ -245,6 +262,14 @@ main{position:relative;z-index:1}
   .flow{grid-template-columns:repeat(3,1fr);gap:18px 0}
   .flow::before{display:none}
   .here{display:none}
+}
+@media (pointer:coarse){
+  .pill,.chip,.btn,.link,.fn,.hint,.run{min-height:40px}
+  .pill,.chip{display:inline-flex;align-items:center}
+  .mark{padding:8px 12px;margin:-8px -12px}
+  .run{width:44px;height:44px}
+  .node{padding:6px 0}
+  .elsewhere a{display:inline-block;padding:8px 2px}
 }
 @media (max-width:520px){
   .hint{display:none}
