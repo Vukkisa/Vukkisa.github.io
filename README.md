@@ -1,25 +1,45 @@
 # vukkisa.github.io
 
-Jayanth Vukkisa's portfolio: *from writing queries to teaching machines.*
+Jayanth Vukkisa's portfolio: *I started with SQL. Then I wanted to know what the data could do.*
 
-Hand-built static site. No framework, no build step, no dependencies.
+Built with React, TypeScript, Tailwind CSS v4 and Framer Motion, bundled by Vite.
+
+## How this repo is laid out
+
+GitHub Pages serves this repository's root, so the **built site lives at the root** and the
+**source lives in `app/`**:
 
 ```
-index.html          content and structure
-css/styles.css      design tokens + layout
-css/js/main.js      every interactive piece (one module per section)
-assests/            résumé PDF (folder name kept so existing links keep working)
+app/                     source (Vite root)
+  index.html             HTML shell: SEO, Open Graph, Twitter, JSON-LD, no-JS fallback
+  public/                copied as-is to the root on build (favicons, og.png, robots, sitemap, images)
+  src/
+    data/content.ts      ← every word on the site; edit this to change the story
+    sections/            one component per chapter (Hero, ShortVersion, Evolution, Builds, …)
+    components/          reusable pieces (Pipeline, LayerNet, ZoneDemo, ProjectStory, ui/, layout/)
+    hooks/, lib/         small helpers
+index.html, static/      ← build output. Don't edit by hand; run `npm run build`.
+assests/                 résumé PDF and the original photo (folder name kept so old links work)
 ```
 
-Run locally: `python3 -m http.server` and open http://localhost:8000
+## Working on it
 
-Keyboard: press `/` (or Ctrl/Cmd+K) to jump between sections.
+```bash
+npm install
+npm run dev        # http://localhost:5173
+npm run build      # typecheck, then write index.html + static/ to the repo root
+```
 
-Demos on the page (retriever, zone simulator, forecasts, etc.) are small illustrative models
-running in the browser. They are not the production systems they are named after.
+Commit the build output along with the source; that's what GitHub Pages serves.
 
-## Content that is a first draft (edit these)
+## Editing the content
 
-- The struck-through "I used to think…" lines in the journey (`index.html`, `#journey`)
-- The status words in "what is he learning?" (`.now-list`)
-- The project answers ("the problem", "the hard part"…) are written from the brief; check them against what actually happened.
+Everything visible comes from `app/src/data/content.ts`. Lines marked `// DRAFT` were written
+from the brief and are worth a read: the "what changed" lines in the timeline, the engineering
+decisions in each pipeline, the statuses in the tabs and the lab, and the lessons.
+Lab statuses support `ABANDONED` too; use it where it's true.
+
+## Accessibility
+
+Semantic landmarks, a skip link, keyboard-operable tabs (arrow keys, Home, End), a focus-trapped
+menu, reduced-motion support throughout, and colour contrast that passes axe-core.
