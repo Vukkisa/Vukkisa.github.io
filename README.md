@@ -2,7 +2,7 @@
 
 Jayanth Vukkisa's portfolio: *I started with SQL. Then I wanted to know what the data could do.*
 
-Built with React, TypeScript, Tailwind CSS v4 and Framer Motion, bundled by Vite.
+Built with React, TypeScript, Tailwind CSS v4 and Framer Motion, bundled by Vite. Light and dark themes.
 
 ## How this repo is laid out
 
@@ -15,8 +15,8 @@ app/                     source (Vite root)
   public/                copied as-is to the root on build (favicons, og.png, robots, sitemap, images)
   src/
     data/content.ts      ← every word on the site; edit this to change the story
-    sections/            one component per chapter (Hero, ShortVersion, Evolution, Builds, …)
-    components/          reusable pieces (Pipeline, LayerNet, ZoneDemo, ProjectStory, ui/, layout/)
+    sections/            one component per chapter (Hero, Work, Journey, Experience, Contact)
+    components/          reusable pieces (CaseFile, Flow, ui/, layout/)
     hooks/, lib/         small helpers
 index.html, static/      ← build output. Don't edit by hand; run `npm run build`.
 assests/                 résumé PDF and the original photo (folder name kept so old links work)
@@ -34,12 +34,15 @@ Commit the build output along with the source; that's what GitHub Pages serves.
 
 ## Editing the content
 
-Everything visible comes from `app/src/data/content.ts`. Lines marked `// DRAFT` were written
-from the brief and are worth a read: the "what changed" lines in the timeline, the engineering
-decisions in each pipeline, the statuses in the tabs and the lab, and the lessons.
-Lab statuses support `ABANDONED` too; use it where it's true.
+Everything visible comes from `app/src/data/content.ts`. Each project is a "case file": problem,
+what I did, key decisions, limits and status, plus its real pipeline (`flow`). On a team project,
+mark the steps you built with `mine: true`.
+
+One rule: only write what can be backed up. Link the evidence (a repo or a demo), label where the
+work came from (internship, coursework, team project), and add results only once they're measured
+and shareable. Internship work stays described without code, data or numbers until approved.
 
 ## Accessibility
 
-Semantic landmarks, a skip link, keyboard-operable tabs (arrow keys, Home, End), a focus-trapped
-menu, reduced-motion support throughout, and colour contrast that passes axe-core.
+Semantic landmarks, a skip link, a focus-trapped mobile menu, reduced-motion support, and colour
+contrast that passes axe-core in both themes.

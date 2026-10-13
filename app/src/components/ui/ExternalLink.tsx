@@ -1,16 +1,18 @@
 import type { ReactNode } from 'react'
 import { cn } from '../../lib/utils'
 
-export function ExternalLink({ href, children, className }: { href: string; children: ReactNode; className?: string }) {
+/** A text link with an arrow. External links open in a new tab and say so to screen readers. */
+export function ExternalLink({ href, children, note, className }: { href: string; children: ReactNode; note?: string; className?: string }) {
   const external = /^https?:/.test(href)
   return (
     <a
       href={href}
       {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-      className={cn('group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.1em] text-fg transition-colors hover:text-amber', className)}
+      className={cn('group inline-flex items-baseline gap-1.5 text-sm font-medium text-ink transition-colors hover:text-accent', className)}
     >
-      <span className="border-b border-amber/50 pb-0.5 group-hover:border-amber">{children}</span>
-      <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">{external ? '↗' : '→'}</span>
+      <span className="underline decoration-rule-strong underline-offset-4 group-hover:decoration-accent">{children}</span>
+      <span aria-hidden="true" className="text-accent transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">{external ? '↗' : '→'}</span>
+      {note && <span className="text-xs font-normal text-mute">({note})</span>}
       {external && <span className="sr-only">(opens in a new tab)</span>}
     </a>
   )

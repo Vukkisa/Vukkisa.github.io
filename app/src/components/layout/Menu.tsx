@@ -1,9 +1,9 @@
 import { AnimatePresence, m } from 'framer-motion'
 import { useEffect, useRef } from 'react'
-import { sections } from '../../data/content'
+import { sections, site } from '../../data/content'
 import { cn, scrollToId } from '../../lib/utils'
 
-/** Full-screen index of the story. Traps focus, closes on Escape, returns focus to the trigger. */
+/** Mobile navigation. Traps focus, closes on Escape, returns focus to the trigger. */
 export function Menu({ open, onClose, active }: { open: boolean; onClose: () => void; active: string }) {
   const panel = useRef<HTMLDivElement>(null)
 
@@ -11,8 +11,7 @@ export function Menu({ open, onClose, active }: { open: boolean; onClose: () => 
     if (!open) return
     const root = document.documentElement
     root.style.overflow = 'hidden'
-    const first = panel.current?.querySelector<HTMLElement>('a,button')
-    first?.focus()
+    panel.current?.querySelector<HTMLElement>('a,button')?.focus()
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') { e.preventDefault(); onClose(); return }
       if (e.key !== 'Tab' || !panel.current) return
@@ -38,37 +37,39 @@ export function Menu({ open, onClose, active }: { open: boolean; onClose: () => 
           id="site-menu"
           role="dialog"
           aria-modal="true"
-          aria-label="Index of sections"
-          className="fixed inset-0 z-[60] overflow-y-auto bg-bg/97 px-5 py-6 backdrop-blur-lg sm:px-8 lg:pl-32"
+          aria-label="Site navigation"
+          className="fixed inset-0 z-[60] overflow-y-auto bg-paper px-5 py-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.18 }}
         >
-          <div className="mx-auto flex max-w-6xl items-center justify-between">
-            <p className="label">ls ~/jayanth</p>
-            <button type="button" onClick={onClose} className="label rounded-full border border-rule px-3.5 py-2 text-fg hover:border-amber hover:text-amber">
-              close <span aria-hidden="true">✕</span>
+          <div className="flex items-center justify-between">
+            <p className="display text-xl">{site.name}</p>
+            <button type="button" onClick={onClose} className="rounded-full border border-rule px-3.5 py-1.5 text-sm text-ink hover:border-accent hover:text-accent">
+              Close
             </button>
           </div>
-          <nav aria-label="Sections" className="mx-auto mt-10 max-w-6xl">
+          <nav aria-label="Sections" className="mt-10">
             <ol>
               {sections.map((s, i) => (
-                <m.li key={s.id} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.03 * i, duration: 0.3 }}>
+                <li key={s.id}>
                   <a
                     href={`#${s.id}`}
                     onClick={e => { e.preventDefault(); go(s.id) }}
                     aria-current={active === s.id ? 'location' : undefined}
-                    className={cn('group flex items-baseline gap-5 border-b border-rule py-3.5 transition-colors hover:text-amber', active === s.id ? 'text-amber' : 'text-fg')}
+                    className={cn('flex items-baseline gap-5 border-b border-rule py-4 transition-colors hover:text-accent', active === s.id ? 'text-accent' : 'text-ink')}
                   >
-                    <span className="label w-8 shrink-0">{String(i).padStart(2, '0')}</span>
-                    <span className="display text-[clamp(1.8rem,5vw,3.2rem)] transition-transform group-hover:translate-x-2">{s.title}</span>
-                    <span className="ml-auto hidden font-mono text-xs text-mute sm:block">{s.path}</span>
+                    <span className="label w-6">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="display text-4xl">{s.title}</span>
                   </a>
-                </m.li>
+                </li>
               ))}
             </ol>
           </nav>
+          <p className="mt-10 text-sm text-ink-2">
+            <a href={`mailto:${site.email}`} className="prose-link">{site.email}</a>
+          </p>
         </m.div>
       )}
     </AnimatePresence>

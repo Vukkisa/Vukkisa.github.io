@@ -1,9 +1,9 @@
 {
   "name": "vukkisa-portfolio",
   "private": true,
-  "version": "3.0.0",
+  "version": "4.0.0",
   "type": "module",
-  "description": "Jayanth Vukkisa — AI, Data & Intelligent Systems. Source lives in app/, the build is written to the repo root for GitHub Pages.",
+  "description": "Jayanth Vukkisa — AI & Data Science portfolio. Source lives in app/, the build is written to the repo root for GitHub Pages.",
   "scripts": {
     "dev": "vite",
     "typecheck": "tsc --noEmit -p tsconfig.json",
