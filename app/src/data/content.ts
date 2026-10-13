@@ -112,7 +112,6 @@ export const projects: Project[] = [
     tools: ['Python', 'Django', 'PostgreSQL', 'Razorpay', 'Render'],
     links: [
       { label: 'Live demo', href: 'https://ez-learn.onrender.com/', note: 'may take a minute to wake' },
-      { label: 'Repository', href: 'https://github.com/Vukkisa/ez-learn' },
     ],
   },
 ]
@@ -122,13 +121,13 @@ export const moreWork = [
     title: 'Smart Mutual Fund Advisor',
     body: 'RAG over a mutual-fund dataset with Chroma and structured output, served in Gradio, then rebuilt as a LangGraph graph.',
     context: 'Jio Institute coursework',
-    href: 'https://github.com/Vukkisa/gen_ai',
+    href: 'https://github.com/Vukkisa/Gen_AI',
   },
   {
     title: 'LLM extraction pipelines',
     body: 'LangChain + Groq pipelines that classify, summarise and extract entities from news articles and job postings.',
     context: 'Jio Institute coursework',
-    href: 'https://github.com/Vukkisa/gen_ai',
+    href: 'https://github.com/Vukkisa/Gen_AI',
   },
 ]
 
