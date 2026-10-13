@@ -2,87 +2,85 @@
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-/* Paper and ink, one rust accent. Light by default; dark redefines the same tokens. */
+/* Minimal: one narrow column, one sans face, neutral greys. Colour only for status. */
 @theme {
-  --color-paper: #f3f0e8;
-  --color-surface: #fbf9f4;
-  --color-ink: #1b1a17;
-  --color-ink-2: #45423a;
-  --color-mute: #636057;    /* lowest tone allowed for text */
-  --color-rule: #d9d3c5;
-  --color-rule-strong: #b9b2a2;
-  --color-accent: #a8380f;
-  --color-accent-soft: #f3e1d5;
-  --color-progress: #845300;
-  --color-progress-soft: #f5e7c8;
-  --color-live: #276236;
-  --color-live-soft: #dcecd9;
+  --color-bg: #fdfdfc;
+  --color-card: #ffffff;
+  --color-fg: #18181b;
+  --color-soft: #3f3f46;
+  --color-mute: #6b6b73;    /* lowest tone allowed for text */
+  --color-line: #e7e7e4;
+  --color-line-strong: #d4d4d0;
+  --color-chip: #f4f4f2;
+  --color-progress: #8a5300;
+  --color-progress-soft: #fbf1dc;
+  --color-live: #1f6b38;
+  --color-live-soft: #e3f3e7;
 
-  --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
   --font-sans: "Geist Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 @layer base {
-  /* Dark theme: follows the system unless the visitor picked light; or forced by the toggle. */
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --color-paper: #121210;
-      --color-surface: #1a1916;
-      --color-ink: #ece8de;
-      --color-ink-2: #c2bdb0;
-      --color-mute: #9a9588;
-      --color-rule: #2e2c27;
-      --color-rule-strong: #47443c;
-      --color-accent: #f08c60;
-      --color-accent-soft: #3a2219;
-      --color-progress: #e9b85a;
-      --color-progress-soft: #382a10;
-      --color-live: #93d3a1;
-      --color-live-soft: #18301e;
+      --color-bg: #0c0c0d;
+      --color-card: #131315;
+      --color-fg: #ededed;
+      --color-soft: #c8c8cc;
+      --color-mute: #96969d;
+      --color-line: #232326;
+      --color-line-strong: #333337;
+      --color-chip: #1b1b1e;
+      --color-progress: #ebbd5f;
+      --color-progress-soft: #2b2312;
+      --color-live: #86d39b;
+      --color-live-soft: #132a1a;
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --color-paper: #121210;
-    --color-surface: #1a1916;
-    --color-ink: #ece8de;
-    --color-ink-2: #c2bdb0;
-    --color-mute: #9a9588;
-    --color-rule: #2e2c27;
-    --color-rule-strong: #47443c;
-    --color-accent: #f08c60;
-    --color-accent-soft: #3a2219;
-    --color-progress: #e9b85a;
-    --color-progress-soft: #382a10;
-    --color-live: #93d3a1;
-    --color-live-soft: #18301e;
+    --color-bg: #0c0c0d;
+    --color-card: #131315;
+    --color-fg: #ededed;
+    --color-soft: #c8c8cc;
+    --color-mute: #96969d;
+    --color-line: #232326;
+    --color-line-strong: #333337;
+    --color-chip: #1b1b1e;
+    --color-progress: #ebbd5f;
+    --color-progress-soft: #2b2312;
+    --color-live: #86d39b;
+    --color-live-soft: #132a1a;
     color-scheme: dark;
   }
 
   html {
-    background: var(--color-paper);
-    color: var(--color-ink);
+    background: var(--color-bg);
+    color: var(--color-fg);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    scroll-padding-top: 5.5rem;
     color-scheme: light;
   }
   @media (prefers-reduced-motion: no-preference) {
     html { scroll-behavior: smooth; }
   }
   html, body { overflow-x: clip; }
-  body { min-height: 100svh; background: var(--color-paper); }
-  ::selection { background: var(--color-accent); color: var(--color-paper); }
-  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; border-radius: 2px; }
+  body { min-height: 100svh; background: var(--color-bg); }
+  ::selection { background: var(--color-fg); color: var(--color-bg); }
+  :focus-visible { outline: 2px solid var(--color-fg); outline-offset: 3px; border-radius: 3px; }
   a { text-decoration: none; }
+  h1, h2, h3 { text-wrap: balance; }
 }
 
 @layer components {
-  /* Small metadata voice: dates, contexts, stacks. */
-  .label { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-mute); }
-  .display { font-family: var(--font-serif); font-weight: 400; letter-spacing: -0.015em; line-height: 1; }
-  .prose-link { color: var(--color-ink); text-decoration: underline; text-decoration-color: var(--color-rule-strong); text-underline-offset: 4px; transition: text-decoration-color .2s, color .2s; }
-  .prose-link:hover { color: var(--color-accent); text-decoration-color: var(--color-accent); }
+  .link { color: var(--color-fg); text-decoration: underline; text-decoration-color: var(--color-line-strong); text-underline-offset: 4px; transition: text-decoration-color .2s; }
+  .link:hover { text-decoration-color: var(--color-fg); }
 }
+
+/* A quiet fade-up on load, staggered by --i. Off for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: rise .6s cubic-bezier(.25, 1, .5, 1) both; animation-delay: calc(var(--i, 0) * 70ms); }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } }
