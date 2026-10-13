@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* Minimal: one narrow column, one sans face, neutral greys. Colour only for status. */
+@theme {
+  --color-bg: #fdfdfc;
+  --color-card: #ffffff;
+  --color-fg: #18181b;
+  --color-soft: #3f3f46;
+  --color-mute: #6b6b73;    /* lowest tone allowed for text */
+  --color-line: #e7e7e4;
+  --color-line-strong: #d4d4d0;
+  --color-chip: #f4f4f2;
+  --color-progress: #8a5300;
+  --color-progress-soft: #fbf1dc;
+  --color-live: #1f6b38;
+  --color-live-soft: #e3f3e7;
+
+  --font-sans: "Geist Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@layer base {
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --color-bg: #0c0c0d;
+      --color-card: #131315;
+      --color-fg: #ededed;
+      --color-soft: #c8c8cc;
+      --color-mute: #96969d;
+      --color-line: #232326;
+      --color-line-strong: #333337;
+      --color-chip: #1b1b1e;
+      --color-progress: #ebbd5f;
+      --color-progress-soft: #2b2312;
+      --color-live: #86d39b;
+      --color-live-soft: #132a1a;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --color-bg: #0c0c0d;
+    --color-card: #131315;
+    --color-fg: #ededed;
+    --color-soft: #c8c8cc;
+    --color-mute: #96969d;
+    --color-line: #232326;
+    --color-line-strong: #333337;
+    --color-chip: #1b1b1e;
+    --color-progress: #ebbd5f;
+    --color-progress-soft: #2b2312;
+    --color-live: #86d39b;
+    --color-live-soft: #132a1a;
+    color-scheme: dark;
+  }
+
+  html {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    color-scheme: light;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+  html, body { overflow-x: clip; }
+  body { min-height: 100svh; background: var(--color-bg); }
+  ::selection { background: var(--color-fg); color: var(--color-bg); }
+  :focus-visible { outline: 2px solid var(--color-fg); outline-offset: 3px; border-radius: 3px; }
+  a { text-decoration: none; }
+  h1, h2, h3 { text-wrap: balance; }
+}
+
+@layer components {
+  .link { color: var(--color-fg); text-decoration: underline; text-decoration-color: var(--color-line-strong); text-underline-offset: 4px; transition: text-decoration-color .2s; }
+  .link:hover { text-decoration-color: var(--color-fg); }
+}
+
+/* A quiet fade-up on load, staggered by --i. Off for reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .rise { animation: rise .6s cubic-bezier(.25, 1, .5, 1) both; animation-delay: calc(var(--i, 0) * 70ms); }
+}
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } }
