@@ -4,7 +4,7 @@ import { moreWork, projects } from '../data/content'
 
 export function Projects() {
   return (
-    <Section id="projects" title="Projects" i={1}>
+    <Section id="projects" title="Projects" i={1} first>
       <div className="space-y-4">
         {projects.map(p => <ProjectCard key={p.id} p={p} />)}
       </div>

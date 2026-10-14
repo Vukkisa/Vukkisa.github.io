@@ -8,7 +8,7 @@ export default function App() {
   return (
     <>
       <SkipLink />
-      <div className="mx-auto max-w-2xl px-5 pb-10 pt-14 sm:px-6 sm:pt-20">
+      <div className="mx-auto max-w-2xl px-5 pb-10 pt-8 sm:px-6 sm:pt-12">
         <Intro />
         <main id="main" tabIndex={-1} className="outline-none">
           <Projects />

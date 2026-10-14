@@ -8,10 +8,31 @@ const LINKS = [
   { label: 'Résumé', href: site.resume },
 ]
 
+/** In-page sections, in page order. Skills is short and sits just above Contact, so it's left out. */
+const SECTIONS = [
+  { id: 'projects', label: 'Projects' },
+  { id: 'experience', label: 'Experience' },
+  { id: 'education', label: 'Education' },
+  { id: 'contact', label: 'Contact' },
+]
+
 export function Intro() {
   return (
     <header id="top" className="rise">
-      <div className="flex items-start justify-between gap-6">
+      <div className="flex items-center justify-between gap-4">
+        <nav aria-label="On this page">
+          <ul className="flex flex-wrap gap-x-3 gap-y-1 text-[13px] sm:gap-x-4 sm:text-sm">
+            {SECTIONS.map(s => (
+              <li key={s.id}>
+                <a href={`#${s.id}`} className="text-mute transition-colors hover:text-fg">{s.label}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <ThemeToggle />
+      </div>
+
+      <div className="mt-10 flex items-start justify-between gap-6">
         <div className="flex items-center gap-4">
           <img
             src="/images/jayanth-avatar.webp"
@@ -27,7 +48,6 @@ export function Intro() {
             <p className="mt-0.5 text-sm text-mute">{intro.role}</p>
           </div>
         </div>
-        <ThemeToggle />
       </div>
 
       <div className="mt-8 space-y-4 text-[15px] leading-relaxed text-soft">

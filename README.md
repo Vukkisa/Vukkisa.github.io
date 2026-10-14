@@ -2,6 +2,8 @@
 
 Jayanth Vukkisa's portfolio: *I started with SQL. Then I wanted to know what the data could do.*
 
+**Live:** https://vukkisa.github.io/
+
 Built with React, TypeScript and Tailwind CSS v4, bundled by Vite. One narrow column, light and dark themes.
 
 ## How this repo is laid out
@@ -19,7 +21,7 @@ app/                     source (Vite root)
     components/          ProjectCard, ThemeToggle, ui/, layout/
     hooks/, lib/         small helpers
 index.html, static/      ← build output. Don't edit by hand; run `npm run build`.
-assests/                 résumé PDF and the original photo (folder name kept so old links work)
+assests/                 résumé PDF and photo (folder name kept so old links work)
 ```
 
 ## Working on it
@@ -31,6 +33,9 @@ npm run build      # typecheck, then write index.html + static/ to the repo root
 ```
 
 Commit the build output along with the source; that's what GitHub Pages serves.
+
+**Deploying:** GitHub Pages publishes the root of `main` (Settings → Pages → Deploy from a branch,
+`main` / root). Merging to `main` deploys; there's no separate CI step.
 
 ## Editing the content
 
