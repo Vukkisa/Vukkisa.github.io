@@ -85,10 +85,10 @@ export const projects: Project[] = [
   {
     id: 'speech-recognition',
     title: 'Railway speech recognition',
-    subtitle: 'Transcribing noisy, multilingual cab audio',
+    subtitle: 'Transcribing noisy, multilingual railway audio',
     context: 'AiSpry · internship · Oct 2026 – now',
     status: { label: 'In progress', tone: 'progress' },
-    problem: 'Locomotive cab recordings are noisy and multilingual, and off-the-shelf speech models struggle with them.',
+    problem: 'Railway audio recordings are noisy and multilingual, and off-the-shelf speech models struggle with them.',
     built:
       'A fully local speech-recognition pipeline. I tested denoising methods (spectral, RNNoise, DeepFilterNet) and silence- and voice-based segmentation, benchmarked Indic-Conformer, Qwen3-ASR and Whisper, and merged their outputs with a word-level ensemble, all within tight compute and disk limits.',
     evidence: 'Every variant is scored on word and character error rate. Now fine-tuning a model to lower WER. Results not yet shareable.',
