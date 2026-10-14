@@ -19,10 +19,10 @@ export const site = {
 }
 
 export const intro = {
-  role: 'AI & Data Science · Hyderabad',
+  role: 'Postgraduate AI & Data Science · Associate Data Scientist Intern',
   lines: [
     'I started with SQL. Then I wanted to know what the data could do.',
-    'I spent two and a half years as a Data Developer at TCS, working on enterprise telecom billing data. Now I’m a postgraduate student in AI & Data Science at Jio Institute and an Associate Data Scientist intern at AiSpry, working on speech recognition, computer vision and retrieval (RAG).',
+    'I spent two and a half years as a Data Developer at TCS, working on enterprise telecom billing systems. I’m now a postgraduate student in AI & Data Science at Jio Institute and an Associate Data Scientist intern at AiSpry, where I work on speech recognition for noisy railway audio. My coursework and team projects include a RAG assistant and a computer-vision pipeline.',
   ],
 }
 
@@ -44,19 +44,43 @@ export type Project = {
   privateNote?: string
 }
 
+/**
+ * Homepage order: inspectable evidence and relevance to AI/ML roles first, then recency.
+ * Public code (KnowYourRules, AI Surveillance) comes before the internship work that can't be
+ * shown, and Ez-Learn (full-stack, older) comes last.
+ */
 export const projects: Project[] = [
   {
     id: 'knowyourrules',
     title: 'KnowYourRules',
     subtitle: 'Traffic-law assistant grounded in official documents',
     context: 'Jio Institute · team project · Sep 2026',
-    status: { label: 'Runs locally', tone: 'done' },
-    problem: 'India’s traffic rules are scattered across central, state, city and court sources, with no single place to look them up.',
+    status: { label: 'Local prototype', tone: 'done' },
+    problem: 'Indian traffic rules are spread across central, state, city and court documents, so there’s no single place to look one up.',
     built:
-      'The RAG pipeline: LangChain chunking, local Ollama embeddings in a Chroma vector store, and Groq (gpt-oss-120b) answering under a strict prompt that only uses retrieved text and cites its source.',
-    evidence: 'Runs locally with the central Motor Vehicles Act and Rules, Gujarat and Delhi indexed. Answer accuracy not yet evaluated.',
+      'The RAG pipeline, my part of the team project: LangChain chunking, local Ollama embeddings in a Chroma vector store, and Groq (gpt-oss-120b) answering only from the retrieved passages, with the source shown.',
+    evidence: 'Indexed so far: the central Motor Vehicles Act and Rules, Gujarat and Delhi. Answer accuracy hasn’t been evaluated yet; a cited source shows where an answer came from, not that it’s correct.',
     tools: ['Python', 'LangChain', 'Ollama', 'Chroma', 'Groq'],
-    links: [{ label: 'Team repository', href: 'https://github.com/DAG-21/KnowYourRules' }],
+    links: [
+      { label: 'Team repository', href: 'https://github.com/DAG-21/KnowYourRules' },
+      { label: 'How it was built', href: 'https://github.com/DAG-21/KnowYourRules#the-process' },
+    ],
+  },
+  {
+    id: 'ai-surveillance',
+    title: 'AI Surveillance',
+    subtitle: 'Restricted-zone intrusion detection',
+    context: 'Jio Institute · coursework · 2026',
+    status: { label: 'Complete', tone: 'done' },
+    problem: 'Guarding a restricted area shouldn’t depend on someone watching a screen all day.',
+    built:
+      'Draw a zone on any camera feed (webcam, USB, RTSP or video file). YOLOv8 detects people, each person’s feet point is tested against the zone, and every intrusion saves a clip, a snapshot and a CSV log entry.',
+    evidence: 'Packaged as an installable command-line tool with a built-in FPS benchmark; benchmark results not yet recorded. Hidden feet or crowded scenes can cause missed or false alerts.',
+    tools: ['Python', 'YOLOv8', 'OpenCV', 'NumPy'],
+    links: [
+      { label: 'Repository', href: 'https://github.com/Vukkisa/AI_Surveillance' },
+      { label: 'Known limitations', href: 'https://github.com/Vukkisa/AI_Surveillance#known-limitations' },
+    ],
   },
   {
     id: 'speech-recognition',
@@ -73,18 +97,24 @@ export const projects: Project[] = [
     privateNote: 'Company project: code and data aren’t public.',
   },
   {
-    id: 'ai-surveillance',
-    title: 'AI Surveillance',
-    subtitle: 'Restricted-zone intrusion detection',
-    context: 'Jio Institute · coursework · 2026',
-    status: { label: 'Complete', tone: 'done' },
-    problem: 'Guarding a restricted area shouldn’t depend on someone watching a screen all day.',
+    id: 'ez-learn',
+    title: 'Ez-Learn',
+    subtitle: 'Full-stack learning platform',
+    context: 'TalentSprint · 2023, updated 2025',
+    status: { label: 'Live demo', tone: 'live' },
+    problem: 'Learners need one place to sign up, pay, study, take quizzes and earn a certificate, and instructors need a way to run their courses.',
     built:
-      'Draw a zone on any camera feed (webcam, USB, RTSP or video file). YOLOv8 detects people, each person’s feet point is tested against the zone, and every intrusion saves a clip, a snapshot and a CSV log entry.',
-    evidence: 'Packaged as an installable CLI with threaded, self-reconnecting capture and a built-in FPS benchmark. Benchmark results not yet recorded.',
-    tools: ['Python', 'YOLOv8', 'OpenCV', 'NumPy'],
-    links: [{ label: 'Repository', href: 'https://github.com/Vukkisa/AI_Surveillance' }],
+      'A Django platform. Learners sign up with email OTP, study course content, take scored quizzes and earn certificates. Instructors manage courses and quizzes. Paid courses go through Razorpay with payment verification, on PostgreSQL.',
+    evidence: 'Deployed on Render with a public demo.',
+    tools: ['Python', 'Django', 'PostgreSQL', 'Razorpay', 'Render'],
+    links: [
+      { label: 'Live demo', href: 'https://ez-learn.onrender.com/', note: 'may take a minute to wake' },
+    ],
   },
+]
+
+/** Kept for reference but not shown on the homepage, at Jayanth's request. */
+export const archivedProjects: Project[] = [
   {
     id: 'drowsiness',
     title: 'Driver drowsiness detection',
@@ -99,21 +129,6 @@ export const projects: Project[] = [
     links: [],
     privateNote: 'Company project: code and data aren’t public.',
   },
-  {
-    id: 'ez-learn',
-    title: 'Ez-Learn',
-    subtitle: 'Full-stack learning platform',
-    context: 'TalentSprint · 2023, updated 2025',
-    status: { label: 'Live demo', tone: 'live' },
-    problem: 'A complete learning product rather than a notebook: accounts, payments, content, quizzes and certificates for two kinds of user.',
-    built:
-      'A Django platform. Learners sign up with email OTP, study course content, take scored quizzes and earn certificates. Instructors manage courses and quizzes. Paid courses go through Razorpay with payment verification, on PostgreSQL.',
-    evidence: 'Deployed on Render with a public demo.',
-    tools: ['Python', 'Django', 'PostgreSQL', 'Razorpay', 'Render'],
-    links: [
-      { label: 'Live demo', href: 'https://ez-learn.onrender.com/', note: 'may take a minute to wake' },
-    ],
-  },
 ]
 
 export const moreWork = [
@@ -121,13 +136,13 @@ export const moreWork = [
     title: 'Smart Mutual Fund Advisor',
     body: 'RAG over a mutual-fund dataset with Chroma and structured output, served in Gradio, then rebuilt as a LangGraph graph.',
     context: 'Jio Institute coursework',
-    href: 'https://github.com/Vukkisa/Gen_AI',
+    href: 'https://github.com/Vukkisa/Gen_AI/blob/main/GenerativeAI_Assignment_2.ipynb',
   },
   {
     title: 'LLM extraction pipelines',
     body: 'LangChain + Groq pipelines that classify, summarise and extract entities from news articles and job postings.',
     context: 'Jio Institute coursework',
-    href: 'https://github.com/Vukkisa/Gen_AI',
+    href: 'https://github.com/Vukkisa/Gen_AI/blob/main/Generative%20AI%20-%20Assignment%201.ipynb',
   },
 ]
 
