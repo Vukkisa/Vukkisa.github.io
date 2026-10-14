@@ -113,24 +113,6 @@ export const projects: Project[] = [
   },
 ]
 
-/** Kept for reference but not shown on the homepage, at Jayanth's request. */
-export const archivedProjects: Project[] = [
-  {
-    id: 'drowsiness',
-    title: 'Driver drowsiness detection',
-    subtitle: 'Posture and face signals, built for poor light',
-    context: 'AiSpry · live project · 2026',
-    status: { label: 'In progress', tone: 'progress' },
-    problem: 'Spotting a drowsy driver in cab video, often in dim light, without enough labelled data to train a model from scratch.',
-    built:
-      'Improved an existing pipeline instead. YOLOv8-Pose reads posture and MediaPipe reads eye closure, yawning and head tilt. The signals are fused so detection still works when one is missing, classified with RandomForest/SVM, trained on videos recreating real scenarios, and tuned for faster processing.',
-    evidence: 'Performance is reported per lighting condition: normal, dim and dark. Results not yet shareable.',
-    tools: ['Python', 'YOLOv8-Pose', 'MediaPipe', 'scikit-learn', 'OpenCV'],
-    links: [],
-    privateNote: 'Company project: code and data aren’t public.',
-  },
-]
-
 export const moreWork = [
   {
     title: 'Smart Mutual Fund Advisor',
@@ -151,7 +133,7 @@ export const experience = [
     org: 'AiSpry',
     role: 'Associate Data Scientist (internship)',
     when: 'Oct 2026 – Dec 2026',
-    points: ['Speech recognition for noisy railway audio and driver drowsiness detection.'],
+    points: ['Speech recognition for noisy railway audio.'],
   },
   {
     org: 'Tata Consultancy Services',
