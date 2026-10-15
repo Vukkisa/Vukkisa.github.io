@@ -33,6 +33,8 @@
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    <!-- Preload the body font so text does not re-wrap (layout shift) when it swaps in. -->
+    <link rel="preload" href="/static/geist-latin-wght-normal-BgDaEnEv.woff2" as="font" type="font/woff2" crossorigin />
 
     <script type="application/ld+json">
       {
@@ -53,8 +55,8 @@
     <!-- Apply a saved theme before first paint, so there's no flash. -->
     <script>try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
     <style>html{color:#18181b;background:#fdfdfc}@media (prefers-color-scheme:dark){html:not([data-theme=light]){color:#ededed;background:#0c0c0d}}html[data-theme=dark]{color:#ededed;background:#0c0c0d}</style>
-    <script type="module" crossorigin src="/static/index-DWP6ktI_.js"></script>
-    <link rel="stylesheet" crossorigin href="/static/index-BNAAc5E6.css">
+    <script type="module" crossorigin src="/static/index-CfOpkr_B.js"></script>
+    <link rel="stylesheet" crossorigin href="/static/index-7mqWWnK5.css">
   </head>
   <body>
     <noscript>

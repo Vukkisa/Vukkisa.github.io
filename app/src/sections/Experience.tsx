@@ -18,7 +18,7 @@ function Row({ org, role, when, children }: { org: string; role: string; when: s
 export function Experience() {
   return (
     <>
-      <Section id="experience" title="Experience" i={2}>
+      <Section id="experience" title="Experience">
         <ul className="-my-4 divide-y divide-line">
           {experience.map(e => (
             <Row key={e.org} org={e.org} role={e.role} when={e.when}>
@@ -30,14 +30,14 @@ export function Experience() {
         </ul>
       </Section>
 
-      <Section id="education" title="Education" i={3}>
+      <Section id="education" title="Education">
         <ul className="-my-4 divide-y divide-line">
           {education.map(e => <Row key={e.org} org={e.org} role={e.role} when={e.when} />)}
         </ul>
         <p className="mt-5 text-sm text-mute">Certifications: {certifications.join(' · ')}</p>
       </Section>
 
-      <Section id="skills" title="Skills" i={4}>
+      <Section id="skills" title="Skills">
         <ul className="flex flex-wrap gap-1.5">
           {skills.map(s => <li key={s} className="rounded-md border border-line px-2 py-0.5 text-[13px] text-soft">{s}</li>)}
         </ul>

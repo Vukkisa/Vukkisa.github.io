@@ -41,6 +41,8 @@ export type Project = {
   links: Link[]
   /** Shown instead of links when the work can't be public. */
   privateNote?: string
+  /** An optional interactive explainer rendered inside the card. */
+  explainer?: 'rag-flow'
 }
 
 /**
@@ -60,6 +62,7 @@ export const projects: Project[] = [
       'The RAG pipeline, my part of the team project: LangChain chunking, local Ollama embeddings in a Chroma vector store, and Groq (gpt-oss-120b) answering only from the retrieved passages, with the source shown.',
     evidence: 'Indexed so far: the central Motor Vehicles Act and Rules, Gujarat and Delhi. Answer accuracy hasn’t been evaluated yet; a cited source shows where an answer came from, not that it’s correct.',
     tools: ['Python', 'LangChain', 'Ollama', 'Chroma', 'Groq'],
+    explainer: 'rag-flow',
     links: [
       { label: 'Team repository', href: 'https://github.com/DAG-21/KnowYourRules' },
       { label: 'How it was built', href: 'https://github.com/DAG-21/KnowYourRules#the-process' },

@@ -1,8 +1,15 @@
 @import "tailwindcss";
 
+/* Only scan the app source for class names: not the art generator, the images, or the build output. */
+@source not "../../scripts";
+@source not "../public/images";
+@source not "../../images";
+@source not "../../static";
+
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-/* Minimal: one narrow column, one sans face, neutral greys. Colour only for status. */
+/* Minimal: one sans face, neutral greys. One accent (cobalt) marks "the part I built" and the
+   current section; status colours are for status only. */
 @theme {
   --color-bg: #fdfdfc;
   --color-card: #ffffff;
@@ -16,6 +23,8 @@
   --color-progress-soft: #fbf1dc;
   --color-live: #1f6b38;
   --color-live-soft: #e3f3e7;
+  --color-accent: #2340ff;
+  --color-accent-soft: #eef0ff;
 
   --font-sans: "Geist Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -36,6 +45,8 @@
       --color-progress-soft: #2b2312;
       --color-live: #86d39b;
       --color-live-soft: #132a1a;
+      --color-accent: #8e9cff;
+      --color-accent-soft: #181b33;
       color-scheme: dark;
     }
   }
@@ -52,6 +63,8 @@
     --color-progress-soft: #2b2312;
     --color-live: #86d39b;
     --color-live-soft: #132a1a;
+    --color-accent: #8e9cff;
+    --color-accent-soft: #181b33;
     color-scheme: dark;
   }
 
@@ -79,8 +92,44 @@
   .link:hover { text-decoration-color: var(--color-fg); }
 }
 
-/* A quiet fade-up on load, staggered by --i. Off for reduced motion. */
+/* The intro fades up once on load. Off for reduced motion. */
 @media (prefers-reduced-motion: no-preference) {
-  .rise { animation: rise .6s cubic-bezier(.25, 1, .5, 1) both; animation-delay: calc(var(--i, 0) * 70ms); }
+  .rise { animation: rise .6s cubic-bezier(.25, 1, .5, 1) both; }
 }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+
+/* Sections fade up as they scroll into view. Progressive: nothing is hidden until JS has marked
+   what's already on screen and added .reveal-on, so content is never stuck invisible. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-on [data-reveal] { transition: opacity .5s cubic-bezier(.25, 1, .5, 1), transform .5s cubic-bezier(.25, 1, .5, 1); transition-delay: var(--reveal-delay, 0ms); }
+  .reveal-on [data-reveal]:not(.is-in) { opacity: 0; transform: translateY(10px); }
+}
+
+/* Project cards. Keyboard focus inside a card strengthens its border (all devices). On fine pointers,
+   hover does the same plus a 2px lift; links turn the accent colour and their arrow nudges. Touch
+   devices get no hover movement, and nothing is revealed only on hover. */
+.card { transition: border-color .25s, box-shadow .25s, transform .25s cubic-bezier(.25, 1, .5, 1); }
+.card:focus-within { border-color: var(--color-line-strong); }
+.nudge { display: inline-block; transition: transform .2s cubic-bezier(.25, 1, .5, 1), color .2s; }
+.card .link:focus-visible { text-decoration-color: var(--color-accent); }
+.card .link:focus-visible .nudge { color: var(--color-accent); }
+@media (hover: hover) and (pointer: fine) {
+  .card:hover { border-color: var(--color-line-strong); box-shadow: 0 10px 30px -22px rgb(0 0 0 / .35); }
+  .card .link:hover { text-decoration-color: var(--color-accent); }
+  .card .link:hover .nudge { color: var(--color-accent); }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .card:hover { transform: translateY(-2px); }
+  .card .link:hover .nudge, .card .link:focus-visible .nudge { transform: translate(2px, -2px); }
+}
+
+/* RAG explainer: the stage detail fades in briefly when the selection changes. */
+@media (prefers-reduced-motion: no-preference) {
+  .rag-panel { animation: rag-in .2s ease-out; }
+}
+@keyframes rag-in { from { opacity: 0; transform: translateY(3px); } }
+
+/* A short colour cross-fade while the theme is being switched (class added for ~200ms). */
+@media (prefers-reduced-motion: no-preference) {
+  .theme-fade, .theme-fade * { transition: background-color .15s ease, border-color .15s ease, color .15s ease, fill .15s ease !important; }
+}
