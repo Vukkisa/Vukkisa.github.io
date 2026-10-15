@@ -51,8 +51,7 @@ export function Intro() {
       </div>
 
       <div className="mt-8 space-y-4 text-[15px] leading-relaxed text-soft">
-        <p className="text-fg">{intro.lines[0]}</p>
-        <p>{intro.lines[1]}</p>
+        {intro.lines.map(line => <p key={line}>{line}</p>)}
       </div>
 
       <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">

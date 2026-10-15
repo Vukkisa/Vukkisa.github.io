@@ -21,7 +21,6 @@ export const site = {
 export const intro = {
   role: 'Postgraduate AI & Data Science · Associate Data Scientist Intern',
   lines: [
-    'I started with SQL. Then I wanted to know what the data could do.',
     'I spent two and a half years as a Data Developer at TCS, working on enterprise telecom billing systems. I’m now a postgraduate student in AI & Data Science at Jio Institute and an Associate Data Scientist intern at AiSpry, where I work on speech recognition for noisy railway audio. My coursework and team projects include a RAG assistant and a computer-vision pipeline.',
   ],
 }
