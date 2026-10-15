@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Only scan the app source for class names: not the art generator, the images, or the build output. */
+@source not "../../scripts";
+@source not "../public/images";
+@source not "../../images";
+@source not "../../static";
+
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 /* Minimal: one sans face, neutral greys. One accent (cobalt) marks "the part I built" and the
