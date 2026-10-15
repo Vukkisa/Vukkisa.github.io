@@ -1,6 +1,6 @@
 # vukkisa.github.io
 
-Jayanth Vukkisa's portfolio: *I started with SQL. Then I wanted to know what the data could do.*
+Jayanth Vukkisa's portfolio: AI & Data Science, with RAG, computer-vision and speech-recognition projects.
 
 **Live:** https://vukkisa.github.io/
 

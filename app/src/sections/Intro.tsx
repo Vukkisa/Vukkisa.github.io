@@ -18,7 +18,7 @@ const SECTIONS = [
 
 export function Intro() {
   return (
-    <header id="top" className="rise">
+    <header id="top" className="rise lg:sticky lg:top-0 lg:max-h-svh lg:self-start lg:overflow-y-auto lg:py-20">
       <div className="flex items-center justify-between gap-4">
         <nav aria-label="On this page">
           <ul className="flex flex-wrap gap-x-3 gap-y-1 text-[13px] sm:gap-x-4 sm:text-sm">
@@ -51,8 +51,7 @@ export function Intro() {
       </div>
 
       <div className="mt-8 space-y-4 text-[15px] leading-relaxed text-soft">
-        <p className="text-fg">{intro.lines[0]}</p>
-        <p>{intro.lines[1]}</p>
+        {intro.lines.map(line => <p key={line}>{line}</p>)}
       </div>
 
       <ul className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">

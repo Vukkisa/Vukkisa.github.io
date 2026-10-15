@@ -21,7 +21,6 @@ export const site = {
 export const intro = {
   role: 'Postgraduate AI & Data Science · Associate Data Scientist Intern',
   lines: [
-    'I started with SQL. Then I wanted to know what the data could do.',
     'I spent two and a half years as a Data Developer at TCS, working on enterprise telecom billing systems. I’m now a postgraduate student in AI & Data Science at Jio Institute and an Associate Data Scientist intern at AiSpry, where I work on speech recognition for noisy railway audio. My coursework and team projects include a RAG assistant and a computer-vision pipeline.',
   ],
 }
@@ -85,10 +84,10 @@ export const projects: Project[] = [
   {
     id: 'speech-recognition',
     title: 'Railway speech recognition',
-    subtitle: 'Transcribing noisy, multilingual cab audio',
+    subtitle: 'Transcribing noisy, multilingual railway audio',
     context: 'AiSpry · internship · Oct 2026 – now',
     status: { label: 'In progress', tone: 'progress' },
-    problem: 'Locomotive cab recordings are noisy and multilingual, and off-the-shelf speech models struggle with them.',
+    problem: 'Railway audio recordings are noisy and multilingual, and off-the-shelf speech models struggle with them.',
     built:
       'A fully local speech-recognition pipeline. I tested denoising methods (spectral, RNNoise, DeepFilterNet) and silence- and voice-based segmentation, benchmarked Indic-Conformer, Qwen3-ASR and Whisper, and merged their outputs with a word-level ensemble, all within tight compute and disk limits.',
     evidence: 'Every variant is scored on word and character error rate. Now fine-tuning a model to lower WER. Results not yet shareable.',
@@ -113,24 +112,6 @@ export const projects: Project[] = [
   },
 ]
 
-/** Kept for reference but not shown on the homepage, at Jayanth's request. */
-export const archivedProjects: Project[] = [
-  {
-    id: 'drowsiness',
-    title: 'Driver drowsiness detection',
-    subtitle: 'Posture and face signals, built for poor light',
-    context: 'AiSpry · live project · 2026',
-    status: { label: 'In progress', tone: 'progress' },
-    problem: 'Spotting a drowsy driver in cab video, often in dim light, without enough labelled data to train a model from scratch.',
-    built:
-      'Improved an existing pipeline instead. YOLOv8-Pose reads posture and MediaPipe reads eye closure, yawning and head tilt. The signals are fused so detection still works when one is missing, classified with RandomForest/SVM, trained on videos recreating real scenarios, and tuned for faster processing.',
-    evidence: 'Performance is reported per lighting condition: normal, dim and dark. Results not yet shareable.',
-    tools: ['Python', 'YOLOv8-Pose', 'MediaPipe', 'scikit-learn', 'OpenCV'],
-    links: [],
-    privateNote: 'Company project: code and data aren’t public.',
-  },
-]
-
 export const moreWork = [
   {
     title: 'Smart Mutual Fund Advisor',
@@ -151,7 +132,7 @@ export const experience = [
     org: 'AiSpry',
     role: 'Associate Data Scientist (internship)',
     when: 'Oct 2026 – Dec 2026',
-    points: ['Speech recognition for noisy railway audio and driver drowsiness detection.'],
+    points: ['Speech recognition for noisy railway audio: building a local speech-recognition setup and working to lower the word error rate (WER).'],
   },
   {
     org: 'Tata Consultancy Services',
@@ -180,6 +161,6 @@ export const education = [
 export const certifications = ['SQL (Advanced), HackerRank, 2023', 'Full Stack Developer (Python), TalentSprint, 2023']
 
 export const skills = [
-  'Python', 'SQL', 'PL/SQL', 'Oracle', 'PostgreSQL', 'scikit-learn', 'PyTorch', 'YOLOv8', 'OpenCV', 'MediaPipe',
+  'Python', 'SQL', 'PL/SQL', 'Oracle', 'PostgreSQL', 'scikit-learn', 'PyTorch', 'YOLOv8', 'OpenCV',
   'LangChain', 'LangGraph', 'Chroma', 'Ollama', 'Groq', 'Hugging Face', 'Django', 'FastAPI', 'Gradio', 'Git', 'Power BI',
 ]
