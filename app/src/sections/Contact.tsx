@@ -10,7 +10,7 @@ export function Contact() {
     window.setTimeout(() => setCopied(''), 3000)
   }
   return (
-    <Section id="contact" title="Contact" i={5}>
+    <Section id="contact" title="Contact">
       <p className="text-[15px] leading-relaxed text-soft">
         Questions about any of this work, or a role you think fits? Email is the quickest way to reach me.
       </p>

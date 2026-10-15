@@ -1,4 +1,6 @@
 import { ThemeToggle } from '../components/ThemeToggle'
+import { useActiveSection } from '../hooks/useActiveSection'
+import { cn } from '../lib/utils'
 import { intro, site } from '../data/content'
 
 const LINKS = [
@@ -15,8 +17,10 @@ const SECTIONS = [
   { id: 'education', label: 'Education' },
   { id: 'contact', label: 'Contact' },
 ]
+const IDS = SECTIONS.map(s => s.id)
 
 export function Intro() {
+  const active = useActiveSection(IDS)
   return (
     <header id="top" className="rise lg:sticky lg:top-0 lg:max-h-svh lg:self-start lg:overflow-y-auto lg:py-20">
       <div className="flex items-center justify-between gap-4">
@@ -24,7 +28,16 @@ export function Intro() {
           <ul className="flex flex-wrap gap-x-3 gap-y-1 text-[13px] sm:gap-x-4 sm:text-sm">
             {SECTIONS.map(s => (
               <li key={s.id}>
-                <a href={`#${s.id}`} className="text-mute transition-colors hover:text-fg">{s.label}</a>
+                <a
+                  href={`#${s.id}`}
+                  aria-current={active === s.id ? 'location' : undefined}
+                  className={cn(
+                    'relative transition-colors hover:text-fg',
+                    active === s.id ? 'text-fg after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:bg-accent' : 'text-mute',
+                  )}
+                >
+                  {s.label}
+                </a>
               </li>
             ))}
           </ul>

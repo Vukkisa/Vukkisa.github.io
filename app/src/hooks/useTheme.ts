@@ -29,13 +29,15 @@ export function useTheme() {
   }, [])
 
   const toggle = useCallback(() => {
-    setTheme(prev => {
-      const next: Theme = prev === 'dark' ? 'light' : 'dark'
-      document.documentElement.dataset.theme = next
-      try { localStorage.setItem(KEY, next) } catch { /* private mode: the choice just won't persist */ }
-      return next
-    })
-  }, [])
+    const next: Theme = theme === 'dark' ? 'light' : 'dark'
+    const root = document.documentElement
+    // A brief colour cross-fade while the theme switches (see .theme-fade in index.css).
+    root.classList.add('theme-fade')
+    root.dataset.theme = next
+    window.setTimeout(() => root.classList.remove('theme-fade'), 200)
+    try { localStorage.setItem(KEY, next) } catch { /* private mode: the choice just won't persist */ }
+    setTheme(next)
+  }, [theme])
 
   return { theme, toggle }
 }

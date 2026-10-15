@@ -3,8 +3,10 @@ import { Contact } from './sections/Contact'
 import { Experience } from './sections/Experience'
 import { Intro } from './sections/Intro'
 import { Projects } from './sections/Projects'
+import { useReveal } from './hooks/useReveal'
 
 export default function App() {
+  useReveal()
   return (
     <>
       <SkipLink />
