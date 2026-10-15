@@ -162,6 +162,6 @@ export const education = [
 export const certifications = ['SQL (Advanced), HackerRank, 2023', 'Full Stack Developer (Python), TalentSprint, 2023']
 
 export const skills = [
-  'Python', 'SQL', 'PL/SQL', 'Oracle', 'PostgreSQL', 'scikit-learn', 'PyTorch', 'YOLOv8', 'OpenCV', 'MediaPipe',
+  'Python', 'SQL', 'PL/SQL', 'Oracle', 'PostgreSQL', 'scikit-learn', 'PyTorch', 'YOLOv8', 'OpenCV',
   'LangChain', 'LangGraph', 'Chroma', 'Ollama', 'Groq', 'Hugging Face', 'Django', 'FastAPI', 'Gradio', 'Git', 'Power BI',
 ]
