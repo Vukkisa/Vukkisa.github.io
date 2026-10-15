@@ -132,7 +132,7 @@ export const experience = [
     org: 'AiSpry',
     role: 'Associate Data Scientist (internship)',
     when: 'Oct 2026 – Dec 2026',
-    points: ['Speech recognition for noisy railway audio.'],
+    points: ['Speech recognition for noisy railway audio: building a local speech-recognition setup and working to lower the word error rate (WER).'],
   },
   {
     org: 'Tata Consultancy Services',
