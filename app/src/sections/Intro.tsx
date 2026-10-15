@@ -20,7 +20,7 @@ const SECTIONS = [
 const IDS = SECTIONS.map(s => s.id)
 
 export function Intro() {
-  const active = useActiveSection(IDS)
+  const { active, pin } = useActiveSection(IDS)
   return (
     <header id="top" className="rise lg:sticky lg:top-0 lg:max-h-svh lg:self-start lg:overflow-y-auto lg:py-20">
       <div className="flex items-center justify-between gap-4">
@@ -30,6 +30,7 @@ export function Intro() {
               <li key={s.id}>
                 <a
                   href={`#${s.id}`}
+                  onClick={() => pin(s.id)}
                   aria-current={active === s.id ? 'location' : undefined}
                   className={cn(
                     'relative transition-colors hover:text-fg',

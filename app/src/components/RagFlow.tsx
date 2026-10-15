@@ -1,131 +1,116 @@
-import { useId, useState } from 'react'
+import { useId, useRef, useState, type KeyboardEvent } from 'react'
 import { cn } from '../lib/utils'
 
 /**
- * How a question moves through KnowYourRules, for a state the visitor picks.
- * Every step mirrors backend/server.py in the team repository: Central rules are always retrieved
- * (k=4), a state's own documents are added (k=4) only if that state is indexed, and for an
- * unindexed state the model is told to say so. It's a diagram of that logic, not a live model.
+ * "How the RAG pipeline works" for KnowYourRules: four connected stages, each selectable.
+ * Every statement mirrors backend/server.py and the README in the team repository
+ * (github.com/DAG-21/KnowYourRules). It explains the design; it is not a live model.
  */
-const STATES = [
-  { name: 'Gujarat', indexed: true },
-  { name: 'Delhi', indexed: true },
-  { name: 'Haryana', indexed: false },
+const STAGES = [
+  {
+    name: 'Question',
+    summary: 'A traffic-rules question, plus your state.',
+    detail:
+      'You ask a traffic-rules question. Rules differ by state, so the app asks where you are if it doesn’t know, and rewrites a follow-up like “what about bikes?” into a standalone question using the recent conversation.',
+    owner: 'Team backend',
+    mine: false,
+  },
+  {
+    name: 'Retrieve',
+    summary: 'Matching chunks from the Chroma store.',
+    detail:
+      'The question is embedded locally with Ollama (nomic-embed-text) and matched against the Chroma vector store: 4 chunks from the nationwide central rules, plus 4 from your state’s rules when that state is indexed. So far that’s Gujarat and Delhi.',
+    owner: 'My RAG pipeline · state filter from the team backend',
+    mine: true,
+  },
+  {
+    name: 'Context',
+    summary: 'Chunks tagged with source and state.',
+    detail:
+      'The retrieved chunks are joined into one context, each labelled with its source document and state, inside a strict prompt that allows answers only from that text. If your state isn’t indexed, the prompt says so explicitly.',
+    owner: 'My RAG pipeline',
+    mine: true,
+  },
+  {
+    name: 'Answer with sources',
+    summary: 'Groq answers only from that context.',
+    detail:
+      'Groq (gpt-oss-120b) writes the answer from the context and names the source documents, or says the knowledge base doesn’t cover the question. A cited source shows where an answer came from, not that it’s correct. Answer accuracy hasn’t been evaluated yet.',
+    owner: 'My RAG pipeline',
+    mine: true,
+  },
 ] as const
-type State = (typeof STATES)[number]
-
-function steps(s: State) {
-  return [
-    { label: 'Location', mine: false, text: `Asks which state you’re in, because traffic rules differ by state. Here: ${s.name}.` },
-    { label: 'Rewrite', mine: false, text: 'Turns a follow-up like “what about bikes?” into a standalone question, using the recent conversation.' },
-    {
-      label: 'Retrieve', mine: true,
-      text: s.indexed
-        ? `Searches the Chroma vector store: 4 chunks from the nationwide central rules, plus 4 from ${s.name}’s own rules.`
-        : `Searches the Chroma vector store: 4 chunks from the nationwide central rules only. ${s.name}’s documents aren’t indexed yet.`,
-    },
-    {
-      label: 'Ground', mine: true,
-      text: s.indexed
-        ? 'Only the retrieved chunks go to the model, each tagged with its source document and state.'
-        : `Only the retrieved chunks go to the model, with an instruction to say that ${s.name}’s rules aren’t covered.`,
-    },
-    {
-      label: 'Answer', mine: true,
-      text: s.indexed
-        ? 'Groq writes the answer from those chunks and names the source documents.'
-        : `Groq answers from the central rules only, and says plainly that ${s.name}-specific rules aren’t in the knowledge base yet.`,
-    },
-  ]
-}
 
 export function RagFlow() {
-  const [open, setOpen] = useState(false)
-  const [state, setState] = useState<State>(STATES[0])
+  const [selected, setSelected] = useState(0)
+  const tabs = useRef<(HTMLButtonElement | null)[]>([])
   const id = useId()
-  const panelId = `${id}-panel`
+  const stage = STAGES[selected]
+
+  // Tabs pattern: arrow keys move between stages, Home/End jump to the ends.
+  const onKeyDown = (e: KeyboardEvent<HTMLButtonElement>) => {
+    const last = STAGES.length - 1
+    const next = { ArrowRight: selected + 1, ArrowDown: selected + 1, ArrowLeft: selected - 1, ArrowUp: selected - 1, Home: 0, End: last }[e.key]
+    if (next === undefined) return
+    e.preventDefault()
+    const i = (next + STAGES.length) % STAGES.length
+    setSelected(i)
+    tabs.current[i]?.focus()
+  }
 
   return (
-    <div className="mt-5 border-t border-line pt-4">
-      <button
-        type="button"
-        aria-expanded={open}
-        aria-controls={panelId}
-        onClick={() => setOpen(o => !o)}
-        className="group inline-flex items-center gap-2 text-sm font-medium text-fg"
+    <section aria-labelledby={`${id}-title`} className="mt-5 border-t border-line pt-4">
+      <h4 id={`${id}-title`} className="text-sm font-medium text-fg">How the RAG pipeline works</h4>
+      <p className="mt-1 text-xs leading-relaxed text-mute">
+        A conceptual diagram of the code in the team repository. Nothing runs here: no question is sent and no answer is generated.
+      </p>
+
+      <div role="tablist" aria-label="RAG pipeline stages" className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-4 sm:gap-0">
+        {STAGES.map((s, i) => {
+          const active = i === selected
+          return (
+            <button
+              key={s.name}
+              ref={el => { tabs.current[i] = el }}
+              id={`${id}-tab-${i}`}
+              type="button"
+              role="tab"
+              aria-selected={active}
+              aria-controls={`${id}-panel`}
+              tabIndex={active ? 0 : -1}
+              onClick={() => setSelected(i)}
+              onKeyDown={onKeyDown}
+              className={cn(
+                // Connector: a short line into each stage after the first (vertical on phones, horizontal from sm up).
+                'relative rounded-lg border px-3 py-2.5 text-left transition-colors sm:mx-1.5',
+                i > 0 && 'before:absolute before:-top-2 before:left-5 before:h-2 before:w-px before:bg-line-strong sm:before:-left-3 sm:before:top-1/2 sm:before:h-px sm:before:w-3',
+                active ? 'border-accent bg-accent-soft' : 'border-line bg-card hover:border-line-strong',
+              )}
+            >
+              <span className={cn('block font-mono text-[11px]', active ? 'text-accent' : 'text-mute')}>
+                {String(i + 1).padStart(2, '0')}{s.mine && <span className="sr-only">, part I built</span>}
+              </span>
+              <span className={cn('mt-0.5 block text-sm font-medium', active ? 'text-accent' : 'text-fg')}>{s.name}</span>
+              <span className="mt-0.5 block text-xs leading-snug text-soft">{s.summary}</span>
+            </button>
+          )
+        })}
+      </div>
+
+      <div
+        key={selected}
+        id={`${id}-panel`}
+        role="tabpanel"
+        tabIndex={0}
+        aria-labelledby={`${id}-tab-${selected}`}
+        className="rag-panel mt-3 rounded-lg bg-chip px-4 py-3"
       >
-        <span className="underline decoration-line-strong underline-offset-4 group-hover:decoration-fg">How a question flows through it</span>
-        <svg aria-hidden="true" viewBox="0 0 16 16" className={cn('size-3.5 text-mute motion-safe:transition-transform', open && 'rotate-180')} fill="none" stroke="currentColor" strokeWidth="1.6">
-          <path d="M4 6l4 4 4-4" />
-        </svg>
-      </button>
-
-      <div id={panelId} hidden={!open} className="mt-4">
-        <p className="text-xs leading-relaxed text-mute">
-          A diagram of the pipeline’s logic, taken from the repository’s code. It isn’t a live model: nothing is sent or answered here.
-        </p>
-
-        <fieldset className="mt-4">
-          <legend className="text-xs font-medium uppercase tracking-wide text-mute">Asking from</legend>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {STATES.map(s => (
-              <label
-                key={s.name}
-                className={cn(
-                  'cursor-pointer rounded-full border px-3 py-1 text-sm transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-fg',
-                  state.name === s.name ? 'border-fg bg-fg text-bg' : 'border-line-strong text-soft hover:border-fg hover:text-fg',
-                )}
-              >
-                <input type="radio" name={`${id}-state`} value={s.name} checked={state.name === s.name} onChange={() => setState(s)} className="sr-only" />
-                {s.name}
-                <span className="sr-only">{s.indexed ? ' (indexed)' : ' (not indexed yet)'}</span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
-
-        <ol className="mt-5 space-y-2.5">
-          {steps(state).map((st, i) => (
-            <li key={st.label} className={cn('grid grid-cols-[1.25rem_minmax(0,1fr)] gap-x-3 border-l-2 pl-3 text-sm leading-relaxed sm:grid-cols-[1.25rem_4.5rem_minmax(0,1fr)]', st.mine ? 'border-accent' : 'border-line')}>
-              <span className="font-mono text-xs leading-6 text-mute">{i + 1}</span>
-              <span className={cn('font-medium', st.mine ? 'text-accent' : 'text-fg')}>{st.label}</span>
-              <span className="col-start-2 text-soft sm:col-start-auto">{st.text}</span>
-            </li>
-          ))}
-        </ol>
-
-        <figure className="mt-5">
-          <div className="flex flex-wrap gap-1.5" aria-hidden="true">
-            {Array.from({ length: 8 }, (_, i) => {
-              const central = i < 4
-              const filled = central || state.indexed
-              return (
-                <span
-                  key={i}
-                  className={cn(
-                    'grid h-8 w-14 place-items-center rounded-md border font-mono text-[10px] motion-safe:transition-colors motion-safe:duration-300',
-                    central && 'border-line-strong bg-chip text-soft',
-                    !central && filled && 'border-accent bg-accent-soft text-accent',
-                    !filled && 'border-dashed border-line-strong text-mute',
-                  )}
-                >
-                  {central ? 'Central' : filled ? state.name : 'none'}
-                </span>
-              )
-            })}
-          </div>
-          <figcaption className="mt-2 text-xs text-mute" aria-live="polite">
-            {state.indexed
-              ? `Up to 8 chunks reach the model: 4 central, 4 from ${state.name}.`
-              : `Only the 4 central chunks reach the model; ${state.name} has none indexed.`}
-          </figcaption>
-        </figure>
-
-        <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-mute">
-          <span aria-hidden="true" className="mt-1 inline-block h-2.5 w-0.5 shrink-0 bg-accent" />
-          Highlighted: the retrieval and grounded-answer steps, my part. Location handling, question rewriting and the coverage instruction are the team’s backend.
+        <p className="text-sm leading-relaxed text-soft">{stage.detail}</p>
+        <p className="mt-2 font-mono text-[11px] text-mute">
+          <span className={cn('mr-1.5 inline-block size-2 rounded-full align-middle', stage.mine ? 'bg-accent' : 'border border-line-strong')} aria-hidden="true" />
+          {stage.owner}
         </p>
       </div>
-    </div>
+    </section>
   )
 }
