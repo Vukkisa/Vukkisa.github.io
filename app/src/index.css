@@ -8,65 +8,84 @@
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-/* Minimal: one sans face, neutral greys. One accent (cobalt) marks "the part I built" and the
-   current section; status colours are for status only. */
+/* Dark first, high contrast. Every token below is live: the Lab's token playground and the
+   text-size toggle change data-* attributes on <html>, and these variables follow. */
 @theme {
-  --color-bg: #fdfdfc;
-  --color-card: #ffffff;
-  --color-fg: #18181b;
-  --color-soft: #3f3f46;
-  --color-mute: #6b6b73;    /* lowest tone allowed for text */
-  --color-line: #e7e7e4;
-  --color-line-strong: #d4d4d0;
-  --color-chip: #f4f4f2;
-  --color-progress: #8a5300;
-  --color-progress-soft: #fbf1dc;
-  --color-live: #1f6b38;
-  --color-live-soft: #e3f3e7;
-  --color-accent: #2340ff;
-  --color-accent-soft: #eef0ff;
+  --color-bg: #0a0a0b;
+  --color-card: #121214;
+  --color-fg: #f4f4f2;
+  --color-soft: #cfcfd3;
+  --color-mute: #9a9aa2;    /* lowest tone allowed for text */
+  --color-line: #222226;
+  --color-line-strong: #36363c;
+  --color-chip: #18181b;
+  --color-progress: #ebbd5f;
+  --color-progress-soft: #2b2312;
+  --color-live: #86d39b;
+  --color-live-soft: #132a1a;
+  --color-accent: var(--acc);
+  --color-accent-ink: var(--acc-ink);
+  --color-accent-soft: color-mix(in oklab, var(--acc) 16%, var(--color-bg));
 
   --font-sans: "Geist Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: var(--display);
 }
 
 @layer base {
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --color-bg: #0c0c0d;
-      --color-card: #131315;
-      --color-fg: #ededed;
-      --color-soft: #c8c8cc;
-      --color-mute: #96969d;
-      --color-line: #232326;
-      --color-line-strong: #333337;
-      --color-chip: #1b1b1e;
-      --color-progress: #ebbd5f;
-      --color-progress-soft: #2b2312;
-      --color-live: #86d39b;
-      --color-live-soft: #132a1a;
-      --color-accent: #8e9cff;
-      --color-accent-soft: #181b33;
-      color-scheme: dark;
-    }
-  }
-  :root[data-theme="dark"] {
-    --color-bg: #0c0c0d;
-    --color-card: #131315;
-    --color-fg: #ededed;
-    --color-soft: #c8c8cc;
-    --color-mute: #96969d;
-    --color-line: #232326;
-    --color-line-strong: #333337;
-    --color-chip: #1b1b1e;
-    --color-progress: #ebbd5f;
-    --color-progress-soft: #2b2312;
-    --color-live: #86d39b;
-    --color-live-soft: #132a1a;
-    --color-accent: #8e9cff;
-    --color-accent-soft: #181b33;
+  :root {
+    --acc: #8e9cff;
+    --acc-ink: #0a0a0b;
+    --display: "Bricolage Grotesque Variable", var(--font-sans);
+    --space: 1;
+    --r: 18px;
+    --r-sm: 10px;
+    /* Letter-hover colours: the five accents of the current theme. */
+    --h1: #8e9cff; --h2: #ff9157; --h3: #6fdc9a; --h4: #ff86bd; --h5: #ebbd5f;
+    /* Journey landscape (see Landscape.tsx). */
+    --sc-top: #2a2b31; --sc-left: #1e1f24; --sc-right: #16171b; --sc-edge: rgb(244 244 242 / .28);
+    --sc-ground: #17181c; --sc-ground-left: #111215; --sc-ground-right: #0d0e10; --sc-grid: #23242a;
+    --sc-mute: #55565e; --sc-shadow: rgb(0 0 0 / .45); --sc-mix: black;
     color-scheme: dark;
   }
+  :root[data-accent="ember"] { --acc: #ff9157; }
+  :root[data-accent="moss"] { --acc: #6fdc9a; }
+  :root[data-accent="rose"] { --acc: #ff86bd; }
+  :root[data-accent="mono"] { --acc: #f4f4f2; }
+
+  :root[data-theme="light"] {
+    --color-bg: #f7f7f4;
+    --color-card: #ffffff;
+    --color-fg: #121214;
+    --color-soft: #3c3c43;
+    --color-mute: #64646c;
+    --color-line: #e2e2dc;
+    --color-line-strong: #cbcbc4;
+    --color-chip: #eeeee9;
+    --color-progress: #8a5300;
+    --color-progress-soft: #fbf1dc;
+    --color-live: #1f6b38;
+    --color-live-soft: #e3f3e7;
+    --acc: #2340ff;
+    --acc-ink: #ffffff;
+    --h1: #2340ff; --h2: #c2410c; --h3: #15803d; --h4: #be185d; --h5: #a16207;
+    --sc-top: #fbfbf9; --sc-left: #e4e4df; --sc-right: #cfcfc8; --sc-edge: rgb(42 42 48 / .35);
+    --sc-ground: #ecece7; --sc-ground-left: #e0e0da; --sc-ground-right: #cfcfc8; --sc-grid: #dcdcd6;
+    --sc-mute: #b3b3ab; --sc-shadow: rgb(20 20 40 / .07); --sc-mix: white;
+    color-scheme: light;
+  }
+  :root[data-theme="light"][data-accent="ember"] { --acc: #c2410c; }
+  :root[data-theme="light"][data-accent="moss"] { --acc: #15803d; }
+  :root[data-theme="light"][data-accent="rose"] { --acc: #be185d; }
+  :root[data-theme="light"][data-accent="mono"] { --acc: #121214; }
+
+  :root[data-type="sans"] { --display: var(--font-sans); }
+  :root[data-type="mono"] { --display: var(--font-mono); }
+  :root[data-density="compact"] { --space: .7; }
+  :root[data-density="airy"] { --space: 1.35; }
+  :root[data-radius="none"] { --r: 0px; --r-sm: 0px; }
+  :root[data-radius="round"] { --r: 32px; --r-sm: 999px; }
+  :root[data-text="lg"] { font-size: 112.5%; }
 
   html {
     background: var(--color-bg);
@@ -74,62 +93,127 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    color-scheme: light;
   }
   @media (prefers-reduced-motion: no-preference) {
     html { scroll-behavior: smooth; }
   }
   html, body { overflow-x: clip; }
   body { min-height: 100svh; background: var(--color-bg); }
-  ::selection { background: var(--color-fg); color: var(--color-bg); }
-  :focus-visible { outline: 2px solid var(--color-fg); outline-offset: 3px; border-radius: 3px; }
+  ::selection { background: var(--color-accent); color: var(--color-accent-ink); }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; border-radius: 4px; }
   a { text-decoration: none; }
   h1, h2, h3 { text-wrap: balance; }
+  [id] { scroll-margin-top: 5rem; }
 }
 
 @layer components {
-  .link { color: var(--color-fg); text-decoration: underline; text-decoration-color: var(--color-line-strong); text-underline-offset: 4px; transition: text-decoration-color .2s; }
-  .link:hover { text-decoration-color: var(--color-fg); }
+  .link { color: var(--color-fg); text-decoration: underline; text-decoration-color: var(--color-line-strong); text-underline-offset: 4px; transition: text-decoration-color .2s, color .2s; }
+  .link:hover { text-decoration-color: var(--color-accent); }
+  .sec { padding-block: calc(var(--space) * 5.5rem); }
+  .pad { padding: calc(var(--space) * 1.5rem); }
+  .kbd { font-family: var(--font-mono); font-size: 11px; line-height: 1; padding: 3px 5px; border-radius: 5px; border: 1px solid var(--color-line-strong); color: var(--color-mute); }
+  .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .02em; color: var(--color-mute); }
+  .chip { border-radius: var(--r-sm); }
 }
 
-/* The intro fades up once on load. Off for reduced motion. */
-@media (prefers-reduced-motion: no-preference) {
-  .rise { animation: rise .6s cubic-bezier(.25, 1, .5, 1) both; }
-}
-@keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+/* ---- Hero ------------------------------------------------------------------------------------ */
 
-/* Sections fade up as they scroll into view. Progressive: nothing is hidden until JS has marked
-   what's already on screen and added .reveal-on, so content is never stuck invisible. */
-@media (prefers-reduced-motion: no-preference) {
-  .reveal-on [data-reveal] { transition: opacity .5s cubic-bezier(.25, 1, .5, 1), transform .5s cubic-bezier(.25, 1, .5, 1); transition-delay: var(--reveal-delay, 0ms); }
-  .reveal-on [data-reveal]:not(.is-in) { opacity: 0; transform: translateY(10px); }
-}
-
-/* Project cards. Keyboard focus inside a card strengthens its border (all devices). On fine pointers,
-   hover does the same plus a 2px lift; links turn the accent colour and their arrow nudges. Touch
-   devices get no hover movement, and nothing is revealed only on hover. */
-.card { transition: border-color .25s, box-shadow .25s, transform .25s cubic-bezier(.25, 1, .5, 1); }
-.card:focus-within { border-color: var(--color-line-strong); }
-.nudge { display: inline-block; transition: transform .2s cubic-bezier(.25, 1, .5, 1), color .2s; }
-.card .link:focus-visible { text-decoration-color: var(--color-accent); }
-.card .link:focus-visible .nudge { color: var(--color-accent); }
+/* Each letter of the name takes a colour on hover and lets it go slowly. */
+.ltr { display: inline-block; transition: color 1.4s ease, transform .5s cubic-bezier(.25, 1, .5, 1); }
 @media (hover: hover) and (pointer: fine) {
-  .card:hover { border-color: var(--color-line-strong); box-shadow: 0 10px 30px -22px rgb(0 0 0 / .35); }
-  .card .link:hover { text-decoration-color: var(--color-accent); }
-  .card .link:hover .nudge { color: var(--color-accent); }
+  .ltr:hover { color: var(--h); transition-duration: 0s, .15s; transform: translateY(-.05em); }
 }
-@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .card:hover { transform: translateY(-2px); }
-  .card .link:hover .nudge, .card .link:focus-visible .nudge { transform: translate(2px, -2px); }
+@media (prefers-reduced-motion: no-preference) {
+  .ltr-in { animation: ltr-in .7s cubic-bezier(.2, .9, .3, 1) both; animation-delay: calc(var(--i) * 28ms + 80ms); }
+  .rise { animation: rise .7s cubic-bezier(.25, 1, .5, 1) both; animation-delay: var(--d, 0ms); }
+}
+@keyframes ltr-in { from { opacity: 0; transform: translateY(.35em); } }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+
+/* Neutral until you hover or focus it, then in colour with a small tilt. */
+.avatar img { filter: grayscale(1) contrast(1.05); transition: filter .5s ease, transform .5s cubic-bezier(.25, 1, .5, 1); }
+.avatar:hover img, .avatar:focus-visible img { filter: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .avatar:hover img, .avatar:focus-visible img { transform: rotate(-3deg) scale(1.03); }
+}
+.avatar .smile { opacity: 0; transform: scale(.6) rotate(-20deg); transition: opacity .3s, transform .4s cubic-bezier(.3, 1.6, .5, 1); }
+.avatar:hover .smile, .avatar:focus-visible .smile { opacity: 1; transform: none; }
+
+.hero-glow { background: radial-gradient(60% 60% at 75% 10%, color-mix(in oklab, var(--color-accent) 14%, transparent), transparent 70%); }
+.dot-grid { background-image: radial-gradient(color-mix(in oklab, var(--color-fg) 9%, transparent) 1px, transparent 1px); background-size: 22px 22px; }
+
+.pulse { position: relative; }
+@media (prefers-reduced-motion: no-preference) {
+  .pulse::after { content: ""; position: absolute; inset: 0; border-radius: 999px; background: inherit; animation: pulse 2s ease-out infinite; }
+  .cue-line { animation: cue 2.2s cubic-bezier(.6, 0, .4, 1) infinite; transform-origin: top; }
+}
+@keyframes pulse { to { transform: scale(2.6); opacity: 0; } }
+@keyframes cue { 0% { transform: scaleY(0); } 45% { transform: scaleY(1); transform-origin: top; } 55% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+/* ---- Reveal on scroll --------------------------------------------------------------------------
+   Progressive: nothing is hidden until JS has marked what's already on screen and added
+   .reveal-on, so content is never stuck invisible. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-on [data-reveal] { transition: opacity .6s cubic-bezier(.25, 1, .5, 1), transform .6s cubic-bezier(.25, 1, .5, 1); transition-delay: var(--reveal-delay, 0ms); }
+  .reveal-on [data-reveal]:not(.is-in) { opacity: 0; transform: translateY(14px); }
 }
 
-/* RAG explainer: the stage detail fades in briefly when the selection changes. */
+/* ---- Work ------------------------------------------------------------------------------------- */
+.cover img { transition: transform .8s cubic-bezier(.2, .8, .2, 1); }
+.nudge { display: inline-block; transition: transform .2s cubic-bezier(.25, 1, .5, 1); }
+.project:focus-within .cover { outline: 1px solid var(--color-line-strong); }
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .project:hover .cover img { transform: scale(1.035); }
+  .link:hover .nudge, .link:focus-visible .nudge { transform: translate(2px, -2px); }
+}
+
+/* ---- Journey landscape ------------------------------------------------------------------------ */
+.scape .bx polygon { stroke: var(--sc-edge); stroke-width: 1; stroke-linejoin: round; transition: fill .6s ease; }
+.scape .bx .t { fill: var(--sc-top); }
+.scape .bx .l { fill: var(--sc-left); }
+.scape .bx .r { fill: var(--sc-right); }
+.scape .bx.ghost polygon { fill: none; stroke-dasharray: 3 4; }
+.scape .bx.soft .t { fill: color-mix(in oklab, var(--color-accent) 14%, var(--sc-top)); }
+.scape .bx.soft .l { fill: color-mix(in oklab, var(--color-accent) 26%, var(--sc-left)); }
+.scape .bx.soft .r { fill: color-mix(in oklab, var(--color-accent) 36%, var(--sc-right)); }
+.scape .bx.acc .t { fill: color-mix(in oklab, var(--color-accent) 72%, white); }
+.scape .bx.acc .l { fill: var(--color-accent); }
+.scape .bx.acc .r { fill: color-mix(in oklab, var(--color-accent) 62%, black); }
+.scape .shadow { fill: var(--sc-shadow); }
+.scape .ground { fill: var(--sc-ground); }
+.scape .ground-l { fill: var(--sc-ground-left); }
+.scape .ground-r { fill: var(--sc-ground-right); }
+.scape .grid { stroke: var(--sc-grid); }
+.scape .wire { stroke: var(--sc-edge); }
+.scape .link-line { stroke: var(--sc-mute); transition: stroke .6s; }
+.scape .link-line.on { stroke: var(--color-accent); }
+.scape .thread-base { stroke: var(--sc-mute); }
+.scape .thread { stroke: var(--color-accent); transition: stroke-dashoffset 1s cubic-bezier(.45, 0, .2, 1); }
+.scape .head { fill: var(--color-accent); transition: transform 1s cubic-bezier(.45, 0, .2, 1); }
+.scape .head-ring { stroke: var(--color-accent); }
+.scape .fade { transition: opacity .6s ease; }
+@media (prefers-reduced-motion: no-preference) {
+  .scape .head-ring { animation: ring 2s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scape *, .scape .thread, .scape .head { transition: none !important; }
+}
+@keyframes ring { from { transform: scale(.5); opacity: .8; } to { transform: scale(1.6); opacity: 0; } }
+
+/* ---- Lab -------------------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: no-preference) {
   .rag-panel { animation: rag-in .2s ease-out; }
 }
 @keyframes rag-in { from { opacity: 0; transform: translateY(3px); } }
 
-/* A short colour cross-fade while the theme is being switched (class added for ~200ms). */
+/* ---- Command palette ------------------------------------------------------------------------- */
+dialog.palette::backdrop { background: rgb(0 0 0 / .55); backdrop-filter: blur(3px); }
+@media (prefers-reduced-motion: no-preference) {
+  dialog.palette[open] { animation: pop .18s cubic-bezier(.2, .9, .3, 1); }
+}
+@keyframes pop { from { opacity: 0; transform: translateY(-6px) scale(.985); } }
+
+/* A short colour cross-fade while the theme or accent is being switched (class added for ~200ms). */
 @media (prefers-reduced-motion: no-preference) {
   .theme-fade, .theme-fade * { transition: background-color .15s ease, border-color .15s ease, color .15s ease, fill .15s ease !important; }
 }

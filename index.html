@@ -8,9 +8,8 @@
     <link rel="canonical" href="https://vukkisa.github.io/" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="author" content="Jayanth Vukkisa" />
-    <meta name="theme-color" content="#fdfdfc" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0c0c0d" media="(prefers-color-scheme: dark)" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#0a0a0b" />
+    <meta name="color-scheme" content="dark light" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Jayanth Vukkisa" />
@@ -33,8 +32,9 @@
     <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <!-- Preload the body font so text does not re-wrap (layout shift) when it swaps in. -->
+    <!-- Preload the body and display fonts so text does not re-wrap (layout shift) when they swap in. -->
     <link rel="preload" href="/static/geist-latin-wght-normal-BgDaEnEv.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/static/bricolage-grotesque-latin-wght-normal-DLoelf7F.woff2" as="font" type="font/woff2" crossorigin />
 
     <script type="application/ld+json">
       {
@@ -52,11 +52,12 @@
         "sameAs": ["https://github.com/Vukkisa", "https://linkedin.com/in/jayanthvukkisa"]
       }
     </script>
-    <!-- Apply a saved theme before first paint, so there's no flash. -->
-    <script>try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
-    <style>html{color:#18181b;background:#fdfdfc}@media (prefers-color-scheme:dark){html:not([data-theme=light]){color:#ededed;background:#0c0c0d}}html[data-theme=dark]{color:#ededed;background:#0c0c0d}</style>
-    <script type="module" crossorigin src="/static/index-CfOpkr_B.js"></script>
-    <link rel="stylesheet" crossorigin href="/static/index-7mqWWnK5.css">
+    <!-- Apply saved preferences (theme, text size, design tokens) before first paint, so nothing flashes.
+         Dark is the default. Mirrors OPTIONS / DEFAULTS in src/lib/prefs.ts. -->
+    <script>(function(){var O={theme:['dark','light'],text:['md','lg'],accent:['cobalt','ember','moss','rose','mono'],type:['grotesk','sans','mono'],density:['compact','cozy','airy'],radius:['none','soft','round']},s={},d=document.documentElement.dataset;try{s=JSON.parse(localStorage.getItem('prefs')||'{}')||{};if(!s.theme)s.theme=localStorage.getItem('theme')}catch(e){}for(var k in O)d[k]=O[k].indexOf(s[k])>-1?s[k]:O[k][k==='density'||k==='radius'?1:0]})()</script>
+    <style>html{color:#f4f4f2;background:#0a0a0b}html[data-theme=light]{color:#121214;background:#f7f7f4}</style>
+    <script type="module" crossorigin src="/static/index-CHixE5Hg.js"></script>
+    <link rel="stylesheet" crossorigin href="/static/index-DQs6x-WN.css">
   </head>
   <body>
     <noscript>

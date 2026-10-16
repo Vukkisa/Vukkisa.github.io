@@ -17,9 +17,11 @@ app/                     source (Vite root)
   public/                copied as-is to the root on build (favicons, og.png, robots, sitemap, images)
   src/
     data/content.ts      ← every word on the site; edit this to change the story
-    sections/            Intro, Projects, Experience (with education and skills), Contact
-    components/          ProjectCard, ThemeToggle, ui/, layout/
-    hooks/, lib/         small helpers
+    sections/            Hero, Work, Journey, Lab, About, Contact
+    components/          TopBar + CommandPalette (⌘K), ProjectCard, Landscape (journey illustration),
+                         RagFlow, ZoneTest, TokenPlayground (the three Lab experiments), layout/
+    lib/prefs.ts         theme, text size and the live design tokens (mirrored by the script in index.html)
+    hooks/               scroll reveal, active section
 index.html, static/      ← build output. Don't edit by hand; run `npm run build`.
 assests/                 résumé PDF and photo (folder name kept so old links work)
 ```

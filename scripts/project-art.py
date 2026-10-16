@@ -1,7 +1,8 @@
 """Four project illustrations from one shared art direction (1200x900, 4:3).
 
 Usage: python3 scripts/project-art.py app/public/images/projects
-All four share one palette, texture, stroke weights and a single cobalt accent; edit P / WARM to restyle the set.
+All four share one palette, texture, stroke weights and a single cobalt accent; edit P / WARM to restyle
+the set. Writes light versions (name.svg) and dark versions (name-dark.svg) from the same drawings.
 """
 import math, random, sys
 OUT = sys.argv[1]
@@ -9,15 +10,20 @@ W, H = 1200, 900
 
 # ---- shared art direction -------------------------------------------------------------------
 P = dict(bg='#f4f4f1', paper='#fbfbf9', ink='#2a2a30', g1='#e8e8e3', g2='#dadad4', g3='#c7c7c0', g4='#9c9c95',
-         acc='#2340ff', acc_soft='#dde2ff', shadow='#141428')
+         acc='#2340ff', acc_soft='#dde2ff', shadow='#141428', shadow_op=1)
 WARM = dict(bg='#f6f1e8', paper='#fffaf2', g1='#efe6d8', g2='#e5d9c7', g3='#d3c4ae', g4='#a8977f')
+LIGHT, LIGHT_WARM = dict(P), dict(WARM)
+DARK = dict(bg='#101115', paper='#191a1f', ink='#e9e8e4', g1='#1f2026', g2='#2b2d34', g3='#3b3e47', g4='#80838d',
+            acc='#8e9cff', acc_soft='#232a52', shadow='#000000', shadow_op=4)
+DARK_WARM = dict(bg='#15130f', paper='#1e1b16', g1='#26221c', g2='#342e26', g3='#473f34', g4='#8f816c')
+GRAIN_RGB = '0'   # grain colour channel: 0 = dark specks (light theme), 1 = light specks (dark theme)
 
 def defs(bg):
     return f'''<defs>
   <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="12" cy="12" r="1" fill="{P['ink']}" fill-opacity=".08"/></pattern>
   <filter id="grain" x="0" y="0" width="100%" height="100%">
     <feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" seed="7" stitchTiles="stitch"/>
-    <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .045 0"/>
+    <feColorMatrix values="0 0 0 0 {GRAIN_RGB}  0 0 0 0 {GRAIN_RGB}  0 0 0 0 {GRAIN_RGB}  0 0 0 .045 0"/>
   </filter>
 </defs>
 <rect width="{W}" height="{H}" fill="{bg}"/>
@@ -26,13 +32,14 @@ def defs(bg):
 GRAIN = f'<rect width="{W}" height="{H}" filter="url(#grain)"/>'
 
 def card(x, y, w, h, fill, stroke, r=10, sw=1.5, shadow=True, extra=''):
-    s = f'<rect x="{x+8:.1f}" y="{y+10:.1f}" width="{w}" height="{h}" rx="{r}" fill="{P["shadow"]}" fill-opacity=".06"/>' if shadow else ''
+    s = f'<rect x="{x+8:.1f}" y="{y+10:.1f}" width="{w}" height="{h}" rx="{r}" fill="{P["shadow"]}" fill-opacity="{.06 * P["shadow_op"]:.2f}"/>' if shadow else ''
     return s + f'<rect x="{x:.1f}" y="{y:.1f}" width="{w}" height="{h}" rx="{r}" fill="{fill}" stroke="{stroke}" stroke-width="{sw}" {extra}/>'
 
 def bar(x, y, w, fill, h=6):
     return f'<rect x="{x:.1f}" y="{y:.1f}" width="{w:.1f}" height="{h}" rx="{h/2}" fill="{fill}"/>'
 
-def svg(body, bg=P['bg']):
+def svg(body, bg=None):
+    bg = bg or P['bg']   # read at call time: P is swapped between the light and dark passes
     return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}">{defs(bg)}{body}{GRAIN}</svg>'
 
 # ---- 1. KnowYourRules: documents -> retrieved passages -> one grounded answer ----------------
@@ -118,7 +125,7 @@ def surv():
         h, w = 118 * s, 38 * s
         top = foot_y - h
         col = P['acc'] if inside else P['ink']
-        g = f'<ellipse cx="{x}" cy="{foot_y}" rx="{w*0.55:.1f}" ry="{5*s:.1f}" fill="{P["shadow"]}" fill-opacity=".08"/>'
+        g = f'<ellipse cx="{x}" cy="{foot_y}" rx="{w*0.55:.1f}" ry="{5*s:.1f}" fill="{P["shadow"]}" fill-opacity="{.08 * P["shadow_op"]:.2f}"/>'
         g += f'<rect x="{x-w/2:.1f}" y="{top+30*s:.1f}" width="{w:.1f}" height="{h-30*s:.1f}" rx="{w/2:.1f}" fill="{P["g4"]}"/>'
         g += f'<circle cx="{x}" cy="{top+14*s:.1f}" r="{13*s:.1f}" fill="{P["g4"]}"/>'
         bx, by, bw, bh = x - w / 2 - 12 * s, top - 8 * s, w + 24 * s, h + 14 * s
@@ -205,6 +212,9 @@ def ezlearn():
     o.append(f'<circle cx="{cx:.1f}" cy="{sy:.1f}" r="22" fill="none" stroke="{P["acc"]}" stroke-width="1.4" stroke-dasharray="3 4"/>')
     return svg(''.join(o), bg=WARM['bg'])
 
-for name, fn in [('knowyourrules', kyr), ('ai-surveillance', surv), ('railway-speech', speech), ('ez-learn', ezlearn)]:
-    open(f'{OUT}/{name}.svg', 'w').write(fn())
-    print('wrote', name)
+for suffix, base, warm, grain in [('', LIGHT, LIGHT_WARM, '0'), ('-dark', DARK, DARK_WARM, '1')]:
+    P.clear(); P.update(base); WARM.clear(); WARM.update(warm); GRAIN_RGB = grain
+    GRAIN = f'<rect width="{W}" height="{H}" filter="url(#grain)"/>'
+    for name, fn in [('knowyourrules', kyr), ('ai-surveillance', surv), ('railway-speech', speech), ('ez-learn', ezlearn)]:
+        open(f'{OUT}/{name}{suffix}.svg', 'w').write(fn())
+        print('wrote', name + suffix)

@@ -59,10 +59,9 @@ export function RagFlow() {
   }
 
   return (
-    <section aria-labelledby={`${id}-title`} className="mt-5 border-t border-line pt-4">
-      <h4 id={`${id}-title`} className="text-sm font-medium text-fg">How the RAG pipeline works</h4>
-      <p className="mt-1 text-xs leading-relaxed text-mute">
-        A conceptual diagram of the code in the team repository. Nothing runs here: no question is sent and no answer is generated.
+    <div>
+      <p className="text-sm leading-relaxed text-soft">
+        The four stages of KnowYourRules, as written in the team repository. Select a stage (or use the arrow keys). This is an explainer, not a live model: nothing is sent and no answer is generated.
       </p>
 
       <div role="tablist" aria-label="RAG pipeline stages" className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-4 sm:gap-0">
@@ -82,15 +81,15 @@ export function RagFlow() {
               onKeyDown={onKeyDown}
               className={cn(
                 // Connector: a short line into each stage after the first (vertical on phones, horizontal from sm up).
-                'relative rounded-lg border px-3 py-2.5 text-left transition-colors sm:mx-1.5',
+                'chip relative border px-3 py-2.5 text-left transition-colors sm:mx-1.5',
                 i > 0 && 'before:absolute before:-top-2 before:left-5 before:h-2 before:w-px before:bg-line-strong sm:before:-left-3 sm:before:top-1/2 sm:before:h-px sm:before:w-3',
-                active ? 'border-accent bg-accent-soft' : 'border-line bg-card hover:border-line-strong',
+                active ? 'border-accent bg-accent-soft' : 'border-line bg-bg hover:border-line-strong',
               )}
             >
-              <span className={cn('block font-mono text-[11px]', active ? 'text-accent' : 'text-mute')}>
+              <span className={cn('block font-mono text-[11px]', active ? 'text-fg' : 'text-mute')}>
                 {String(i + 1).padStart(2, '0')}{s.mine && <span className="sr-only">, part I built</span>}
               </span>
-              <span className={cn('mt-0.5 block text-sm font-medium', active ? 'text-accent' : 'text-fg')}>{s.name}</span>
+              <span className="mt-0.5 block text-sm font-medium text-fg">{s.name}</span>
               <span className="mt-0.5 block text-xs leading-snug text-soft">{s.summary}</span>
             </button>
           )
@@ -103,7 +102,7 @@ export function RagFlow() {
         role="tabpanel"
         tabIndex={0}
         aria-labelledby={`${id}-tab-${selected}`}
-        className="rag-panel mt-3 rounded-lg bg-chip px-4 py-3"
+        className="rag-panel chip mt-3 bg-chip px-4 py-3"
       >
         <p className="text-sm leading-relaxed text-soft">{stage.detail}</p>
         <p className="mt-2 font-mono text-[11px] text-mute">
@@ -111,6 +110,6 @@ export function RagFlow() {
           {stage.owner}
         </p>
       </div>
-    </section>
+    </div>
   )
 }
