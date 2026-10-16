@@ -9,7 +9,7 @@ export function About() {
       <div className="mt-10 grid gap-12 lg:grid-cols-12">
         <div data-reveal className="lg:col-span-5">
           <p className="font-display text-2xl font-medium leading-snug tracking-tight sm:text-[1.7rem]">
-            Two and a half years of SQL and billing data taught me where real data breaks. Now I build the AI that has to live with it.
+            Two and a half years of SQL and billing systems at TCS, then a move into AI: retrieval, computer vision and speech recognition.
           </p>
           <dl className="mt-8 divide-y divide-line border-y border-line">
             {now.map(n => (

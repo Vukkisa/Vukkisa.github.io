@@ -29,7 +29,7 @@ export function Contact() {
       <div data-reveal className="border-t border-line pt-5">
         <p className="eyebrow"><span aria-hidden="true">05 ✉ </span>Contact</p>
         <h2 id="contact-title" className="mt-6 max-w-4xl font-display text-[clamp(2.4rem,7vw,5.5rem)] font-semibold leading-[.95] tracking-[-.035em]">
-          Got a role, a question or a messy dataset<span className="text-accent">?</span>
+          Let’s talk<span className="text-accent">.</span>
         </h2>
         <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-soft sm:text-base">Email is the quickest way to reach me.</p>
 
