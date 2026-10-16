@@ -20,6 +20,9 @@ export const site = {
 
 export const intro = {
   role: 'Postgraduate AI & Data Science · Associate Data Scientist Intern',
+  /** The one-line hero statement. Each clause is one of the projects below (KYR, AI Surveillance, speech). */
+  tagline: ['I build AI that', 'reads the rules,', 'watches the zone', 'and listens through the noise.'],
+  now: 'Associate Data Scientist intern at AiSpry',
   lines: [
     'I spent two and a half years as a Data Developer at TCS, working on enterprise telecom billing systems. I’m now a postgraduate student in AI & Data Science at Jio Institute and an Associate Data Scientist intern at AiSpry, where I work on speech recognition for noisy railway audio. My coursework and team projects include a RAG assistant and a computer-vision pipeline.',
   ],
@@ -41,8 +44,10 @@ export type Project = {
   links: Link[]
   /** Shown instead of links when the work can't be public. */
   privateNote?: string
-  /** An optional interactive explainer rendered inside the card. */
-  explainer?: 'rag-flow'
+  /** Illustration basename in /images/projects (with a -dark variant). Illustrative, not a screenshot. */
+  cover: string
+  /** A related experiment in the Lab section. */
+  lab?: { label: string; href: string }
 }
 
 /**
@@ -62,7 +67,8 @@ export const projects: Project[] = [
       'The RAG pipeline, my part of the team project: LangChain chunking, local Ollama embeddings in a Chroma vector store, and Groq (gpt-oss-120b) answering only from the retrieved passages, with the source shown.',
     evidence: 'Indexed so far: the central Motor Vehicles Act and Rules, Gujarat and Delhi. Answer accuracy hasn’t been evaluated yet; a cited source shows where an answer came from, not that it’s correct.',
     tools: ['Python', 'LangChain', 'Ollama', 'Chroma', 'Groq'],
-    explainer: 'rag-flow',
+    cover: 'knowyourrules',
+    lab: { label: 'Step through the pipeline', href: '#lab-rag' },
     links: [
       { label: 'Team repository', href: 'https://github.com/DAG-21/KnowYourRules' },
       { label: 'How it was built', href: 'https://github.com/DAG-21/KnowYourRules#the-process' },
@@ -79,6 +85,8 @@ export const projects: Project[] = [
       'Draw a zone on any camera feed (webcam, USB, RTSP or video file). YOLOv8 detects people, each person’s feet point is tested against the zone, and every intrusion saves a clip, a snapshot and a CSV log entry.',
     evidence: 'Packaged as an installable command-line tool with a built-in FPS benchmark; benchmark results not yet recorded. Hidden feet or crowded scenes can cause missed or false alerts.',
     tools: ['Python', 'YOLOv8', 'OpenCV', 'NumPy'],
+    cover: 'ai-surveillance',
+    lab: { label: 'Try the zone check', href: '#lab-zone' },
     links: [
       { label: 'Repository', href: 'https://github.com/Vukkisa/AI_Surveillance' },
       { label: 'Known limitations', href: 'https://github.com/Vukkisa/AI_Surveillance#known-limitations' },
@@ -95,6 +103,7 @@ export const projects: Project[] = [
       'A fully local speech-recognition pipeline. I tested denoising methods (spectral, RNNoise, DeepFilterNet) and silence- and voice-based segmentation, benchmarked Indic-Conformer, Qwen3-ASR and Whisper, and merged their outputs with a word-level ensemble, all within tight compute and disk limits.',
     evidence: 'Every variant is scored on word and character error rate. Now fine-tuning a model to lower WER. Results not yet shareable.',
     tools: ['Python', 'PyTorch', 'Hugging Face Transformers', 'faster-whisper', 'Silero VAD', 'jiwer'],
+    cover: 'railway-speech',
     links: [],
     privateNote: 'Company project: code and data aren’t public.',
   },
@@ -109,6 +118,7 @@ export const projects: Project[] = [
       'A Django platform. Learners sign up with email OTP, study course content, take scored quizzes and earn certificates. Instructors manage courses and quizzes. Paid courses go through Razorpay with payment verification, on PostgreSQL.',
     evidence: 'Deployed on Render with a public demo.',
     tools: ['Python', 'Django', 'PostgreSQL', 'Razorpay', 'Render'],
+    cover: 'ez-learn',
     links: [
       { label: 'Live demo', href: 'https://ez-learn.onrender.com/', note: 'may take a minute to wake' },
     ],
@@ -163,7 +173,69 @@ export const education = [
 
 export const certifications = ['SQL (Advanced), HackerRank, 2023', 'Full Stack Developer (Python), TalentSprint, 2023']
 
-export const skills = [
-  'Python', 'SQL', 'PL/SQL', 'Oracle', 'PostgreSQL', 'scikit-learn', 'PyTorch', 'YOLOv8', 'OpenCV',
-  'LangChain', 'LangGraph', 'Chroma', 'Ollama', 'Groq', 'Hugging Face', 'Django', 'FastAPI', 'Gradio', 'Git', 'Power BI',
+export const skillGroups = [
+  { name: 'Data', items: ['SQL', 'PL/SQL', 'Oracle', 'PostgreSQL', 'Power BI'] },
+  { name: 'ML & vision', items: ['Python', 'scikit-learn', 'PyTorch', 'YOLOv8', 'OpenCV', 'Hugging Face'] },
+  { name: 'GenAI & RAG', items: ['LangChain', 'LangGraph', 'Chroma', 'Ollama', 'Groq'] },
+  { name: 'Apps & tools', items: ['Django', 'FastAPI', 'Gradio', 'Git'] },
+] as const
+
+/**
+ * The journey, year by year. `station` lights up that part of the landscape illustration
+ * (0 start · 1 data · 2 processing · 3 learning · 4 retrieval · 5 applications). Dates and facts
+ * match `experience`, `education` and `projects` above; the last entry is a direction, not a claim.
+ */
+export const chapters = [
+  {
+    year: '2022', station: 0, kind: 'Start',
+    title: 'B.Tech, Computer Science & Engineering', org: 'B.V. Raju Institute of Technology',
+    points: ['Graduated with a CGPA of 8.17.'],
+  },
+  {
+    year: '2023', station: 1, kind: 'Data',
+    title: 'Full Stack Developer program', org: 'TalentSprint · Mar – Sep 2023',
+    points: [
+      '200+ hours of Python, Django and web development. Ez-Learn started here; I later updated it and deployed it on Render (2025).',
+      'Certified in SQL (Advanced) on HackerRank.',
+    ],
+  },
+  {
+    year: '2023 – 26', station: 2, kind: 'Processing',
+    title: 'Data Developer', org: 'Tata Consultancy Services · Sep 2023 – Apr 2026',
+    points: [
+      'Configured billing rules and rate plans for a Kenan billing migration of 2M+ customer records.',
+      'Built pre-migration scripts for bulk call-record (CDR) loads, improving processing speed by 25%.',
+      'Automated a billing charge-inventory report, cutting manual validation time by 40%.',
+      'Star of the Month, TCS project excellence award (2024).',
+    ],
+  },
+  {
+    year: '2026', station: 3, kind: 'Learning',
+    title: 'PG Program in AI & Data Science', org: 'Jio Institute · Apr 2026 – Apr 2027',
+    points: [
+      'Coursework includes computer vision and generative AI.',
+      'Built AI Surveillance (YOLOv8 zone-intrusion detection) and LLM extraction and RAG notebooks.',
+    ],
+  },
+  {
+    year: 'Sep 2026', station: 4, kind: 'Retrieval',
+    title: 'KnowYourRules', org: 'Jio Institute · team project',
+    points: ['Built the RAG pipeline that answers traffic-law questions only from official documents, with the source shown.'],
+  },
+  {
+    year: 'Oct 2026', station: 5, kind: 'Applications',
+    title: 'Associate Data Scientist (internship)', org: 'AiSpry · Oct 2026 – Dec 2026',
+    points: ['Speech recognition for noisy railway audio: building a local speech-recognition setup and working to lower the word error rate (WER).'],
+  },
+  {
+    year: 'Next', station: 5, kind: 'Direction',
+    title: 'AI agents', org: 'Where I’m heading',
+    points: ['Systems that plan, call tools and check their own work. I’ve rebuilt one coursework RAG project as a LangGraph graph; agents are the next step.'],
+  },
+] as const
+
+export const now = [
+  { label: 'Now', text: 'Lowering word error rate on noisy railway audio at AiSpry.' },
+  { label: 'Studying', text: 'PG Program in AI & Data Science at Jio Institute, until April 2027.' },
+  { label: 'Next', text: 'AI agents: tool use, planning and evaluation.' },
 ]
