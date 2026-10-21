@@ -38,6 +38,7 @@
     --acc-ink: #0a0a0b;
     --display: "Bricolage Grotesque Variable", var(--font-sans);
     --space: 1;
+    --header-h: 5.875rem;   /* top bar height; TopBar.tsx keeps it exact (two rows on phones) */
     --r: 18px;
     --r-sm: 10px;
     /* Letter-hover colours: the five accents of the current theme. */
@@ -45,7 +46,7 @@
     /* Journey landscape (see Landscape.tsx). */
     --sc-top: #2a2b31; --sc-left: #1e1f24; --sc-right: #16171b; --sc-edge: rgb(244 244 242 / .28);
     --sc-ground: #17181c; --sc-ground-left: #111215; --sc-ground-right: #0d0e10; --sc-grid: #23242a;
-    --sc-mute: #55565e; --sc-shadow: rgb(0 0 0 / .45); --sc-mix: black;
+    --sc-mute: #55565e; --sc-shadow: rgb(0 0 0 / .45);
     color-scheme: dark;
   }
   :root[data-accent="ember"] { --acc: #ff9157; }
@@ -71,7 +72,7 @@
     --h1: #2340ff; --h2: #c2410c; --h3: #15803d; --h4: #be185d; --h5: #a16207;
     --sc-top: #fbfbf9; --sc-left: #e4e4df; --sc-right: #cfcfc8; --sc-edge: rgb(42 42 48 / .35);
     --sc-ground: #ecece7; --sc-ground-left: #e0e0da; --sc-ground-right: #cfcfc8; --sc-grid: #dcdcd6;
-    --sc-mute: #b3b3ab; --sc-shadow: rgb(20 20 40 / .07); --sc-mix: white;
+    --sc-mute: #b3b3ab; --sc-shadow: rgb(20 20 40 / .07);
     color-scheme: light;
   }
   :root[data-theme="light"][data-accent="ember"] { --acc: #c2410c; }
@@ -103,7 +104,8 @@
   :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; border-radius: 4px; }
   a { text-decoration: none; }
   h1, h2, h3 { text-wrap: balance; }
-  [id] { scroll-margin-top: 5rem; }
+  @media (min-width: 48rem) { :root { --header-h: 3.5rem; } }
+  [id] { scroll-margin-top: calc(var(--header-h) + 1.5rem); }
 }
 
 @layer components {
@@ -111,8 +113,8 @@
   .link:hover { text-decoration-color: var(--color-accent); }
   .sec { padding-block: calc(var(--space) * 5.5rem); }
   .pad { padding: calc(var(--space) * 1.5rem); }
-  .kbd { font-family: var(--font-mono); font-size: 11px; line-height: 1; padding: 3px 5px; border-radius: 5px; border: 1px solid var(--color-line-strong); color: var(--color-mute); }
-  .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .02em; color: var(--color-mute); }
+  .kbd { font-family: var(--font-mono); font-size: .6875rem; line-height: 1; padding: 3px 5px; border-radius: 5px; border: 1px solid var(--color-line-strong); color: var(--color-mute); }
+  .eyebrow { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .02em; color: var(--color-mute); }
   .chip { border-radius: var(--r-sm); }
 }
 
@@ -212,6 +214,10 @@ dialog.palette::backdrop { background: rgb(0 0 0 / .55); backdrop-filter: blur(3
   dialog.palette[open] { animation: pop .18s cubic-bezier(.2, .9, .3, 1); }
 }
 @keyframes pop { from { opacity: 0; transform: translateY(-6px) scale(.985); } }
+
+/* Looping animations pause while their [data-loop] container is off screen (usePauseOffscreen). */
+[data-offscreen], [data-offscreen] *, [data-offscreen]::before, [data-offscreen]::after,
+[data-offscreen] *::before, [data-offscreen] *::after { animation-play-state: paused !important; }
 
 /* A short colour cross-fade while the theme or accent is being switched (class added for ~200ms). */
 @media (prefers-reduced-motion: no-preference) {

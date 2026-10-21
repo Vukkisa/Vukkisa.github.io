@@ -20,6 +20,7 @@ const open = (href: string) => window.open(href, '_blank', 'noopener,noreferrer'
 export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const dialog = useRef<HTMLDialogElement>(null)
   const input = useRef<HTMLInputElement>(null)
+  const list = useRef<HTMLDivElement>(null)
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
   const [note, setNote] = useState('')
@@ -57,7 +58,16 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
   useEffect(() => {
     const d = dialog.current
     if (!d) return
-    if (isOpen && !d.open) { setQuery(''); setActive(0); setNote(''); d.showModal(); input.current?.focus() }
+    if (isOpen && !d.open) {
+      setQuery(''); setActive(0); setNote('')
+      // On touch screens, focusing the search box would raise the on-screen keyboard over the list,
+      // so focus starts on the list instead (the dialog focuses the element marked autofocus).
+      // Typing a letter there still moves to the search box.
+      const touch = window.matchMedia('(pointer: coarse)').matches
+      list.current?.toggleAttribute('autofocus', touch)
+      d.showModal()
+      if (!touch) input.current?.focus()
+    }
     if (!isOpen && d.open) d.close()
   }, [isOpen])
 
@@ -109,15 +119,26 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
           value={query}
           onChange={e => { setQuery(e.target.value); setActive(0) }}
           onKeyDown={onKey}
-          className="h-13 w-full bg-transparent text-[15px] outline-none placeholder:text-mute"
+          className="h-13 w-full bg-transparent text-[0.9375rem] outline-none placeholder:text-mute"
         />
         <kbd className="kbd">esc</kbd>
       </div>
 
-      <div id={`${id}-list`} role="listbox" aria-label="Commands" className="max-h-[min(24rem,60vh)] overflow-y-auto p-2">
+      <div
+        ref={list}
+        id={`${id}-list`}
+        role="listbox"
+        aria-label="Commands"
+        tabIndex={-1}
+        onKeyDown={e => {
+          if (e.key.length === 1 && !e.metaKey && !e.ctrlKey && !e.altKey) { input.current?.focus(); return }
+          onKey(e)
+        }}
+        className="max-h-[min(24rem,60vh)] overflow-y-auto p-2"
+      >
         {groups.map(g => (
           <div key={g}>
-            <div aria-hidden="true" className="px-2 pb-1 pt-3 font-mono text-[10px] uppercase tracking-wider text-mute first:pt-1">{g}</div>
+            <div aria-hidden="true" className="px-2 pb-1 pt-3 font-mono text-[0.625rem] uppercase tracking-wider text-mute first:pt-1">{g}</div>
             <div role="group" aria-label={g}>
               {results.filter(r => r.group === g).map(c => {
                 const i = ++index
@@ -143,7 +164,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
         {results.length === 0 && <p className="px-3 py-6 text-center text-sm text-mute">Nothing matches “{query}”.</p>}
       </div>
 
-      <div className="flex items-center justify-between gap-3 border-t border-line px-4 py-2 font-mono text-[11px] text-mute">
+      <div className="flex items-center justify-between gap-3 border-t border-line px-4 py-2 font-mono text-[0.6875rem] text-mute">
         <span aria-live="polite">{note}</span>
         <span className="hidden gap-3 sm:flex"><span><kbd className="kbd">↑</kbd> <kbd className="kbd">↓</kbd> move</span><span><kbd className="kbd">↵</kbd> select</span></span>
       </div>

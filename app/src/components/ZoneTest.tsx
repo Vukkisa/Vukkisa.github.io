@@ -106,7 +106,7 @@ export function ZoneTest() {
           <rect width={W} height={H} fill={`url(#${id}-grid)`} />
           {/* viewfinder corners */}
           <path d="M12 28V12H28M372 12H388V28M388 222V238H372M28 238H12V222" fill="none" className="stroke-mute" strokeWidth="1.5" />
-          <text x="34" y="26" className="fill-mute font-mono text-[10px]">CAM 01 · simulated</text>
+          <text x="34" y="26" className="fill-mute font-mono text-[0.625rem]">CAM 01 · simulated</text>
 
           <polygon points={zone.map(p => p.join(',')).join(' ')} className={cn('transition-colors', alert ? 'fill-accent/25 stroke-accent' : 'fill-accent/10 stroke-accent/70')} strokeWidth="2" strokeDasharray={alert ? undefined : '6 5'} />
 
@@ -156,7 +156,7 @@ export function ZoneTest() {
         </div>
       </div>
 
-      <div className="mt-3 rounded-(--r-sm) bg-chip px-3 py-2 font-mono text-[11px] leading-relaxed text-mute">
+      <div className="mt-3 rounded-(--r-sm) bg-chip px-3 py-2 font-mono text-[0.6875rem] leading-relaxed text-mute">
         <p>simulated log · in the real tool each intrusion saves a clip, a snapshot and a CSV row</p>
         {log.length === 0 ? <p>—</p> : log.map((l, i) => <p key={log.length - i} className="text-soft">{l}</p>)}
       </div>

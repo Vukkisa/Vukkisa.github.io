@@ -20,9 +20,7 @@ const appCode = sources('app/src')
   .join('\n')
 
 describe('content.ts', () => {
-  // Known bug B5, fixed in Phase 1: `experience` and `intro.role` are unused copies. `it.fails` keeps CI green
-  // while proving the check catches them; Phase 1 turns it into a normal test.
-  it.fails('has no unused exports or intro fields (B5)', () => {
+  it('has no unused exports or intro fields (B5)', () => {
     const unusedExports = Object.keys(content).filter(name => !new RegExp(`\\b${name}\\b`).test(appCode))
     const unusedIntro = Object.keys(content.intro).filter(key => !new RegExp(`intro\\.${key}\\b|\\b${key}\\b[^:]*=\\s*intro\\b`).test(appCode))
     expect({ unusedExports, unusedIntro }).toEqual({ unusedExports: [], unusedIntro: [] })

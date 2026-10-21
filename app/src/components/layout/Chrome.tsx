@@ -11,7 +11,7 @@ export function SkipLink() {
 export function Footer() {
   return (
     <footer className="mx-auto max-w-6xl px-5 pb-10 sm:px-6 lg:px-10">
-      <div className="flex flex-col gap-4 border-t border-line pt-6 font-mono text-[11px] text-mute sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 border-t border-line pt-6 font-mono text-[0.6875rem] text-mute sm:flex-row sm:items-center sm:justify-between">
         <p>
           © {new Date().getFullYear()} {site.name} · {site.location} · built with React & Tailwind ·{' '}
           <a href={site.source} target="_blank" rel="noopener noreferrer" className="link text-mute">

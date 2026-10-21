@@ -21,6 +21,9 @@ export type TokenKey = 'accent' | 'type' | 'density' | 'radius'
 export const DEFAULTS: Prefs = { theme: 'dark', text: 'md', accent: 'cobalt', type: 'grotesk', density: 'cozy', radius: 'soft' }
 const KEY = 'prefs'
 
+/** The browser's own UI colour (meta theme-color) for each theme: the page background. */
+export const THEME_COLOR = { dark: '#0a0a0b', light: '#f7f7f4' } as const
+
 /**
  * Turn the stored JSON (and the older site's lone 'theme' key) into valid preferences. Anything
  * missing, unknown or corrupt falls back to the default. Pure, so it's unit-tested, and the
@@ -54,6 +57,7 @@ const listeners = new Set<() => void>()
 function apply(p: Prefs) {
   const d = document.documentElement.dataset
   for (const [k, v] of Object.entries(p)) d[k] = v
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', THEME_COLOR[p.theme])
 }
 
 export function setPref<K extends keyof Prefs>(key: K, value: Prefs[K]) {

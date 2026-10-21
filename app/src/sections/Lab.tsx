@@ -19,7 +19,7 @@ function Experiment({ id, n, title, tag, wide, children }: { id: string; n: stri
           <span aria-hidden="true" className="mr-2 font-mono text-xs font-normal tracking-normal text-mute">exp. {n}</span>
           {title}
         </h3>
-        <span className="font-mono text-[11px] text-mute">⌘ {tag}</span>
+        <span className="font-mono text-[0.6875rem] text-mute">⌘ {tag}</span>
       </header>
       {children}
     </article>
@@ -29,7 +29,7 @@ function Experiment({ id, n, title, tag, wide, children }: { id: string; n: stri
 export function Lab() {
   return (
     <section id="lab" aria-labelledby="lab-title" className="sec">
-      <SectionHead id="lab-title" n="03" glyph="⌘" title="Lab" count={LAB.length} note="Small, honest experiments. Each one runs entirely in your browser." />
+      <SectionHead id="lab-title" n="03" glyph="⌘" title="Lab" count={{ n: LAB.length, noun: 'experiments' }} note="Small, honest experiments. Each one runs entirely in your browser." />
       <div className="mt-10 grid gap-4 lg:grid-cols-2">
         {LAB.map(x => (
           <Experiment key={x.id} id={x.id} n={x.n} title={x.title} tag={x.tag} wide={'wide' in x && x.wide}>{x.body}</Experiment>

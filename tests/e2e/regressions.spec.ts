@@ -1,7 +1,7 @@
 /**
- * Regression tests for the bugs confirmed in the audit (B1–B6) and the duplicate listeners.
- * Phase 0: marked test.fail() — they must fail against the current code, which proves they catch
- * the bug. Phase 1 fixes each bug and removes the marker.
+ * Regression tests for the bugs confirmed in the audit (B1–B6) and the duplicate listeners. Each one
+ * was first committed as an expected failure and seen to fail against the old code for the right
+ * reason, then fixed; they now guard against the bug coming back.
  */
 import { expect, test, type Page } from '@playwright/test'
 import { loopingAnimations, scrollToY, setPrefs } from './helpers'
@@ -24,7 +24,6 @@ async function textSizes(page: Page) {
 
 for (const width of [1440, 390]) {
   test(`B1: the Aa button enlarges all body text, labels and navigation (${width}px)`, async ({ page }) => {
-    test.fail(true, 'B1, fixed in Phase 1')
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/')
     const before = await textSizes(page)
@@ -37,7 +36,6 @@ for (const width of [1440, 390]) {
 }
 
 test('B2: the browser theme-color follows the theme', async ({ page }) => {
-  test.fail(true, 'B2, fixed in Phase 1')
   const themeColor = () => page.locator('meta[name="theme-color"]').evaluateAll(ms => ms.map(m => m.getAttribute('content')))
   await page.goto('/')
   expect(await themeColor()).toEqual(['#0a0a0b'])
@@ -51,7 +49,6 @@ test.describe('on a phone', () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true })
 
   test('B3: section navigation is visible without opening the menu', async ({ page }) => {
-    test.fail(true, 'B3, fixed in Phase 1')
     await page.goto('/')
     const links = page.getByRole('navigation', { name: 'Sections' }).getByRole('link')
     await expect(links).toHaveCount(5)
@@ -59,9 +56,8 @@ test.describe('on a phone', () => {
   })
 
   test('B3: tapping Menu opens the command menu without focusing the search box (no keyboard pop-up)', async ({ page }) => {
-    test.fail(true, 'B3, fixed in Phase 1')
     await page.goto('/')
-    await page.getByRole('button', { name: /command menu/ }).tap()
+    await page.getByRole('button', { name: 'Menu', exact: true }).tap()
     await expect(page.getByRole('dialog', { name: 'Command menu' })).toBeVisible()
     await expect(page.getByRole('combobox')).not.toBeFocused()
     // Still fully usable by tapping.
@@ -71,18 +67,16 @@ test.describe('on a phone', () => {
 })
 
 test('B4: navigation and section headings have clean accessible names', async ({ page }) => {
-  test.fail(true, 'B4, fixed in Phase 1')
   await page.goto('/')
   const nav = page.getByRole('navigation', { name: 'Sections' })
-  for (const name of ['work, 4 projects', 'journey', 'lab, 3 experiments', 'about', 'contact']) {
+  for (const name of ['work (4 projects)', 'journey', 'lab (3 experiments)', 'about', 'contact']) {
     await expect(nav.getByRole('link', { name, exact: true })).toHaveCount(1)
   }
-  await expect(page.getByRole('heading', { level: 2, name: 'Selected work, 4 projects', exact: true })).toHaveCount(1)
-  await expect(page.getByRole('heading', { level: 2, name: 'Lab, 3 experiments', exact: true })).toHaveCount(1)
+  await expect(page.getByRole('heading', { level: 2, name: 'Selected work (4 projects)', exact: true })).toHaveCount(1)
+  await expect(page.getByRole('heading', { level: 2, name: 'Lab (3 experiments)', exact: true })).toHaveCount(1)
 })
 
 test('B6: looping animations pause when they are off screen', async ({ page }) => {
-  test.fail(true, 'B6, fixed in Phase 1')
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto('/')
   await expect.poll(async () => (await loopingAnimations(page)).some(a => a.state === 'running')).toBe(true) // still alive at the top
@@ -102,7 +96,6 @@ test('B6: nothing loops when the visitor prefers reduced motion', async ({ page 
 })
 
 test('one scroll listener and one keydown listener on window', async ({ page }) => {
-  test.fail(true, 'listener consolidation, Phase 1')
   await page.goto('/')
   const cdp = await page.context().newCDPSession(page)
   const { result } = await cdp.send('Runtime.evaluate', { expression: 'window' })

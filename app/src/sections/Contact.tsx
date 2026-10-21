@@ -31,7 +31,7 @@ export function Contact() {
         <h2 id="contact-title" className="mt-6 max-w-4xl font-display text-[clamp(2.4rem,7vw,5.5rem)] font-semibold leading-[.95] tracking-[-.035em]">
           Let’s talk<span className="text-accent">.</span>
         </h2>
-        <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-soft sm:text-base">Email is the quickest way to reach me.</p>
+        <p className="mt-6 max-w-xl text-[0.9375rem] leading-relaxed text-soft sm:text-base">Email is the quickest way to reach me.</p>
 
         <div className="mt-8 flex flex-wrap items-center gap-3">
           <a href={`mailto:${site.email}`} className="group inline-flex items-center gap-3 font-display text-[clamp(1.25rem,4vw,2.25rem)] font-medium tracking-tight transition-colors hover:text-accent">

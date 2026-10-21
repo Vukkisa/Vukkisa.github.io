@@ -86,7 +86,7 @@ export function RagFlow() {
                 active ? 'border-accent bg-accent-soft' : 'border-line bg-bg hover:border-line-strong',
               )}
             >
-              <span className={cn('block font-mono text-[11px]', active ? 'text-fg' : 'text-mute')}>
+              <span className={cn('block font-mono text-[0.6875rem]', active ? 'text-fg' : 'text-mute')}>
                 {String(i + 1).padStart(2, '0')}{s.mine && <span className="sr-only">, part I built</span>}
               </span>
               <span className="mt-0.5 block text-sm font-medium text-fg">{s.name}</span>
@@ -105,7 +105,7 @@ export function RagFlow() {
         className="rag-panel chip mt-3 bg-chip px-4 py-3"
       >
         <p className="text-sm leading-relaxed text-soft">{stage.detail}</p>
-        <p className="mt-2 font-mono text-[11px] text-mute">
+        <p className="mt-2 font-mono text-[0.6875rem] text-mute">
           <span className={cn('mr-1.5 inline-block size-2 rounded-full align-middle', stage.mine ? 'bg-accent' : 'border border-line-strong')} aria-hidden="true" />
           {stage.owner}
         </p>

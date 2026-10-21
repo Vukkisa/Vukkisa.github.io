@@ -7,7 +7,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { runInNewContext } from 'node:vm'
 import { describe, expect, it } from 'vitest'
-import { DEFAULTS, OPTIONS, parsePrefs } from '../../app/src/lib/prefs'
+import { DEFAULTS, OPTIONS, parsePrefs, THEME_COLOR } from '../../app/src/lib/prefs'
 
 const MARKER = "localStorage.getItem('prefs')"
 
@@ -53,7 +53,9 @@ describe('pre-paint script in app/index.html', () => {
 
   it.each(CASES)('matches parsePrefs: $name', c => {
     const expected = c.throws ? DEFAULTS : parsePrefs(c.prefs ?? null, c.theme ?? null)
-    expect(runScript(src, c).dataset).toEqual({ ...expected })
+    const got = runScript(src, c)
+    expect(got.dataset).toEqual({ ...expected })
+    expect(got.themeColor).toBe(THEME_COLOR[expected.theme])
   })
 
   it('knows every option and default from prefs.ts', () => {

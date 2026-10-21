@@ -32,7 +32,7 @@ const LINKS = [
 export function Hero() {
   const [lead, ...clauses] = intro.tagline
   return (
-    <section id="top" aria-label="Introduction" className="relative">
+    <section id="top" aria-label="Introduction" data-loop className="relative">
       {/* Full-bleed glow: wider than the content column so it never shows an edge. */}
       <div aria-hidden="true" className="hero-glow pointer-events-none absolute -top-24 left-1/2 h-[38rem] w-screen -translate-x-1/2" />
       <div className="relative pb-6 pt-10 sm:pt-16 lg:pt-20">
@@ -67,7 +67,7 @@ export function Hero() {
         </p>
 
         <div className="rise mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end" style={{ '--d': '380ms' } as CSSProperties}>
-          <p className="max-w-xl text-[15px] leading-relaxed text-soft sm:text-base">{intro.lines[0]}</p>
+          <p className="max-w-xl text-[0.9375rem] leading-relaxed text-soft sm:text-base">{intro.lines[0]}</p>
           <div className="flex flex-col gap-4 lg:items-end">
             <div className="flex flex-wrap gap-3">
               <a href="#work" className="chip inline-flex items-center gap-2 bg-fg px-4 py-2.5 text-sm font-medium text-bg transition-opacity hover:opacity-85">
@@ -93,7 +93,7 @@ export function Hero() {
           </div>
         </div>
 
-        <a href="#work" aria-hidden="true" tabIndex={-1} className="mt-12 hidden items-center gap-3 font-mono text-[11px] text-mute sm:inline-flex">
+        <a href="#work" aria-hidden="true" tabIndex={-1} className="mt-12 hidden items-center gap-3 font-mono text-[0.6875rem] text-mute sm:inline-flex">
           <span className="relative block h-10 w-px overflow-hidden bg-line"><span className="cue-line absolute inset-0 bg-accent" /></span>
           scroll
         </a>

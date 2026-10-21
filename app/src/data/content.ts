@@ -19,7 +19,6 @@ export const site = {
 }
 
 export const intro = {
-  role: 'Postgraduate AI & Data Science · Associate Data Scientist Intern',
   /** The one-line hero statement. Each clause is one of the projects below (KYR, AI Surveillance, speech). */
   tagline: ['I build AI that', 'reads the rules,', 'watches the zone', 'and listens through the noise.'],
   now: 'Associate Data Scientist intern at AiSpry',
@@ -140,32 +139,6 @@ export const moreWork = [
   },
 ]
 
-export const experience = [
-  {
-    org: 'AiSpry',
-    role: 'Associate Data Scientist (internship)',
-    when: 'Oct 2026 – Dec 2026',
-    points: ['Speech recognition for noisy railway audio: building a local speech-recognition setup and working to lower the word error rate (WER).'],
-  },
-  {
-    org: 'Tata Consultancy Services',
-    role: 'Data Developer',
-    when: 'Sep 2023 – Apr 2026',
-    points: [
-      'Configured billing rules and rate plans for a Kenan billing migration of 2M+ customer records.',
-      'Built pre-migration scripts for bulk call-record (CDR) loads, improving processing speed by 25%.',
-      'Automated a billing charge-inventory report, cutting manual validation time by 40%.',
-      'Star of the Month, TCS project excellence award (2024).',
-    ],
-  },
-  {
-    org: 'TalentSprint',
-    role: 'Full Stack Developer program',
-    when: 'Mar 2023 – Sep 2023',
-    points: ['200+ hour program in Python, Django and web development, where Ez-Learn started.'],
-  },
-] as const
-
 export const education = [
   { org: 'Jio Institute', role: 'PG Program in AI & Data Science', when: 'Apr 2026 – Apr 2027' },
   { org: 'B.V. Raju Institute of Technology', role: 'B.Tech, Computer Science & Engineering · CGPA 8.17', when: '2022' },
@@ -181,9 +154,10 @@ export const skillGroups = [
 ] as const
 
 /**
- * The journey, year by year. `station` lights up that part of the landscape illustration
- * (0 start · 1 data · 2 processing · 3 learning · 4 retrieval · 5 applications). Dates and facts
- * match `experience`, `education` and `projects` above; the last entry is a direction, not a claim.
+ * The journey, year by year, and the only record of work experience on the site (roles, dates and
+ * the TCS results all live here). `station` lights up that part of the landscape illustration
+ * (0 start · 1 data · 2 processing · 3 learning · 4 retrieval · 5 applications). Dates match
+ * `education` and `projects`; the last entry is a direction, not a claim.
  */
 export const chapters = [
   {

@@ -5,10 +5,6 @@ import { setPrefs, type StoredPrefs } from './helpers'
 // Reduced motion so scroll reveals don't leave content mid-fade while axe checks contrast.
 test.use({ contextOptions: { reducedMotion: 'reduce' } })
 
-// Known bug B7, fixed in Phase 1: the logo link (shows "JV") and the command-menu button (shows "Ctrl K")
-// have accessible names that don't contain their visible text (WCAG 2.5.3). Only this rule is skipped.
-const KNOWN: string[] = ['label-content-name-mismatch']
-
 const WIDTHS = [320, 768, 1440]
 const COMBOS: { name: string; prefs: StoredPrefs }[] = [
   { name: 'dark', prefs: { theme: 'dark' } },
@@ -24,7 +20,7 @@ for (const combo of COMBOS) {
       await page.setViewportSize({ width, height: 900 })
       await page.goto('/')
       await page.waitForLoadState('networkidle')
-      const { violations } = await new AxeBuilder({ page }).disableRules(KNOWN).analyze()
+      const { violations } = await new AxeBuilder({ page }).analyze()
       const summary = violations.map(v => `${v.id} (${v.impact}): ${v.nodes.slice(0, 3).map(n => n.target.join(' ')).join(' | ')}`)
       expect(summary).toEqual([])
     })

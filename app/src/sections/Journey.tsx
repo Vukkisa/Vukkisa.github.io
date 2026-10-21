@@ -34,12 +34,12 @@ export function Journey() {
 
       <div className="mt-10 lg:grid lg:grid-cols-[minmax(0,1.25fr)_minmax(0,1fr)] lg:gap-14">
         {/* The illustration stays in view while the chapters scroll past (on phones it pins under the top bar). */}
-        <div className="sticky top-14 z-10 -mx-5 bg-bg/90 px-5 pb-3 pt-2 backdrop-blur-sm sm:-mx-6 sm:px-6 lg:top-24 lg:mx-0 lg:self-start lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
-          <figure>
+        <div className="sticky top-(--header-h) z-10 -mx-5 bg-bg/90 px-5 pb-3 pt-2 backdrop-blur-sm sm:-mx-6 sm:px-6 lg:top-24 lg:mx-0 lg:self-start lg:bg-transparent lg:p-0 lg:backdrop-blur-none">
+          <figure data-loop>
             <div className="dot-grid overflow-hidden rounded-(--r) border border-line bg-card/40 px-2 sm:px-4">
               <Landscape stage={stage} />
             </div>
-            <ol aria-label="Stations" className="mt-3 flex flex-wrap gap-1.5 font-mono text-[11px]">
+            <ol aria-label="Stations" className="mt-3 flex flex-wrap gap-1.5 font-mono text-[0.6875rem]">
               {STATIONS.map((s, i) => {
                 const reached = stage >= i + 1
                 return (
@@ -69,7 +69,7 @@ export function Journey() {
               </p>
               <h3 className="mt-2 font-display text-2xl font-semibold tracking-tight sm:text-[1.7rem]">{c.title}</h3>
               <p className="mt-1 text-sm text-mute">{c.org}</p>
-              <ul className="mt-3 space-y-1.5 text-[15px] leading-relaxed text-soft">
+              <ul className="mt-3 space-y-1.5 text-[0.9375rem] leading-relaxed text-soft">
                 {c.points.map(pt => <li key={pt}>{pt}</li>)}
               </ul>
             </li>
