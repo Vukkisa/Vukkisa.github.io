@@ -41,8 +41,10 @@
     --header-h: 5.875rem;   /* top bar height; TopBar.tsx keeps it exact (two rows on phones) */
     --r: 18px;
     --r-sm: 10px;
-    /* Letter-hover colours: the five accents of the current theme. */
-    --h1: #8e9cff; --h2: #ff9157; --h3: #6fdc9a; --h4: #ff86bd; --h5: #ebbd5f;
+    /* Motion: one easing and two durations for every hover, focus and state change. */
+    --ease: cubic-bezier(.2, .8, .2, 1);
+    --dur: .18s;
+    --dur-slow: .5s;
     /* Journey landscape (see Landscape.tsx). */
     --sc-top: #2a2b31; --sc-left: #1e1f24; --sc-right: #16171b; --sc-edge: rgb(244 244 242 / .28);
     --sc-ground: #17181c; --sc-ground-left: #111215; --sc-ground-right: #0d0e10; --sc-grid: #23242a;
@@ -69,7 +71,6 @@
     --color-live-soft: #e3f3e7;
     --acc: #2340ff;
     --acc-ink: #ffffff;
-    --h1: #2340ff; --h2: #c2410c; --h3: #15803d; --h4: #be185d; --h5: #a16207;
     --sc-top: #fbfbf9; --sc-left: #e4e4df; --sc-right: #cfcfc8; --sc-edge: rgb(42 42 48 / .35);
     --sc-ground: #ecece7; --sc-ground-left: #e0e0da; --sc-ground-right: #cfcfc8; --sc-grid: #dcdcd6;
     --sc-mute: #b3b3ab; --sc-shadow: rgb(20 20 40 / .07);
@@ -116,14 +117,37 @@
   .kbd { font-family: var(--font-mono); font-size: .6875rem; line-height: 1; padding: 3px 5px; border-radius: 5px; border: 1px solid var(--color-line-strong); color: var(--color-mute); }
   .eyebrow { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .02em; color: var(--color-mute); }
   .chip { border-radius: var(--r-sm); }
+
+  /* Type scale. Display sizes follow the viewport; everything below ~32px is rem-based so the Aa
+     control scales it (tests/e2e/regressions.spec.ts, B1). */
+  .t-kicker { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--color-mute); }
+  .t-display { font-family: var(--font-display); font-weight: 600; font-size: clamp(3rem, min(1.6rem + 6vw, 12.5svh), 6.5rem); line-height: .9; letter-spacing: -.045em; }
+  .t-headline { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.5rem, 1.15rem + 1.2vw, 2.125rem); line-height: 1.16; letter-spacing: -.02em; text-wrap: balance; }
+  .t-section { font-family: var(--font-display); font-weight: 600; font-size: clamp(2.25rem, 1.6rem + 2.4vw, 3.25rem); line-height: 1; letter-spacing: -.03em; }
+  .t-lead { font-size: 1.0625rem; line-height: 1.65; color: var(--color-soft); }
+
+  /* Surfaces: one quiet card style, set apart by a hairline, not a shadow. */
+  .surface { background: var(--color-card); border: 1px solid var(--color-line); border-radius: var(--r); }
+
+  /* Buttons: same height, radius, hover and focus everywhere. */
+  .btn { display: inline-flex; align-items: center; gap: .5rem; height: 2.75rem; padding-inline: 1rem; border: 1px solid transparent; border-radius: var(--r-sm); font-size: .9375rem; font-weight: 500; transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease); }
+  .btn-primary { background: var(--color-fg); color: var(--color-bg); }
+  .btn-primary:hover { background: var(--color-accent); color: var(--color-accent-ink); }
+  .btn-secondary { border-color: var(--color-line-strong); color: var(--color-fg); }
+  .btn-secondary:hover { border-color: var(--color-accent); color: var(--color-accent); }
+  .btn-arrow { display: inline-block; transition: transform var(--dur) var(--ease); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn:hover .btn-arrow, .btn:focus-visible .btn-arrow { transform: translateX(3px); }
+  .btn:active { transform: translateY(1px); }
 }
 
 /* ---- Hero ------------------------------------------------------------------------------------ */
 
-/* Each letter of the name takes a colour on hover and lets it go slowly. */
-.ltr { display: inline-block; transition: color 1.4s ease, transform .5s cubic-bezier(.25, 1, .5, 1); }
+/* Each letter of the name takes the accent on hover and lets it go slowly. */
+.ltr { display: inline-block; transition: color 1.2s ease, transform var(--dur-slow) var(--ease); }
 @media (hover: hover) and (pointer: fine) {
-  .ltr:hover { color: var(--h); transition-duration: 0s, .15s; transform: translateY(-.05em); }
+  .ltr:hover { color: var(--color-accent); transition-duration: 0s, .15s; transform: translateY(-.04em); }
 }
 @media (prefers-reduced-motion: no-preference) {
   .ltr-in { animation: ltr-in .7s cubic-bezier(.2, .9, .3, 1) both; animation-delay: calc(var(--i) * 28ms + 80ms); }
@@ -141,16 +165,18 @@
 .avatar .smile { opacity: 0; transform: scale(.6) rotate(-20deg); transition: opacity .3s, transform .4s cubic-bezier(.3, 1.6, .5, 1); }
 .avatar:hover .smile, .avatar:focus-visible .smile { opacity: 1; transform: none; }
 
-.hero-glow { background: radial-gradient(60% 60% at 75% 10%, color-mix(in oklab, var(--color-accent) 14%, transparent), transparent 70%); }
 .dot-grid { background-image: radial-gradient(color-mix(in oklab, var(--color-fg) 9%, transparent) 1px, transparent 1px); background-size: 22px 22px; }
 
-.pulse { position: relative; }
+
+/* Hero figure: one slow playhead sweep, and the four pipeline stages taking turns. At rest (reduced
+   motion, or if animation never starts) the playhead waits mid-clip and every stage reads normally. */
+.signal-head { transform: translateX(240px); }
 @media (prefers-reduced-motion: no-preference) {
-  .pulse::after { content: ""; position: absolute; inset: 0; border-radius: 999px; background: inherit; animation: pulse 2s ease-out infinite; }
-  .cue-line { animation: cue 2.2s cubic-bezier(.6, 0, .4, 1) infinite; transform-origin: top; }
+  .signal-head { animation: sweep 9s cubic-bezier(.45, 0, .55, 1) infinite; }
+  .signal-stage { animation: stage 9s ease-in-out infinite; animation-delay: calc(var(--k) * 2.25s); }
 }
-@keyframes pulse { to { transform: scale(2.6); opacity: 0; } }
-@keyframes cue { 0% { transform: scaleY(0); } 45% { transform: scaleY(1); transform-origin: top; } 55% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+@keyframes sweep { from { transform: translateX(0); } to { transform: translateX(480px); } }
+@keyframes stage { 0%, 22% { background-color: var(--color-accent-soft); } 25%, 100% { background-color: var(--color-card); } }
 
 /* ---- Reveal on scroll --------------------------------------------------------------------------
    Progressive: nothing is hidden until JS has marked what's already on screen and added

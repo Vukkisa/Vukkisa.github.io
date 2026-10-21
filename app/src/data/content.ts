@@ -19,11 +19,28 @@ export const site = {
 }
 
 export const intro = {
+  /** What the work is, in two words each. Shown above the name. */
+  focus: ['AI engineering', 'Applied ML'],
   /** The one-line hero statement. Each clause is one of the projects below (KYR, AI Surveillance, speech). */
   tagline: ['I build AI that', 'reads the rules,', 'watches the zone', 'and listens through the noise.'],
   now: 'Associate Data Scientist intern at AiSpry',
-  lines: [
-    'I spent two and a half years as a Data Developer at TCS, working on enterprise telecom billing systems. I’m now a postgraduate student in AI & Data Science at Jio Institute and an Associate Data Scientist intern at AiSpry, where I work on speech recognition for noisy railway audio. My coursework and team projects include a RAG assistant and a computer-vision pipeline.',
+  summary:
+    'Postgraduate student in AI & Data Science at Jio Institute and Associate Data Scientist intern at AiSpry, after two and a half years as a Data Developer at TCS working on telecom billing systems. I build retrieval, computer-vision and speech-recognition systems.',
+}
+
+/**
+ * The hero's illustration: the speech-recognition pipeline from the AiSpry internship, stage by
+ * stage. Every name here is from the project card below (approved by the owner); nothing shows
+ * real audio or results.
+ */
+export const signalFigure = {
+  title: 'Noisy railway audio → text',
+  caption: 'Illustration of my internship pipeline. Not real audio, and no results.',
+  stages: [
+    { name: 'Denoise', detail: 'Spectral · RNNoise · DeepFilterNet' },
+    { name: 'Segment', detail: 'Silence and voice (Silero VAD)' },
+    { name: 'Transcribe', detail: 'Whisper · Indic-Conformer · Qwen3-ASR' },
+    { name: 'Score', detail: 'Word and character error rate' },
   ],
 }
 

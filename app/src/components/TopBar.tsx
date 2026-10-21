@@ -51,7 +51,7 @@ export function TopBar() {
   const next = prefs.theme === 'dark' ? 'light' : 'dark'
   return (
     <>
-      <header ref={header} className={cn('sticky top-0 z-40 border-b transition-colors duration-300', scrolled ? 'border-line bg-bg/80 backdrop-blur-md' : 'border-transparent')}>
+      <header ref={header} className={cn('sticky top-0 z-40 border-b transition-colors duration-300', scrolled ? 'border-line bg-bg/90 backdrop-blur-md' : 'border-transparent')}>
         {/* One row from md up. On phones the section links wrap onto a second row, so they stay visible. */}
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-4 px-5 sm:px-6 lg:px-10">
           <a href="#top" className="group flex h-14 items-center gap-2.5 font-display text-[0.9375rem] font-semibold tracking-tight">
