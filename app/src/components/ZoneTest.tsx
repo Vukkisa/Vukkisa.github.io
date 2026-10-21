@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
+import { clampPoint, inside, type Pt } from '../lib/geometry'
 import { cn } from '../lib/utils'
 
 /**
@@ -6,24 +7,13 @@ import { cn } from '../lib/utils'
  * bottom-centre of their box) is tested against a polygon you draw. Only the geometry is real here.
  * There's no camera, no detector and nothing is recorded; the log is simulated.
  */
-type Pt = [number, number]
 const W = 400
 const H = 250
 const START_ZONE: Pt[] = [[205, 95], [335, 110], [325, 215], [185, 200]]
 const START_PERSON: Pt = [95, 190]
 
-/** Ray casting: count how many polygon edges a horizontal ray from the point crosses. */
-function inside([x, y]: Pt, poly: Pt[]) {
-  let hit = false
-  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
-    const [xi, yi] = poly[i]
-    const [xj, yj] = poly[j]
-    if (yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) hit = !hit
-  }
-  return hit
-}
-
-const clamp = ([x, y]: Pt): Pt => [Math.round(Math.min(W - 10, Math.max(10, x))), Math.round(Math.min(H - 8, Math.max(60, y)))]
+const BOX = { minX: 10, maxX: W - 10, minY: 60, maxY: H - 8 }
+const clamp = (p: Pt) => clampPoint(p, BOX)
 
 export function ZoneTest() {
   const [zone, setZone] = useState<Pt[]>(START_ZONE)

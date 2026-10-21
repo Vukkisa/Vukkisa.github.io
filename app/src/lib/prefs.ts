@@ -21,16 +21,31 @@ export type TokenKey = 'accent' | 'type' | 'density' | 'radius'
 export const DEFAULTS: Prefs = { theme: 'dark', text: 'md', accent: 'cobalt', type: 'grotesk', density: 'cozy', radius: 'soft' }
 const KEY = 'prefs'
 
-function read(): Prefs {
+/**
+ * Turn the stored JSON (and the older site's lone 'theme' key) into valid preferences. Anything
+ * missing, unknown or corrupt falls back to the default. Pure, so it's unit-tested, and the
+ * pre-paint script in app/index.html is tested to give the same answer (tests/unit/prepaint.test.ts).
+ */
+export function parsePrefs(raw: string | null, legacyTheme: string | null): Prefs {
   const p = { ...DEFAULTS }
+  let saved: Record<string, unknown> = {}
   try {
-    const saved = JSON.parse(localStorage.getItem(KEY) ?? '{}') as Record<string, unknown>
-    saved.theme ??= localStorage.getItem('theme')   // the previous version of the site stored only this
-    for (const k of Object.keys(OPTIONS) as (keyof Prefs)[]) {
-      if ((OPTIONS[k] as readonly unknown[]).includes(saved[k])) (p as Record<string, unknown>)[k] = saved[k]
-    }
-  } catch { /* storage blocked or corrupt: use the defaults */ }
+    saved = JSON.parse(raw || '{}') || {}
+    if (!saved.theme) saved.theme = legacyTheme   // the previous version of the site stored only this
+  } catch { /* corrupt JSON, or not an object: use the defaults */ }
+  for (const k of Object.keys(OPTIONS) as (keyof Prefs)[]) {
+    const v = (saved as Record<string, unknown> | null)?.[k]
+    if ((OPTIONS[k] as readonly unknown[]).includes(v)) (p as Record<string, unknown>)[k] = v
+  }
   return p
+}
+
+function read(): Prefs {
+  try {
+    return parsePrefs(localStorage.getItem(KEY), localStorage.getItem('theme'))
+  } catch {
+    return { ...DEFAULTS }   // storage blocked: use the defaults
+  }
 }
 
 let prefs = read()

@@ -36,6 +36,27 @@ npm run build      # typecheck, then write index.html + static/ to the repo root
 
 Commit the build output along with the source; that's what GitHub Pages serves.
 
+## Tests
+
+```bash
+npm run test:unit  # Vitest: zone geometry, preference parsing, pre-paint drift guard, content guards
+npm run build      # the browser tests run against the built site
+npm run test:e2e   # Playwright + axe: smoke, accessibility, keyboard, preferences, Lab, regressions
+npm test           # all of the above, in order
+```
+
+- **Browser:** `@playwright/test` is pinned (1.56.1, Chromium r1194). Install the browser once with
+  `npx playwright install chromium` (add `--with-deps` on a fresh Linux machine). If a matching
+  Chromium is already installed elsewhere, point `PLAYWRIGHT_BROWSERS_PATH` at it instead.
+- **Server:** the browser tests start `vite preview` on port 4173 and serve the built files from
+  the repo root, so run `npm run build` first.
+- **Pre-paint guard:** `app/index.html` has an inline script that repeats the preference logic
+  from `app/src/lib/prefs.ts`, so the saved theme applies before the app loads.
+  `tests/unit/prepaint.test.ts` runs that script against many stored values and fails if it ever
+  disagrees with `parsePrefs()`. If you change `OPTIONS` or `DEFAULTS`, update the script too.
+- **CI:** `.github/workflows/ci.yml` runs unit tests, a fresh build (which must match the
+  committed `index.html` and `static/`), then the browser tests, on every pull request.
+
 **Deploying:** GitHub Pages publishes the root of `main` (Settings → Pages → Deploy from a branch,
 `main` / root). Merging to `main` deploys; there's no separate CI step.
 
