@@ -158,10 +158,19 @@ links              repo / demo only if public and working; otherwise privateNote
 Internship work stays described without code, data or numbers until it's approved for sharing.
 Project illustrations are labelled as illustrations and show no real results.
 
-## Known content gap
+## Résumé
 
-- **Résumé:** `assests/Jayanth_Vukkisa_Resume.pdf` is out of date. It needs a new source file
-  from Jayanth; replace the PDF at the same path so every existing link keeps working.
+`assests/Jayanth_Vukkisa_Resume.pdf` is the file the site links to (served as-is by GitHub Pages;
+the build doesn't touch it). It's generated from the editable source `resume/resume.html`:
+
+```bash
+# edit resume/resume.html, then
+npm run resume     # writes assests/Jayanth_Vukkisa_Resume.pdf (real, selectable text; Chromium)
+```
+
+Keep it to facts that are in `app/src/data/content.ts` or that Jayanth has confirmed;
+`tests/unit/resume.test.ts` checks the roles, dates, results and links against the site. Commit the
+source and the regenerated PDF together.
 
 ## Accessibility
 
