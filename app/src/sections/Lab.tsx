@@ -1,14 +1,14 @@
 import type { ReactNode } from 'react'
 import { RagFlow } from '../components/RagFlow'
 import { SectionHead } from '../components/SectionHead'
-import { TokenPlayground } from '../components/TokenPlayground'
+import { Tokenizer } from '../components/Tokenizer'
 import { ZoneTest } from '../components/ZoneTest'
 import { cn } from '../lib/utils'
 
 export const LAB = [
   { id: 'lab-rag', n: '01', title: 'RAG, step by step', tag: 'from KnowYourRules', body: <RagFlow />, wide: true },
-  { id: 'lab-zone', n: '02', title: 'Zone check', tag: 'from AI Surveillance', body: <ZoneTest /> },
-  { id: 'lab-tokens', n: '03', title: 'Design tokens', tag: 'this site', body: <TokenPlayground /> },
+  { id: 'lab-zone', n: '02', title: 'Zone check', tag: 'from AI Surveillance', body: <ZoneTest />, wide: true },
+  { id: 'lab-tokens', n: '03', title: 'Token playground', tag: 'how models read text', body: <Tokenizer />, wide: true },
 ] as const
 
 function Experiment({ id, n, title, tag, wide, children }: { id: string; n: string; title: string; tag: string; wide?: boolean; children: ReactNode }) {
@@ -29,7 +29,7 @@ function Experiment({ id, n, title, tag, wide, children }: { id: string; n: stri
 export function Lab() {
   return (
     <section id="lab" aria-labelledby="lab-title" className="sec">
-      <SectionHead id="lab-title" n="03" glyph="⌘" title="Lab" count={{ n: LAB.length, noun: 'experiments' }} note="Small, honest experiments. Each one runs entirely in your browser." />
+      <SectionHead id="lab-title" n="03" glyph="⌘" title="Lab" count={{ n: LAB.length, noun: 'experiments' }} note="Three working experiments, each labelled with what is real and what is simulated. Everything runs in your browser." />
       <div className="mt-10 grid gap-4 lg:grid-cols-2">
         {LAB.map(x => (
           <Experiment key={x.id} id={x.id} n={x.n} title={x.title} tag={x.tag} wide={'wide' in x && x.wide}>{x.body}</Experiment>

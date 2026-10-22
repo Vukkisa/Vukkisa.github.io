@@ -17,7 +17,7 @@ test.describe('smoke', () => {
     await page.goto('/')
     const ids = await page.locator('main > section').evaluateAll(els => els.map(e => e.id))
     expect(ids).toEqual(['top', 'work', 'journey', 'lab', 'about', 'contact'])
-    for (const id of ['knowyourrules', 'ai-surveillance', 'speech-recognition', 'ez-learn', 'lab-rag', 'lab-zone', 'lab-tokens']) {
+    for (const id of ['knowyourrules', 'ai-surveillance', 'speech-recognition', 'ez-learn', 'lab-rag', 'lab-zone', 'lab-tokens', 'design-tokens']) {
       await expect(page.locator(`#${id}`)).toHaveCount(1)
     }
   })

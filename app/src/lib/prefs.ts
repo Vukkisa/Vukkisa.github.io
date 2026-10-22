@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from 'react'
 
 /**
- * Visitor preferences: theme, text size and the live design tokens from the Lab. Each one is a
+ * Visitor preferences: theme, text size and the live design tokens (footer and ⌘K). Each one is a
  * data-* attribute on <html> that index.css reads, so a change restyles the whole page at once.
  * Saved to localStorage; the inline script in index.html applies them before first paint.
  */

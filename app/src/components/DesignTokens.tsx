@@ -2,8 +2,9 @@ import { DEFAULTS, OPTIONS, resetTokens, setPref, usePrefs, type Prefs, type Tok
 import { cn } from '../lib/utils'
 
 /**
- * The site's own design tokens as live controls. Each choice sets a data-* attribute on <html>,
- * the CSS variables in index.css follow, and the whole page restyles. Choices are remembered.
+ * The site's own design tokens as live controls, in the footer (and as ⌘K commands). Each choice
+ * sets a data-* attribute on <html>, the CSS variables in index.css follow, and the whole page
+ * restyles. Choices are remembered. Bricolage stays the default heading face.
  */
 const GROUPS: { key: TokenKey; label: string; names: Record<string, string> }[] = [
   { key: 'accent', label: 'Colour', names: { cobalt: 'Cobalt', ember: 'Ember', moss: 'Moss', rose: 'Rose', mono: 'Mono' } },
@@ -14,12 +15,12 @@ const GROUPS: { key: TokenKey; label: string; names: Record<string, string> }[] 
 
 const SWATCH: Record<string, string> = { cobalt: 'bg-[#4d63ff]', ember: 'bg-[#f0763a]', moss: 'bg-[#3fb873]', rose: 'bg-[#e8559a]', mono: 'bg-fg' }
 
-export function TokenPlayground() {
+export function DesignTokens() {
   const prefs = usePrefs()
   const changed = GROUPS.some(g => prefs[g.key] !== DEFAULTS[g.key])
   return (
     <div>
-      <p className="text-sm leading-relaxed text-soft">These are the tokens this site is built from. Change one and the whole page follows: headings, cards, the journey illustration, everything.</p>
+      <p className="text-sm leading-relaxed text-soft">The tokens this site is built from. Change one and the whole page follows.</p>
 
       <div className="mt-5 space-y-4">
         {GROUPS.map(g => (
@@ -41,22 +42,6 @@ export function TokenPlayground() {
             </div>
           </fieldset>
         ))}
-      </div>
-
-      {/* A small specimen, so the change is visible right here as well as across the page. */}
-      <div aria-hidden="true" className="pad mt-6 rounded-(--r) border border-line bg-bg">
-        <div className="flex items-end justify-between gap-4">
-          <p className="font-display text-6xl font-semibold leading-none tracking-tight">Aa<span className="text-accent">.</span></p>
-          <div className="flex gap-1.5">
-            {['bg-accent', 'bg-accent/60', 'bg-accent/30', 'bg-accent-soft'].map(c => <span key={c} className={cn('size-6 rounded-(--r-sm) border border-line', c)} />)}
-          </div>
-        </div>
-        <p className="mt-4 font-display text-lg font-medium leading-snug">I build AI that reads the rules.</p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          <span className="chip bg-accent px-3 py-1.5 text-xs font-medium text-accent-ink">Primary</span>
-          <span className="chip border border-line-strong px-3 py-1.5 text-xs">Secondary</span>
-          <span className="chip border border-line px-2 py-1 font-mono text-[0.6875rem] text-soft">tag</span>
-        </div>
       </div>
 
       <div className="mt-5 flex items-center justify-between gap-3 border-t border-line pt-4">

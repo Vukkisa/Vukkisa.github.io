@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { clampPoint, inside, type Pt } from '../../app/src/lib/geometry'
+import { clampPoint, inside, rayCrossings, type Pt } from '../../app/src/lib/geometry'
 
 const square: Pt[] = [[0, 0], [10, 0], [10, 10], [0, 10]]
 // An L shape: the notch at the top right is outside.
@@ -49,5 +49,20 @@ describe('clampPoint', () => {
   })
   it('rounds to whole units and leaves inner points alone', () => {
     expect(clampPoint([100.4, 150.6], box)).toEqual([100, 151])
+  })
+})
+
+describe('rayCrossings', () => {
+  it('agrees with inside(): an odd number of crossings means inside', () => {
+    const poly: Pt[] = [[205, 95], [335, 110], [325, 215], [185, 200]]
+    for (let x = 0; x <= 400; x += 7) {
+      for (let y = 60; y <= 245; y += 7) {
+        expect(rayCrossings([x, y], poly).length % 2 === 1).toBe(inside([x, y], poly))
+      }
+    }
+  })
+  it('returns the crossing x positions in order, to the right of the point', () => {
+    expect(rayCrossings([-5, 5], [[0, 0], [10, 0], [10, 10], [0, 10]])).toEqual([0, 10])
+    expect(rayCrossings([5, 5], [[0, 0], [10, 0], [10, 10], [0, 10]])).toEqual([10])
   })
 })
