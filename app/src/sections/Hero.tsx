@@ -34,10 +34,13 @@ const LINKS = [
 export function Hero() {
   const [lead, ...clauses] = intro.tagline
   return (
-    <section id="top" aria-labelledby="hero-title" data-loop className="relative pb-12 pt-8 sm:pt-12 lg:pb-16 lg:pt-10">
+    <section id="top" aria-labelledby="hero-title" data-loop className="relative pb-12 pt-5 sm:pt-12 lg:pb-16 lg:pt-10">
       <div className="grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:items-center lg:gap-16">
-        <div>
-          <div className="rise flex items-center gap-4">
+        {/* On phones the calls to action come straight after the headline (order-3) and the summary
+            follows (order-4), so the buttons are reachable on short screens; from sm up the summary
+            comes first. The summary isn't focusable, so keyboard order matches either way. */}
+        <div className="flex flex-col">
+          <div className="rise order-1 flex items-center gap-4">
             <a href="#about" className="avatar group relative block shrink-0" aria-label="About me">
               <img
                 src={`${import.meta.env.BASE_URL}images/jayanth-320.webp`}
@@ -51,7 +54,9 @@ export function Hero() {
               <span aria-hidden="true" className="smile absolute -right-2 -top-2 grid size-6 place-items-center rounded-full bg-accent text-sm text-accent-ink">☺︎</span>
             </a>
             <div className="min-w-0">
-              <p className="t-kicker text-fg">{intro.focus.join(' · ')}</p>
+              <p className="t-kicker text-fg">
+                {intro.focus.map((f, i) => <span key={f} className="whitespace-nowrap">{i > 0 && ' · '}{f}</span>)}
+              </p>
               <p className="mt-1 text-sm text-mute">
                 <span className="mr-1.5 inline-block size-1.5 rounded-full bg-live align-middle" aria-hidden="true" />
                 {intro.now} · {site.location}
@@ -59,7 +64,7 @@ export function Hero() {
             </div>
           </div>
 
-          <h1 id="hero-title" className="mt-7 lg:mt-8">
+          <h1 id="hero-title" className="order-2 mt-6 sm:mt-7 lg:mt-8">
             <span className="sr-only">{site.name}: </span>
             <Name />
             <span className="rise t-headline mt-5 block max-w-[36rem]" style={{ '--d': '220ms' } as CSSProperties}>
@@ -68,9 +73,9 @@ export function Hero() {
             </span>
           </h1>
 
-          <p className="rise t-lead mt-5 max-w-[36rem]" style={{ '--d': '320ms' } as CSSProperties}>{intro.summary}</p>
+          <p className="rise t-lead order-4 mt-6 max-w-[36rem] sm:order-3 sm:mt-5" style={{ '--d': '320ms' } as CSSProperties}>{intro.summary}</p>
 
-          <div className="rise mt-7 flex flex-wrap items-center gap-2.5" style={{ '--d': '400ms' } as CSSProperties}>
+          <div className="rise order-3 mt-6 flex flex-wrap items-center gap-2.5 sm:order-4 sm:mt-7" style={{ '--d': '400ms' } as CSSProperties}>
             <a href="#work" className="btn btn-primary">
               View projects <span aria-hidden="true" className="btn-arrow">→</span>
             </a>
@@ -80,7 +85,7 @@ export function Hero() {
             <a href="#journey" className="link text-sm text-soft sm:ml-1">or start the journey</a>
           </div>
 
-          <ul className="rise mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm" style={{ '--d': '460ms' } as CSSProperties} aria-label="Elsewhere">
+          <ul className="rise order-5 mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm" style={{ '--d': '460ms' } as CSSProperties} aria-label="Elsewhere">
             {LINKS.map(l => {
               const external = l.href.startsWith('http')
               return (

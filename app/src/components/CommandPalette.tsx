@@ -5,14 +5,19 @@ import { cn } from '../lib/utils'
 
 type Cmd = { id: string; group: string; label: string; hint?: string; keywords?: string; run: () => void }
 
-/** Scroll to a section or project and move keyboard focus there, so the next Tab continues from it. */
+/**
+ * Scroll to a section, project or case study and move keyboard focus there, so the next Tab
+ * continues from it. A case study (<details>) is opened first and its summary takes focus.
+ */
 export function goTo(id: string) {
   const el = document.getElementById(id)
   if (!el) return
   history.replaceState(null, '', id === 'top' ? location.pathname : `#${id}`)
+  if (el instanceof HTMLDetailsElement) el.open = true
   el.scrollIntoView({ block: 'start' })
-  if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1')
-  el.focus({ preventScroll: true })
+  const target = el instanceof HTMLDetailsElement ? el.querySelector('summary')! : el
+  if (!target.hasAttribute('tabindex') && target === el) el.setAttribute('tabindex', '-1')
+  target.focus({ preventScroll: true })
 }
 
 const open = (href: string) => window.open(href, '_blank', 'noopener,noreferrer')
@@ -31,6 +36,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
     ...([['top', 'Home'], ['work', 'Selected work'], ['journey', 'Journey'], ['lab', 'Lab'], ['about', 'About'], ['contact', 'Contact']] as const)
       .map(([to, label]) => ({ id: `go-${to}`, group: 'Go to', label, keywords: to, run: () => goTo(to) })),
     ...projects.map(p => ({ id: `p-${p.id}`, group: 'Projects', label: p.title, hint: p.subtitle, keywords: p.tools.join(' '), run: () => goTo(p.id) })),
+    ...projects.map(p => ({ id: `c-${p.id}`, group: 'Case studies', label: `${p.title} case study`, hint: 'how it works, my part, limits', keywords: 'architecture evaluation', run: () => goTo(`${p.id}-case`) })),
     { id: 'exp-zone', group: 'Lab', label: 'Try the zone check', keywords: 'yolo polygon surveillance', run: () => goTo('lab-zone') },
     { id: 'exp-rag', group: 'Lab', label: 'Step through the RAG pipeline', keywords: 'retrieval knowyourrules', run: () => goTo('lab-rag') },
     { id: 'exp-tokens', group: 'Lab', label: 'Play with design tokens', keywords: 'colour color accent radius spacing type', run: () => goTo('lab-tokens') },

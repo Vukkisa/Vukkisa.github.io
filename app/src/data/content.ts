@@ -46,6 +46,18 @@ export const signalFigure = {
 
 export type Link = { label: string; href: string; note?: string }
 
+export type CaseStudy = {
+  /** How it works, in order. */
+  steps: { name: string; detail: string }[]
+  /** What I personally did. */
+  mine: string[]
+  /** Parts other people built, when it was a team project. */
+  team?: string
+  /** What has been measured, or a plain statement that it hasn't. Never a goal. */
+  evaluation: string
+  limitations: string[]
+}
+
 /** One recruiter-friendly card. Keep problem + built + evidence to roughly 50–90 words. */
 export type Project = {
   id: string
@@ -62,6 +74,10 @@ export type Project = {
   privateNote?: string
   /** Illustration basename in /images/projects (with a -dark variant). Illustrative, not a screenshot. */
   cover: string
+  /** A drawn diagram of how the project works, shown instead of the cover. Illustrative, not live. */
+  visual?: 'rag' | 'cv' | 'speech'
+  /** The expandable case study under the card. Only facts that are backed up; say so when nothing is measured. */
+  caseStudy: CaseStudy
   /** A related experiment in the Lab section. */
   lab?: { label: string; href: string }
 }
@@ -84,7 +100,21 @@ export const projects: Project[] = [
     evidence: 'Indexed so far: the central Motor Vehicles Act and Rules, Gujarat and Delhi. Answer accuracy hasn’t been evaluated yet; a cited source shows where an answer came from, not that it’s correct.',
     tools: ['Python', 'LangChain', 'Ollama', 'Chroma', 'Groq'],
     cover: 'knowyourrules',
+    visual: 'rag',
     lab: { label: 'Step through the pipeline', href: '#lab-rag' },
+    caseStudy: {
+      steps: [
+        { name: 'Ingest', detail: 'Official documents (the central Motor Vehicles Act and Rules, Gujarat and Delhi) are split into chunks with LangChain, embedded locally with Ollama (nomic-embed-text) and stored in Chroma, each chunk tagged with its source and state.' },
+        { name: 'Ask', detail: 'You ask a traffic-rules question. If the app doesn’t know your state it asks, and it rewrites a follow-up into a standalone question.' },
+        { name: 'Retrieve', detail: 'The question is embedded the same way and matched against Chroma: 4 chunks from the central rules, plus 4 from your state’s rules when that state is indexed.' },
+        { name: 'Ground', detail: 'The chunks go into a strict prompt, each labelled with its source and state, that allows answers only from that text.' },
+        { name: 'Answer', detail: 'Groq (gpt-oss-120b) answers and names its source documents, or says the knowledge base doesn’t cover the question.' },
+      ],
+      mine: ['The RAG pipeline: chunking, local embeddings, the Chroma store, retrieval, and the grounded prompt and answer.'],
+      team: 'Teammates built the backend around it, including asking for your state and rewriting follow-up questions.',
+      evaluation: 'Not evaluated yet. A cited source shows where an answer came from, not that the answer is correct.',
+      limitations: ['Only the central rules, Gujarat and Delhi are indexed so far.', 'Answer accuracy hasn’t been measured.', 'It runs as a local prototype, not a public service.'],
+    },
     links: [
       { label: 'Team repository', href: 'https://github.com/DAG-21/KnowYourRules' },
       { label: 'How it was built', href: 'https://github.com/DAG-21/KnowYourRules#the-process' },
@@ -102,7 +132,20 @@ export const projects: Project[] = [
     evidence: 'Packaged as an installable command-line tool with a built-in FPS benchmark; benchmark results not yet recorded. Hidden feet or crowded scenes can cause missed or false alerts.',
     tools: ['Python', 'YOLOv8', 'OpenCV', 'NumPy'],
     cover: 'ai-surveillance',
+    visual: 'cv',
     lab: { label: 'Try the zone check', href: '#lab-zone' },
+    caseStudy: {
+      steps: [
+        { name: 'Input', detail: 'Any camera feed: a webcam, a USB camera, an RTSP stream or a video file.' },
+        { name: 'Zone', detail: 'You draw the restricted zone as a polygon on the frame.' },
+        { name: 'Detect', detail: 'YOLOv8 detects people in each frame.' },
+        { name: 'Test', detail: 'Each person’s feet point, the bottom-centre of their box, is tested against the zone.' },
+        { name: 'Record', detail: 'Every intrusion saves a video clip, a snapshot and a CSV log entry.' },
+      ],
+      mine: ['Built the tool as Jio Institute coursework and packaged it as an installable command-line tool with a built-in FPS benchmark.'],
+      evaluation: 'No accuracy or speed results recorded yet. The FPS benchmark is built in, but its results haven’t been recorded.',
+      limitations: ['Hidden feet or crowded scenes can cause missed or false alerts.', 'It watches for people only.'],
+    },
     links: [
       { label: 'Repository', href: 'https://github.com/Vukkisa/AI_Surveillance' },
       { label: 'Known limitations', href: 'https://github.com/Vukkisa/AI_Surveillance#known-limitations' },
@@ -120,6 +163,19 @@ export const projects: Project[] = [
     evidence: 'Every variant is scored on word and character error rate. Now fine-tuning a model to lower WER. Results not yet shareable.',
     tools: ['Python', 'PyTorch', 'Hugging Face Transformers', 'faster-whisper', 'Silero VAD', 'jiwer'],
     cover: 'railway-speech',
+    visual: 'speech',
+    caseStudy: {
+      steps: [
+        { name: 'Denoise', detail: 'Spectral denoising, RNNoise and DeepFilterNet, each tested.' },
+        { name: 'Segment', detail: 'Silence-based and voice-based segmentation, using Silero VAD.' },
+        { name: 'Transcribe', detail: 'Indic-Conformer, Qwen3-ASR and Whisper (via faster-whisper), benchmarked side by side.' },
+        { name: 'Combine', detail: 'A word-level ensemble merges the models’ outputs.' },
+        { name: 'Score', detail: 'Every variant is scored on word and character error rate (WER, CER) with jiwer.' },
+      ],
+      mine: ['Built the fully local pipeline during the internship, within tight compute and disk limits.', 'Now fine-tuning a model to lower WER.'],
+      evaluation: 'Every variant is scored on WER and CER, but the results are company data and can’t be shared yet.',
+      limitations: ['Company project: the code, audio and results aren’t public.', 'Work in progress: fine-tuning is under way.'],
+    },
     links: [],
     privateNote: 'Company project: code and data aren’t public.',
   },
@@ -135,6 +191,18 @@ export const projects: Project[] = [
     evidence: 'Deployed on Render with a public demo.',
     tools: ['Python', 'Django', 'PostgreSQL', 'Razorpay', 'Render'],
     cover: 'ez-learn',
+    caseStudy: {
+      steps: [
+        { name: 'Sign up', detail: 'Learners sign up with a one-time code sent by email.' },
+        { name: 'Learn', detail: 'They study course content and take scored quizzes.' },
+        { name: 'Pay', detail: 'Paid courses go through Razorpay, with payment verification.' },
+        { name: 'Certify', detail: 'Learners earn certificates.' },
+        { name: 'Teach', detail: 'Instructors manage their courses and quizzes. Everything runs on Django and PostgreSQL.' },
+      ],
+      mine: ['Built it during the TalentSprint Full Stack Developer program (2023), then updated it and deployed it on Render (2025).'],
+      evaluation: 'No formal evaluation. It’s a working deployment you can try.',
+      limitations: ['The demo server sleeps when idle, so it can take a minute to wake.', 'The repository isn’t linked here yet.'],
+    },
     links: [
       { label: 'Live demo', href: 'https://ez-learn.onrender.com/', note: 'may take a minute to wake' },
     ],

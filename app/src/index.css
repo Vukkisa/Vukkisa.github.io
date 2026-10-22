@@ -136,6 +136,11 @@
   .btn-secondary { border-color: var(--color-line-strong); color: var(--color-fg); }
   .btn-secondary:hover { border-color: var(--color-accent); color: var(--color-accent); }
   .btn-arrow { display: inline-block; transition: transform var(--dur) var(--ease); }
+  /* The narrowest phones (under 360px): slightly smaller buttons without arrows, so two fit on a row. */
+  @media (max-width: 22.4375rem) {
+    .btn { padding-inline: .8125rem; font-size: .875rem; }
+    .btn-arrow { display: none; }
+  }
 }
 @media (prefers-reduced-motion: no-preference) {
   .btn:hover .btn-arrow, .btn:focus-visible .btn-arrow { transform: translateX(3px); }
@@ -193,6 +198,37 @@
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .project:hover .cover img { transform: scale(1.035); }
   .link:hover .nudge, .link:focus-visible .nudge { transform: translate(2px, -2px); }
+}
+
+/* ---- Project diagrams (ProjectVisual.tsx) ------------------------------------------------------
+   At rest (reduced motion, or before animating) each diagram shows its final state: chunks
+   retrieved, the answer written, the person inside the zone and flagged. The vote highlight in the
+   speech diagram only exists while moving. Loops pause off screen ([data-loop]). */
+.pv-scan { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .pv-hit { animation: pv-hit 6s var(--ease) infinite; }
+  .pv-line { animation: pv-line 6s ease-out infinite; }
+  .pv-scan { animation: pv-scan 4.2s ease-in-out infinite; }
+  .pv-walk { animation: pv-walk 7s cubic-bezier(.4, 0, .3, 1) infinite; }
+  .pv-box { animation: pv-box 7s step-end infinite; }
+  .pv-feet { animation: pv-feet 7s step-end infinite; }
+  .pv-tag, .pv-alert { animation: pv-show 7s step-end infinite; }
+}
+@keyframes pv-hit { 0%, 8% { opacity: .25; } 18%, 100% { opacity: 1; } }
+@keyframes pv-line { 0%, 12% { opacity: .15; } 22%, 100% { opacity: 1; } }
+@keyframes pv-scan { 0% { opacity: 0; } 4%, 13% { opacity: 1; } 17%, 100% { opacity: 0; } }
+@keyframes pv-walk { 0% { transform: translateX(-120px); } 55%, 100% { transform: translateX(0); } }
+@keyframes pv-box { 0% { stroke: var(--color-mute); } 24% { stroke: var(--color-accent); } }
+@keyframes pv-feet { 0% { fill: var(--color-fg); } 24% { fill: var(--color-accent); } }
+@keyframes pv-show { 0% { opacity: 0; } 24% { opacity: 1; } }
+
+/* Case studies (CaseStudy.tsx): the disclosure marker turns, the body fades in. */
+.case > summary { list-style: none; }
+.case > summary::-webkit-details-marker { display: none; }
+.case-mark { transition: transform var(--dur) var(--ease); }
+.case[open] .case-mark { transform: rotate(45deg); }
+@media (prefers-reduced-motion: no-preference) {
+  .case[open] > .case-body { animation: rise .35s var(--ease) both; }
 }
 
 /* ---- Journey landscape ------------------------------------------------------------------------ */

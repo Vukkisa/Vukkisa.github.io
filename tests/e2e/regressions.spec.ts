@@ -11,7 +11,8 @@ async function textSizes(page: Page) {
   return page.evaluate(() => {
     const out: { key: string; size: number }[] = []
     document.querySelectorAll<HTMLElement>('body *').forEach((el, i) => {
-      if (el.closest('dialog, noscript, script, style')) return
+      // Diagram labels inside SVGs scale with the drawing, not with the text-size control.
+      if (el.closest('dialog, noscript, script, style, svg')) return
       const hasText = [...el.childNodes].some(n => n.nodeType === 3 && n.textContent!.trim())
       if (!hasText) return
       const size = parseFloat(getComputedStyle(el).fontSize)

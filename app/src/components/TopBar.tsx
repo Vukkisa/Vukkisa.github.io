@@ -61,14 +61,14 @@ export function TopBar() {
           </a>
 
           <nav aria-label="Sections" className="order-last -mx-2.5 w-[calc(100%+1.25rem)] overflow-x-auto pb-2 md:order-none md:mx-0 md:w-auto md:overflow-visible md:pb-0">
-            <ul className="flex items-center gap-1 font-mono text-[0.8125rem]">
+            <ul className="flex items-center gap-0.5 font-mono text-[0.8125rem] min-[360px]:gap-1">
               {NAV.map(n => (
                 <li key={n.id} className="shrink-0">
                   <a
                     href={`#${n.id}`}
                     onClick={() => pin(n.id)}
                     aria-current={active === n.id ? 'location' : undefined}
-                    className={cn('block rounded-(--r-sm) px-2.5 py-1.5 transition-colors', active === n.id ? 'bg-chip text-fg' : 'text-mute hover:text-fg')}
+                    className={cn('block rounded-(--r-sm) px-1.5 py-1.5 transition-colors min-[360px]:px-2.5', active === n.id ? 'bg-chip text-fg' : 'text-mute hover:text-fg')}
                   >
                     {n.label}
                     {n.count && (

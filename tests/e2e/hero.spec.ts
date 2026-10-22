@@ -21,7 +21,7 @@ test.describe('hero', () => {
   // Desktop and tablet windows, then phones (emulated as phones: mobile viewport and touch).
   const SCREENS: { width: number; height: number; phone?: boolean }[] = [
     { width: 1280, height: 720 }, { width: 1440, height: 900 }, { width: 768, height: 1024 },
-    { width: 390, height: 844, phone: true }, { width: 360, height: 740, phone: true },
+    { width: 390, height: 844, phone: true }, { width: 360, height: 740, phone: true }, { width: 320, height: 568, phone: true },
   ]
   for (const { width, height, phone } of SCREENS) {
     test.describe(`${width}×${height}`, () => {
