@@ -179,7 +179,7 @@ export function ZoneTest() {
             <div className="lab-out space-y-2 p-3">
               <div className="flex items-center justify-between gap-2">
                 <p className="lab-label">How the rule decides</p>
-                <label className="flex items-center gap-1.5 text-xs text-soft">
+                <label className="flex min-h-6 cursor-pointer items-center gap-1.5 text-xs text-soft">
                   <input type="checkbox" checked={showRule} onChange={e => setShowRule(e.target.checked)} className="accent-[var(--color-accent)]" /> show ray
                 </label>
               </div>

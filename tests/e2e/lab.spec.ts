@@ -1,3 +1,4 @@
+import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
 
 test.describe('Lab · RAG, step by step', () => {
@@ -150,6 +151,19 @@ test.describe('Lab · token playground', () => {
     await tok.getByLabel('token IDs').check()
     await expect(tok.getByRole('list', { name: /tokens from/ }).getByRole('listitem').first()).toContainText(/\d+/)
   })
+
+  for (const prefs of [{ theme: 'dark' }, { theme: 'light' }, { theme: 'light', accent: 'moss' }]) {
+    test(`the loaded tokenizer with token IDs passes axe (${Object.values(prefs).join(' + ')})`, async ({ page }) => {
+      await page.addInitScript(p => localStorage.setItem('prefs', JSON.stringify(p)), prefs)
+      await page.goto('/')
+      const tok = page.locator('#lab-tokens')
+      await tok.getByRole('button', { name: 'Load tokenizers' }).click()
+      await tok.getByRole('button', { name: 'Telugu' }).click()   // includes partial-character pieces
+      await tok.getByRole('checkbox', { name: 'token IDs' }).check()
+      const { violations } = await new AxeBuilder({ page }).include('#lab-tokens').analyze()
+      expect(violations.map(v => `${v.id}: ${v.nodes.slice(0, 2).map(n => n.target.join(' ')).join(' | ')}`)).toEqual([])
+    })
+  }
 
   test('an empty text has a clear empty state; reset restores the example', async ({ page }) => {
     await page.goto('/')

@@ -109,7 +109,7 @@ export function Tokenizer() {
 
             <div className="flex flex-wrap items-end justify-between gap-3">
               <ChipChoice name={`${id}-view`} legend="Show the pieces from" options={NAMES} value={view} onChange={setView} />
-              <label className="flex items-center gap-1.5 text-xs text-soft">
+              <label className="flex min-h-6 cursor-pointer items-center gap-1.5 text-xs text-soft">
                 <input type="checkbox" checked={ids} onChange={e => setIds(e.target.checked)} className="accent-[var(--color-accent)]" /> token IDs
               </label>
             </div>
@@ -122,7 +122,7 @@ export function Tokenizer() {
                       className={cn('chip inline-flex flex-col items-center px-1.5 py-0.5 font-mono text-[0.8125rem] leading-snug',
                         p.partial ? 'border border-dashed border-mute text-mute' : i % 2 ? 'bg-accent-soft text-fg' : 'bg-chip text-fg')}>
                       <span className="whitespace-pre">{p.partial ? '▢' : show(p.text)}</span>
-                      {ids && <span className="text-[0.625rem] text-mute">{p.id}</span>}
+                      {ids && <span className="text-[0.625rem] text-soft">{p.id}</span>}
                     </li>
                   ))}
                 </ol>
