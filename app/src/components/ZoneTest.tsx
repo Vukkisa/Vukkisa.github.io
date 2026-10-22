@@ -153,14 +153,14 @@ export function ZoneTest() {
               {zone.map(([x, y], i) => (
                 <g key={i} role="button" tabIndex={0} aria-label={`Zone corner ${i + 1} of 4, at ${x}, ${y}`} aria-describedby={`${id}-help`} onPointerDown={onDown(i)} onKeyDown={onKey(i, [x, y])} className={handle}>
                   <circle cx={x} cy={y} r="7" className="fill-bg stroke-accent" strokeWidth="2" />
-                  <circle cx={x} cy={y} r="16" fill="transparent" />
+                  <circle cx={x} cy={y} r="20" fill="transparent" />
                 </g>
               ))}
             </svg>
           </div>
           <label className="block">
             <span className="lab-label">Frame {manual ? '(moved by hand)' : `${frame} of ${FRAMES}`}</span>
-            <input type="range" min={0} max={FRAMES} value={manual ? 0 : frame} onChange={e => { setPlaying(false); setManual(null); setFrame(Number(e.target.value)) }} className="mt-1 block w-full accent-[var(--color-accent)]" aria-valuetext={manual ? 'moved by hand' : `frame ${frame} of ${FRAMES}`} />
+            <input type="range" min={0} max={FRAMES} value={manual ? 0 : frame} onChange={e => { setPlaying(false); setManual(null); setFrame(Number(e.target.value)) }} className="mt-1 block h-6 w-full cursor-pointer accent-[var(--color-accent)]" aria-valuetext={manual ? 'moved by hand' : `frame ${frame} of ${FRAMES}`} />
           </label>
         </div>
 

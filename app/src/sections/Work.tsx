@@ -1,10 +1,8 @@
 import { ProjectCard } from '../components/ProjectCard'
 import { SectionHead } from '../components/SectionHead'
 import { moreWork, projects } from '../data/content'
-import { useCaseStudyLinks } from '../hooks/useCaseStudyLinks'
 
 export function Work() {
-  useCaseStudyLinks()
   return (
     <section id="work" aria-labelledby="work-title" className="sec">
       <SectionHead id="work-title" n="01" glyph="▶" title="Selected work" count={{ n: projects.length, noun: 'projects' }} note="Problem, what I built, and the evidence, without inflated numbers." />

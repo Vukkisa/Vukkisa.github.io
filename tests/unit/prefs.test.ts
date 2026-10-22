@@ -12,7 +12,7 @@ describe('parsePrefs', () => {
   })
 
   it('keeps every valid stored value', () => {
-    const all = { theme: 'light', text: 'lg', accent: 'moss', type: 'mono', density: 'airy', radius: 'none' }
+    const all = { theme: 'light', text: 'lg', accent: 'moss', density: 'airy', radius: 'none' }
     expect(parsePrefs(JSON.stringify(all), null)).toEqual(all)
   })
 
@@ -20,6 +20,11 @@ describe('parsePrefs', () => {
     const p = parsePrefs(JSON.stringify({ theme: 'sepia', accent: 'rose', text: 3, extra: 'x' }), null)
     expect(p).toEqual({ ...DEFAULTS, accent: 'rose' })
     expect(p).not.toHaveProperty('extra')
+  })
+
+  it('ignores a heading-font choice saved by an earlier version: headings are always Bricolage', () => {
+    expect(OPTIONS).not.toHaveProperty('type')
+    expect(parsePrefs('{"type":"mono","accent":"moss"}', null)).toEqual({ ...DEFAULTS, accent: 'moss' })
   })
 
   it('falls back to the defaults on corrupt or non-object JSON', () => {

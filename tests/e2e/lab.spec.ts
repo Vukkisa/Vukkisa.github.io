@@ -128,10 +128,18 @@ test.describe('Lab · token playground', () => {
   })
 
   test('loads the real tokenizers on request and counts with both', async ({ page }) => {
+    const vocab: string[] = []
+    page.on('request', r => { if (/(o200k_base|cl100k_base|GptEncoding)-/.test(r.url())) vocab.push(r.url()) })
     await page.goto('/')
     const tok = page.locator('#lab-tokens')
+    // Scrolling the whole page, the Lab included, downloads nothing from the tokenizers.
+    for (let y = 0; y < 16000; y += 1200) await page.mouse.wheel(0, 1200)
+    await tok.scrollIntoViewIfNeeded()
+    await page.waitForLoadState('networkidle')
+    expect(vocab).toEqual([])
     await tok.getByRole('button', { name: 'Load tokenizers' }).click()
     await expect(tok.getByText('o200k_base', { exact: false }).first()).toBeVisible()
+    expect(vocab.length).toBeGreaterThanOrEqual(2)   // the click is what fetched them
     await tok.getByRole('button', { name: 'Hindi' }).click()
     const count = async (name: string) => Number(await tok.locator('dl > div', { hasText: name }).locator('dd span').first().textContent())
     const o = await count('o200k_base')

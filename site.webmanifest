@@ -1,1 +1,1 @@
-{ "name": "Jayanth Vukkisa", "short_name": "Jayanth", "icons": [{ "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }], "theme_color": "#fdfdfc", "background_color": "#fdfdfc", "display": "browser" }
+{ "name": "Jayanth Vukkisa", "short_name": "Jayanth", "icons": [{ "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }], "theme_color": "#0a0a0b", "background_color": "#0a0a0b", "display": "browser" }

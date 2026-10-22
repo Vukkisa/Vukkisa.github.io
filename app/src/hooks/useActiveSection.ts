@@ -3,6 +3,9 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 /** Keys that scroll the page; pressing one releases a pin (see `unpin`). */
 export const SCROLL_KEYS = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' ']
 
+/** Dispatched on window by goTo (CommandPalette) before it scrolls. */
+export const NAVIGATE = 'site:navigate'
+
 /**
  * Which of the given sections is "current": the first one (in page order) crossing a band in the
  * upper part of the viewport, or the last section once the page is scrolled to the bottom. Also
@@ -12,6 +15,8 @@ export const SCROLL_KEYS = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home'
  * (the bottom), so the clicked section is shown until the visitor scrolls again themselves. The
  * visitor's own wheel or touch scrolling releases it here; scroll keys release it through `unpin`,
  * which the caller wires into its keydown handler (one keydown listener for the whole top bar).
+ * Any other jump within the page (an in-page link outside the nav, or the command menu's goTo,
+ * which dispatches NAVIGATE) releases it too, so the highlight follows where the visitor went.
  * Without IntersectionObserver the active section stays '' and nothing is highlighted.
  */
 export function useActiveSection(ids: readonly string[]) {
@@ -43,7 +48,15 @@ export function useActiveSection(ids: readonly string[]) {
     // Only the visitor's own scrolling releases a pin, not the smooth scroll a nav click starts.
     window.addEventListener('wheel', unpin, { passive: true })
     window.addEventListener('touchstart', unpin, { passive: true })
+    window.addEventListener(NAVIGATE, unpin)
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as Element | null)?.closest?.('a[href^="#"]')
+      if (a && !a.closest('header nav')) unpin()
+    }
+    document.addEventListener('click', onClick)
     return () => {
+      window.removeEventListener(NAVIGATE, unpin)
+      document.removeEventListener('click', onClick)
       io?.disconnect()
       window.removeEventListener('scroll', update)
       window.removeEventListener('wheel', unpin)

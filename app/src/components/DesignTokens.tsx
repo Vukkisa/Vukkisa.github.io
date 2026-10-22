@@ -4,11 +4,10 @@ import { cn } from '../lib/utils'
 /**
  * The site's own design tokens as live controls, in the footer (and as ⌘K commands). Each choice
  * sets a data-* attribute on <html>, the CSS variables in index.css follow, and the whole page
- * restyles. Choices are remembered. Bricolage stays the default heading face.
+ * restyles. Choices are remembered. Headings always use Bricolage, so type isn't a choice here.
  */
 const GROUPS: { key: TokenKey; label: string; names: Record<string, string> }[] = [
   { key: 'accent', label: 'Colour', names: { cobalt: 'Cobalt', ember: 'Ember', moss: 'Moss', rose: 'Rose', mono: 'Mono' } },
-  { key: 'type', label: 'Type', names: { grotesk: 'Grotesk', sans: 'Sans', mono: 'Mono' } },
   { key: 'density', label: 'Spacing', names: { compact: 'Compact', cozy: 'Cozy', airy: 'Airy' } },
   { key: 'radius', label: 'Radius', names: { none: 'Square', soft: 'Soft', round: 'Round' } },
 ]
@@ -34,7 +33,6 @@ export function DesignTokens() {
                   <label key={v} className={cn('chip inline-flex cursor-pointer items-center gap-1.5 border px-2.5 py-1 text-xs transition-colors has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent', on ? 'border-fg bg-fg text-bg' : 'border-line text-soft hover:border-line-strong hover:text-fg')}>
                     <input type="radio" name={`token-${g.key}`} value={v} checked={on} onChange={() => setPref(g.key, v as Prefs[typeof g.key])} className="sr-only" />
                     {g.key === 'accent' && <span aria-hidden="true" className={cn('size-2.5 rounded-full', SWATCH[v])} />}
-                    {g.key === 'type' && <span aria-hidden="true" className={cn('text-[0.8125rem] leading-none', v === 'grotesk' && 'font-[Bricolage_Grotesque_Variable] font-semibold', v === 'mono' && 'font-mono')}>Aa</span>}
                     {g.names[v]}
                   </label>
                 )
@@ -48,7 +46,7 @@ export function DesignTokens() {
         <p className="flex flex-wrap gap-x-3 font-mono text-[0.6875rem] text-mute">
           {GROUPS.map(g => <span key={g.key} className="whitespace-nowrap">--{g.key}: {prefs[g.key]}</span>)}
         </p>
-        <button type="button" onClick={resetTokens} disabled={!changed} className="chip shrink-0 border border-line px-3 py-1 text-xs text-soft transition-colors hover:text-fg disabled:opacity-40">Reset</button>
+        <button type="button" onClick={resetTokens} disabled={!changed} className="btn btn-secondary btn-sm shrink-0">Reset</button>
       </div>
     </div>
   )

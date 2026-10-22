@@ -35,7 +35,7 @@ function runScript(src: string, store: { prefs?: string | null; theme?: string |
 
 const CASES: { name: string; prefs?: string | null; theme?: string | null; throws?: boolean }[] = [
   { name: 'nothing stored' },
-  { name: 'all valid', prefs: JSON.stringify({ theme: 'light', text: 'lg', accent: 'moss', type: 'mono', density: 'airy', radius: 'none' }) },
+  { name: 'all valid', prefs: JSON.stringify({ theme: 'light', text: 'lg', accent: 'moss', density: 'airy', radius: 'none' }) },
   { name: 'mixed valid and invalid', prefs: JSON.stringify({ theme: 'sepia', accent: 'rose', density: 'compact', radius: 7 }) },
   { name: 'legacy theme only', theme: 'light' },
   { name: 'legacy theme plus prefs without theme', prefs: '{"accent":"ember"}', theme: 'light' },

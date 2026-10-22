@@ -1,7 +1,8 @@
 name: CI
 
 # Checks every pull request: types, unit tests, a fresh build (which must match the committed
-# build, since GitHub Pages serves the committed files), then browser and accessibility tests.
+# build, since GitHub Pages serves the committed files), the size budget, then browser and
+# accessibility tests.
 on:
   pull_request:
   workflow_dispatch:
@@ -42,6 +43,9 @@ jobs:
             echo "$changes"
             exit 1
           fi
+
+      - name: JavaScript size budget
+        run: npm run size
 
       - name: Install Chromium for Playwright
         run: npx playwright install --with-deps chromium

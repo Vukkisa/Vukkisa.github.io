@@ -9,9 +9,11 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "build": "npm run typecheck && rm -rf static && vite build",
     "preview": "vite preview",
-    "test": "npm run test:unit && npm run build && npm run test:e2e",
+    "test": "npm run test:unit && npm run build && npm run size && npm run test:e2e",
     "test:unit": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "size": "node scripts/check-size.mjs",
+    "og": "node scripts/og-image.mjs"
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",

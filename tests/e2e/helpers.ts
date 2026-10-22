@@ -1,6 +1,6 @@
 import type { Page } from '@playwright/test'
 
-export type StoredPrefs = Partial<Record<'theme' | 'text' | 'accent' | 'type' | 'density' | 'radius', string>>
+export type StoredPrefs = Partial<Record<'theme' | 'text' | 'accent' | 'density' | 'radius', string>>
 
 /** Store preferences before the page loads, the way a returning visitor's browser would. */
 export async function setPrefs(page: Page, prefs: StoredPrefs) {

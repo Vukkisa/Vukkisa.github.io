@@ -3,22 +3,22 @@ import { useSyncExternalStore } from 'react'
 /**
  * Visitor preferences: theme, text size and the live design tokens (footer and ⌘K). Each one is a
  * data-* attribute on <html> that index.css reads, so a change restyles the whole page at once.
+ * Headings are always Bricolage; there's deliberately no font choice.
  * Saved to localStorage; the inline script in index.html applies them before first paint.
  */
 export const OPTIONS = {
   theme: ['dark', 'light'],
   text: ['md', 'lg'],
   accent: ['cobalt', 'ember', 'moss', 'rose', 'mono'],
-  type: ['grotesk', 'sans', 'mono'],
   density: ['compact', 'cozy', 'airy'],
   radius: ['none', 'soft', 'round'],
 } as const
 
 type Options = typeof OPTIONS
 export type Prefs = { [K in keyof Options]: Options[K][number] }
-export type TokenKey = 'accent' | 'type' | 'density' | 'radius'
+export type TokenKey = 'accent' | 'density' | 'radius'
 
-export const DEFAULTS: Prefs = { theme: 'dark', text: 'md', accent: 'cobalt', type: 'grotesk', density: 'cozy', radius: 'soft' }
+export const DEFAULTS: Prefs = { theme: 'dark', text: 'md', accent: 'cobalt', density: 'cozy', radius: 'soft' }
 const KEY = 'prefs'
 
 /** The browser's own UI colour (meta theme-color) for each theme: the page background. */
@@ -75,7 +75,7 @@ export function setPref<K extends keyof Prefs>(key: K, value: Prefs[K]) {
 }
 
 export function resetTokens() {
-  for (const k of ['accent', 'type', 'density', 'radius'] as const) setPref(k, DEFAULTS[k])
+  for (const k of ['accent', 'density', 'radius'] as const) setPref(k, DEFAULTS[k])
 }
 
 const subscribe = (l: () => void) => { listeners.add(l); return () => { listeners.delete(l) } }

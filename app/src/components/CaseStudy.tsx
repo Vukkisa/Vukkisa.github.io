@@ -4,7 +4,7 @@ import { cn } from '../lib/utils'
 /**
  * A project's case study as a native disclosure (<details>): how it works, my part, what has been
  * evaluated, its limitations, and where to find the code or demo. Works without JavaScript, by
- * keyboard, and can be opened by link: #<project-id>-case (see useCaseStudyLinks). The parts are
+ * keyboard, and can be opened by link: #<project-id>-case (see useHashLinks). The parts are
  * plain blocks under h4 headings, not labelled sections, so four case studies don't add sixteen
  * look-alike landmarks.
  */

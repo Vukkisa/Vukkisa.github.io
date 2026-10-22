@@ -1,6 +1,7 @@
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import { projects, site } from '../data/content'
 import { OPTIONS, resetTokens, setPref, toggleText, toggleTheme, usePrefs, type Prefs, type TokenKey } from '../lib/prefs'
+import { NAVIGATE } from '../hooks/useActiveSection'
 import { cn } from '../lib/utils'
 
 type Cmd = { id: string; group: string; label: string; hint?: string; keywords?: string; run: () => void }
@@ -12,6 +13,7 @@ type Cmd = { id: string; group: string; label: string; hint?: string; keywords?:
 export function goTo(id: string) {
   const el = document.getElementById(id)
   if (!el) return
+  window.dispatchEvent(new Event(NAVIGATE))   // releases a nav pin, so the highlight follows
   history.replaceState(null, '', id === 'top' ? location.pathname : `#${id}`)
   if (el instanceof HTMLDetailsElement) el.open = true
   el.scrollIntoView({ block: 'start' })
@@ -21,7 +23,7 @@ export function goTo(id: string) {
 }
 
 const open = (href: string) => window.open(href, '_blank', 'noopener,noreferrer')
-const TOKEN_NAMES: Record<TokenKey, string> = { accent: 'Accent', type: 'Heading type', density: 'Spacing', radius: 'Radius' }
+const TOKEN_NAMES: Record<TokenKey, string> = { accent: 'Accent', density: 'Spacing', radius: 'Radius' }
 
 export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const dialog = useRef<HTMLDialogElement>(null)
@@ -43,15 +45,16 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
     { id: 'exp-tokens', group: 'Lab', label: 'Count tokens', keywords: 'tokenizer tokenization gpt hindi telugu', run: () => goTo('lab-tokens') },
     { id: 'theme', group: 'Preferences', label: `Switch to ${prefs.theme === 'dark' ? 'light' : 'dark'} theme`, keywords: 'dark light mode', run: toggleTheme },
     { id: 'text', group: 'Preferences', label: prefs.text === 'lg' ? 'Use normal text size' : 'Use larger text', keywords: 'font size zoom accessibility', run: toggleText },
-    { id: 'tokens', group: 'Preferences', label: 'Open design tokens', keywords: 'colour color accent radius spacing type', run: () => goTo('design-tokens') },
-    ...(['accent', 'type', 'density', 'radius'] as TokenKey[]).flatMap(k => (OPTIONS[k] as readonly string[]).map(v => ({
+    { id: 'tokens', group: 'Preferences', label: 'Open design tokens', keywords: 'colour color accent radius spacing', run: () => goTo('design-tokens') },
+    ...(['accent', 'density', 'radius'] as TokenKey[]).flatMap(k => (OPTIONS[k] as readonly string[]).map(v => ({
       id: `tok-${k}-${v}`, group: 'Preferences', label: `${TOKEN_NAMES[k]}: ${v}${prefs[k] === v ? ' (current)' : ''}`, keywords: 'design token',
       run: () => setPref(k, v as Prefs[typeof k]),
     }))),
     { id: 'reset', group: 'Preferences', label: 'Reset design tokens', keywords: 'default', run: resetTokens },
     {
       id: 'copy', group: 'Contact', label: 'Copy email address', hint: site.email, keywords: 'mail',
-      run: () => { navigator.clipboard?.writeText(site.email).then(() => setNote('Email address copied.'), () => setNote(`Couldn’t copy. The address is ${site.email}`)) },
+      // Promise.resolve().then(...) also catches a missing Clipboard API (older browsers, plain http).
+      run: () => { Promise.resolve().then(() => navigator.clipboard.writeText(site.email)).then(() => setNote('Email address copied.'), () => setNote(`Couldn’t copy. The address is ${site.email}`)) },
     },
     { id: 'mail', group: 'Contact', label: 'Write an email', hint: site.email, run: () => { location.href = `mailto:${site.email}` } },
     { id: 'gh', group: 'Links', label: 'GitHub', hint: 'opens in a new tab', run: () => open(site.github) },

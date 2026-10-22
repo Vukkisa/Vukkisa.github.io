@@ -16,7 +16,7 @@ export function Footer() {
         <summary className="flex cursor-pointer items-center justify-between gap-4 rounded-(--r) px-5 py-3.5 transition-colors hover:bg-chip/60">
           <span>
             <span className="block text-sm font-medium">Design tokens</span>
-            <span className="block text-xs text-mute">Colour, type, spacing and radius for this site, live</span>
+            <span className="block text-xs text-mute">Colour, spacing and radius for this site, live</span>
           </span>
           <span aria-hidden="true" className="case-mark grid size-7 shrink-0 place-items-center rounded-full border border-line-strong leading-none text-soft">+</span>
         </summary>
@@ -30,7 +30,7 @@ export function Footer() {
           </a>
         </p>
         <p className="flex items-center gap-4">
-          <span>press <kbd className="kbd">/</kbd> for the command menu</span>
+          <span className="pointer-coarse:hidden">press <kbd className="kbd">/</kbd> for the command menu</span>
           <a href="#top" className="link text-mute">back to top ↑</a>
         </p>
       </div>

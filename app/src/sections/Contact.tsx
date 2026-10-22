@@ -38,7 +38,7 @@ export function Contact() {
             <span ref={address} className="underline decoration-line-strong decoration-2 underline-offset-[6px] group-hover:decoration-accent">{site.email}</span>
             <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
           </a>
-          <button type="button" onClick={copy} className="chip border border-line-strong px-3 py-1.5 text-xs text-soft transition-colors hover:border-accent hover:text-accent">
+          <button type="button" onClick={copy} className="btn btn-secondary btn-sm">
             Copy<span className="sr-only"> email address</span>
           </button>
           <span aria-live="polite" className="text-xs text-mute">{copied}</span>
