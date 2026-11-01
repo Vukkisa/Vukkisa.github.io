@@ -8,7 +8,7 @@
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-/* Dark first, high contrast. Every token below is live: the Lab's token playground and the
+/* Dark first, high contrast. Every token below is live: the design tokens (footer, ⌘K) and the
    text-size toggle change data-* attributes on <html>, and these variables follow. */
 @theme {
   --color-bg: #0a0a0b;
@@ -29,23 +29,25 @@
 
   --font-sans: "Geist Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
-  --font-display: var(--display);
+  --font-display: "Bricolage Grotesque Variable", var(--font-sans);   /* headings: always Bricolage */
 }
 
 @layer base {
   :root {
     --acc: #8e9cff;
     --acc-ink: #0a0a0b;
-    --display: "Bricolage Grotesque Variable", var(--font-sans);
     --space: 1;
+    --header-h: 5.875rem;   /* top bar height; TopBar.tsx keeps it exact (two rows on phones) */
     --r: 18px;
     --r-sm: 10px;
-    /* Letter-hover colours: the five accents of the current theme. */
-    --h1: #8e9cff; --h2: #ff9157; --h3: #6fdc9a; --h4: #ff86bd; --h5: #ebbd5f;
+    /* Motion: one easing and two durations for every hover, focus and state change. */
+    --ease: cubic-bezier(.2, .8, .2, 1);
+    --dur: .18s;
+    --dur-slow: .5s;
     /* Journey landscape (see Landscape.tsx). */
     --sc-top: #2a2b31; --sc-left: #1e1f24; --sc-right: #16171b; --sc-edge: rgb(244 244 242 / .28);
     --sc-ground: #17181c; --sc-ground-left: #111215; --sc-ground-right: #0d0e10; --sc-grid: #23242a;
-    --sc-mute: #55565e; --sc-shadow: rgb(0 0 0 / .45); --sc-mix: black;
+    --sc-mute: #55565e; --sc-shadow: rgb(0 0 0 / .45);
     color-scheme: dark;
   }
   :root[data-accent="ember"] { --acc: #ff9157; }
@@ -68,10 +70,9 @@
     --color-live-soft: #e3f3e7;
     --acc: #2340ff;
     --acc-ink: #ffffff;
-    --h1: #2340ff; --h2: #c2410c; --h3: #15803d; --h4: #be185d; --h5: #a16207;
     --sc-top: #fbfbf9; --sc-left: #e4e4df; --sc-right: #cfcfc8; --sc-edge: rgb(42 42 48 / .35);
     --sc-ground: #ecece7; --sc-ground-left: #e0e0da; --sc-ground-right: #cfcfc8; --sc-grid: #dcdcd6;
-    --sc-mute: #b3b3ab; --sc-shadow: rgb(20 20 40 / .07); --sc-mix: white;
+    --sc-mute: #b3b3ab; --sc-shadow: rgb(20 20 40 / .07);
     color-scheme: light;
   }
   :root[data-theme="light"][data-accent="ember"] { --acc: #c2410c; }
@@ -79,8 +80,6 @@
   :root[data-theme="light"][data-accent="rose"] { --acc: #be185d; }
   :root[data-theme="light"][data-accent="mono"] { --acc: #121214; }
 
-  :root[data-type="sans"] { --display: var(--font-sans); }
-  :root[data-type="mono"] { --display: var(--font-mono); }
   :root[data-density="compact"] { --space: .7; }
   :root[data-density="airy"] { --space: 1.35; }
   :root[data-radius="none"] { --r: 0px; --r-sm: 0px; }
@@ -103,25 +102,65 @@
   :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; border-radius: 4px; }
   a { text-decoration: none; }
   h1, h2, h3 { text-wrap: balance; }
-  [id] { scroll-margin-top: 5rem; }
+  @media (min-width: 48rem) { :root { --header-h: 3.5rem; } }
+  [id] { scroll-margin-top: calc(var(--header-h) + 1.5rem); }
 }
 
 @layer components {
   .link { color: var(--color-fg); text-decoration: underline; text-decoration-color: var(--color-line-strong); text-underline-offset: 4px; transition: text-decoration-color .2s, color .2s; }
   .link:hover { text-decoration-color: var(--color-accent); }
+  /* On touch screens, a taller tap area (inline padding doesn't change the line height). */
+  @media (pointer: coarse) { .link { padding-block: .25rem; } }
   .sec { padding-block: calc(var(--space) * 5.5rem); }
   .pad { padding: calc(var(--space) * 1.5rem); }
-  .kbd { font-family: var(--font-mono); font-size: 11px; line-height: 1; padding: 3px 5px; border-radius: 5px; border: 1px solid var(--color-line-strong); color: var(--color-mute); }
-  .eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .02em; color: var(--color-mute); }
+  .kbd { font-family: var(--font-mono); font-size: .6875rem; line-height: 1; padding: 3px 5px; border-radius: 5px; border: 1px solid var(--color-line-strong); color: var(--color-mute); }
+  .eyebrow { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .02em; color: var(--color-mute); }
   .chip { border-radius: var(--r-sm); }
+
+  /* Type scale. Display sizes follow the viewport; everything below ~32px is rem-based so the Aa
+     control scales it (tests/e2e/regressions.spec.ts, B1). */
+  .t-kicker { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--color-mute); }
+  .t-display { font-family: var(--font-display); font-weight: 600; font-size: clamp(3rem, min(1.6rem + 6vw, 12.5svh), 6.5rem); line-height: .9; letter-spacing: -.045em; }
+  .t-headline { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.5rem, 1.15rem + 1.2vw, 2.125rem); line-height: 1.16; letter-spacing: -.02em; text-wrap: balance; }
+  .t-section { font-family: var(--font-display); font-weight: 600; font-size: clamp(2.25rem, 1.6rem + 2.4vw, 3.25rem); line-height: 1; letter-spacing: -.03em; }
+  .t-lead { font-size: 1.0625rem; line-height: 1.65; color: var(--color-soft); }
+
+  /* Surfaces: one quiet card style, set apart by a hairline, not a shadow. */
+  .surface { background: var(--color-card); border: 1px solid var(--color-line); border-radius: var(--r); }
+
+  /* Buttons: same height, radius, hover and focus everywhere. */
+  .btn { display: inline-flex; align-items: center; gap: .5rem; height: 2.75rem; padding-inline: 1rem; border: 1px solid transparent; border-radius: var(--r-sm); font-size: .9375rem; font-weight: 500; transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease); }
+  .btn-primary { background: var(--color-fg); color: var(--color-bg); }
+  .btn-primary:hover { background: var(--color-accent); color: var(--color-accent-ink); }
+  .btn-secondary { border-color: var(--color-line-strong); color: var(--color-fg); }
+  .btn-secondary:hover { border-color: var(--color-accent); color: var(--color-accent); }
+  .btn-arrow { display: inline-block; transition: transform var(--dur) var(--ease); }
+  .btn-sm { height: 2.25rem; padding-inline: .75rem; font-size: .8125rem; }
+  .btn:disabled { opacity: .45; pointer-events: none; }
+
+  /* Lab: one look for every experiment's inputs, outputs and notes. */
+  .lab-out { background: var(--color-bg); border: 1px solid var(--color-line); border-radius: var(--r-sm); }
+  .lab-label { font-family: var(--font-mono); font-size: .6875rem; letter-spacing: .06em; text-transform: uppercase; color: var(--color-mute); }
+  .lab-field { width: 100%; background: var(--color-bg); border: 1px solid var(--color-line-strong); border-radius: var(--r-sm); padding: .5rem .75rem; font-size: .9375rem; color: var(--color-fg); transition: border-color var(--dur) var(--ease); }
+  .lab-field:hover { border-color: var(--color-mute); }
+  .lab-field:focus-visible { border-color: var(--color-accent); }
+  /* The narrowest phones (under 360px): slightly smaller buttons without arrows, so two fit on a row. */
+  @media (max-width: 22.4375rem) {
+    .btn { padding-inline: .8125rem; font-size: .875rem; }
+    .btn-arrow { display: none; }
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .btn:hover .btn-arrow, .btn:focus-visible .btn-arrow { transform: translateX(3px); }
+  .btn:active { transform: translateY(1px); }
 }
 
 /* ---- Hero ------------------------------------------------------------------------------------ */
 
-/* Each letter of the name takes a colour on hover and lets it go slowly. */
-.ltr { display: inline-block; transition: color 1.4s ease, transform .5s cubic-bezier(.25, 1, .5, 1); }
+/* Each letter of the name takes the accent on hover and lets it go slowly. */
+.ltr { display: inline-block; transition: color 1.2s ease, transform var(--dur-slow) var(--ease); }
 @media (hover: hover) and (pointer: fine) {
-  .ltr:hover { color: var(--h); transition-duration: 0s, .15s; transform: translateY(-.05em); }
+  .ltr:hover { color: var(--color-accent); transition-duration: 0s, .15s; transform: translateY(-.04em); }
 }
 @media (prefers-reduced-motion: no-preference) {
   .ltr-in { animation: ltr-in .7s cubic-bezier(.2, .9, .3, 1) both; animation-delay: calc(var(--i) * 28ms + 80ms); }
@@ -139,16 +178,18 @@
 .avatar .smile { opacity: 0; transform: scale(.6) rotate(-20deg); transition: opacity .3s, transform .4s cubic-bezier(.3, 1.6, .5, 1); }
 .avatar:hover .smile, .avatar:focus-visible .smile { opacity: 1; transform: none; }
 
-.hero-glow { background: radial-gradient(60% 60% at 75% 10%, color-mix(in oklab, var(--color-accent) 14%, transparent), transparent 70%); }
 .dot-grid { background-image: radial-gradient(color-mix(in oklab, var(--color-fg) 9%, transparent) 1px, transparent 1px); background-size: 22px 22px; }
 
-.pulse { position: relative; }
+
+/* Hero figure: one slow playhead sweep, and the four pipeline stages taking turns. At rest (reduced
+   motion, or if animation never starts) the playhead waits mid-clip and every stage reads normally. */
+.signal-head { transform: translateX(240px); }
 @media (prefers-reduced-motion: no-preference) {
-  .pulse::after { content: ""; position: absolute; inset: 0; border-radius: 999px; background: inherit; animation: pulse 2s ease-out infinite; }
-  .cue-line { animation: cue 2.2s cubic-bezier(.6, 0, .4, 1) infinite; transform-origin: top; }
+  .signal-head { animation: sweep 9s cubic-bezier(.45, 0, .55, 1) infinite; }
+  .signal-stage { animation: stage 9s ease-in-out infinite; animation-delay: calc(var(--k) * 2.25s); }
 }
-@keyframes pulse { to { transform: scale(2.6); opacity: 0; } }
-@keyframes cue { 0% { transform: scaleY(0); } 45% { transform: scaleY(1); transform-origin: top; } 55% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+@keyframes sweep { from { transform: translateX(0); } to { transform: translateX(480px); } }
+@keyframes stage { 0%, 22% { background-color: var(--color-accent-soft); } 25%, 100% { background-color: var(--color-card); } }
 
 /* ---- Reveal on scroll --------------------------------------------------------------------------
    Progressive: nothing is hidden until JS has marked what's already on screen and added
@@ -165,6 +206,37 @@
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .project:hover .cover img { transform: scale(1.035); }
   .link:hover .nudge, .link:focus-visible .nudge { transform: translate(2px, -2px); }
+}
+
+/* ---- Project diagrams (ProjectVisual.tsx) ------------------------------------------------------
+   At rest (reduced motion, or before animating) each diagram shows its final state: chunks
+   retrieved, the answer written, the person inside the zone and flagged. The vote highlight in the
+   speech diagram only exists while moving. Loops pause off screen ([data-loop]). */
+.pv-scan { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .pv-hit { animation: pv-hit 6s var(--ease) infinite; }
+  .pv-line { animation: pv-line 6s ease-out infinite; }
+  .pv-scan { animation: pv-scan 4.2s ease-in-out infinite; }
+  .pv-walk { animation: pv-walk 7s cubic-bezier(.4, 0, .3, 1) infinite; }
+  .pv-box { animation: pv-box 7s step-end infinite; }
+  .pv-feet { animation: pv-feet 7s step-end infinite; }
+  .pv-tag, .pv-alert { animation: pv-show 7s step-end infinite; }
+}
+@keyframes pv-hit { 0%, 8% { opacity: .25; } 18%, 100% { opacity: 1; } }
+@keyframes pv-line { 0%, 12% { opacity: .15; } 22%, 100% { opacity: 1; } }
+@keyframes pv-scan { 0% { opacity: 0; } 4%, 13% { opacity: 1; } 17%, 100% { opacity: 0; } }
+@keyframes pv-walk { 0% { transform: translateX(-120px); } 55%, 100% { transform: translateX(0); } }
+@keyframes pv-box { 0% { stroke: var(--color-mute); } 24% { stroke: var(--color-accent); } }
+@keyframes pv-feet { 0% { fill: var(--color-fg); } 24% { fill: var(--color-accent); } }
+@keyframes pv-show { 0% { opacity: 0; } 24% { opacity: 1; } }
+
+/* Case studies (CaseStudy.tsx): the disclosure marker turns, the body fades in. */
+.case > summary { list-style: none; }
+.case > summary::-webkit-details-marker { display: none; }
+.case-mark { transition: transform var(--dur) var(--ease); }
+.case[open] .case-mark { transform: rotate(45deg); }
+@media (prefers-reduced-motion: no-preference) {
+  .case[open] > .case-body { animation: rise .35s var(--ease) both; }
 }
 
 /* ---- Journey landscape ------------------------------------------------------------------------ */
@@ -212,6 +284,10 @@ dialog.palette::backdrop { background: rgb(0 0 0 / .55); backdrop-filter: blur(3
   dialog.palette[open] { animation: pop .18s cubic-bezier(.2, .9, .3, 1); }
 }
 @keyframes pop { from { opacity: 0; transform: translateY(-6px) scale(.985); } }
+
+/* Looping animations pause while their [data-loop] container is off screen (usePauseOffscreen). */
+[data-offscreen], [data-offscreen] *, [data-offscreen]::before, [data-offscreen]::after,
+[data-offscreen] *::before, [data-offscreen] *::after { animation-play-state: paused !important; }
 
 /* A short colour cross-fade while the theme or accent is being switched (class added for ~200ms). */
 @media (prefers-reduced-motion: no-preference) {

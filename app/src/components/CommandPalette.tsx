@@ -1,25 +1,34 @@
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from 'react'
 import { projects, site } from '../data/content'
-import { resetTokens, toggleText, toggleTheme, usePrefs } from '../lib/prefs'
+import { OPTIONS, resetTokens, setPref, toggleText, toggleTheme, usePrefs, type Prefs, type TokenKey } from '../lib/prefs'
+import { NAVIGATE } from '../hooks/useActiveSection'
 import { cn } from '../lib/utils'
 
 type Cmd = { id: string; group: string; label: string; hint?: string; keywords?: string; run: () => void }
 
-/** Scroll to a section or project and move keyboard focus there, so the next Tab continues from it. */
+/**
+ * Scroll to a section, project or case study and move keyboard focus there, so the next Tab
+ * continues from it. A case study (<details>) is opened first and its summary takes focus.
+ */
 export function goTo(id: string) {
   const el = document.getElementById(id)
   if (!el) return
+  window.dispatchEvent(new Event(NAVIGATE))   // releases a nav pin, so the highlight follows
   history.replaceState(null, '', id === 'top' ? location.pathname : `#${id}`)
+  if (el instanceof HTMLDetailsElement) el.open = true
   el.scrollIntoView({ block: 'start' })
-  if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '-1')
-  el.focus({ preventScroll: true })
+  const target = el instanceof HTMLDetailsElement ? el.querySelector('summary')! : el
+  if (!target.hasAttribute('tabindex') && target === el) el.setAttribute('tabindex', '-1')
+  target.focus({ preventScroll: true })
 }
 
 const open = (href: string) => window.open(href, '_blank', 'noopener,noreferrer')
+const TOKEN_NAMES: Record<TokenKey, string> = { accent: 'Accent', density: 'Spacing', radius: 'Radius' }
 
 export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   const dialog = useRef<HTMLDialogElement>(null)
   const input = useRef<HTMLInputElement>(null)
+  const list = useRef<HTMLDivElement>(null)
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
   const [note, setNote] = useState('')
@@ -30,22 +39,29 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
     ...([['top', 'Home'], ['work', 'Selected work'], ['journey', 'Journey'], ['lab', 'Lab'], ['about', 'About'], ['contact', 'Contact']] as const)
       .map(([to, label]) => ({ id: `go-${to}`, group: 'Go to', label, keywords: to, run: () => goTo(to) })),
     ...projects.map(p => ({ id: `p-${p.id}`, group: 'Projects', label: p.title, hint: p.subtitle, keywords: p.tools.join(' '), run: () => goTo(p.id) })),
+    ...projects.map(p => ({ id: `c-${p.id}`, group: 'Case studies', label: `${p.title} case study`, hint: 'how it works, my part, limits', keywords: 'architecture evaluation', run: () => goTo(`${p.id}-case`) })),
     { id: 'exp-zone', group: 'Lab', label: 'Try the zone check', keywords: 'yolo polygon surveillance', run: () => goTo('lab-zone') },
     { id: 'exp-rag', group: 'Lab', label: 'Step through the RAG pipeline', keywords: 'retrieval knowyourrules', run: () => goTo('lab-rag') },
-    { id: 'exp-tokens', group: 'Lab', label: 'Play with design tokens', keywords: 'colour color accent radius spacing type', run: () => goTo('lab-tokens') },
+    { id: 'exp-tokens', group: 'Lab', label: 'Count tokens', keywords: 'tokenizer tokenization gpt hindi telugu', run: () => goTo('lab-tokens') },
     { id: 'theme', group: 'Preferences', label: `Switch to ${prefs.theme === 'dark' ? 'light' : 'dark'} theme`, keywords: 'dark light mode', run: toggleTheme },
     { id: 'text', group: 'Preferences', label: prefs.text === 'lg' ? 'Use normal text size' : 'Use larger text', keywords: 'font size zoom accessibility', run: toggleText },
+    { id: 'tokens', group: 'Preferences', label: 'Open design tokens', keywords: 'colour color accent radius spacing', run: () => goTo('design-tokens') },
+    ...(['accent', 'density', 'radius'] as TokenKey[]).flatMap(k => (OPTIONS[k] as readonly string[]).map(v => ({
+      id: `tok-${k}-${v}`, group: 'Preferences', label: `${TOKEN_NAMES[k]}: ${v}${prefs[k] === v ? ' (current)' : ''}`, keywords: 'design token',
+      run: () => setPref(k, v as Prefs[typeof k]),
+    }))),
     { id: 'reset', group: 'Preferences', label: 'Reset design tokens', keywords: 'default', run: resetTokens },
     {
       id: 'copy', group: 'Contact', label: 'Copy email address', hint: site.email, keywords: 'mail',
-      run: () => { navigator.clipboard?.writeText(site.email).then(() => setNote('Email address copied.'), () => setNote(`Couldn’t copy. The address is ${site.email}`)) },
+      // Promise.resolve().then(...) also catches a missing Clipboard API (older browsers, plain http).
+      run: () => { Promise.resolve().then(() => navigator.clipboard.writeText(site.email)).then(() => setNote('Email address copied.'), () => setNote(`Couldn’t copy. The address is ${site.email}`)) },
     },
     { id: 'mail', group: 'Contact', label: 'Write an email', hint: site.email, run: () => { location.href = `mailto:${site.email}` } },
     { id: 'gh', group: 'Links', label: 'GitHub', hint: 'opens in a new tab', run: () => open(site.github) },
     { id: 'li', group: 'Links', label: 'LinkedIn', hint: 'opens in a new tab', run: () => open(site.linkedin) },
     { id: 'cv', group: 'Links', label: 'Résumé (PDF)', run: () => { location.href = site.resume } },
     { id: 'ez', group: 'Links', label: 'Ez-Learn live demo', hint: 'opens in a new tab', run: () => open('https://ez-learn.onrender.com/') },
-  ], [prefs.theme, prefs.text])
+  ], [prefs])
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -57,7 +73,16 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
   useEffect(() => {
     const d = dialog.current
     if (!d) return
-    if (isOpen && !d.open) { setQuery(''); setActive(0); setNote(''); d.showModal(); input.current?.focus() }
+    if (isOpen && !d.open) {
+      setQuery(''); setActive(0); setNote('')
+      // On touch screens, focusing the search box would raise the on-screen keyboard over the list,
+      // so focus starts on the list instead (the dialog focuses the element marked autofocus).
+      // Typing a letter there still moves to the search box.
+      const touch = window.matchMedia('(pointer: coarse)').matches
+      list.current?.toggleAttribute('autofocus', touch)
+      d.showModal()
+      if (!touch) input.current?.focus()
+    }
     if (!isOpen && d.open) d.close()
   }, [isOpen])
 
@@ -67,7 +92,8 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
 
   const run = (c: Cmd) => {
     // Preferences and copy keep the palette open so the result is visible; everything else closes it first.
-    if (c.group === 'Preferences' || c.id === 'copy') { c.run(); if (c.group === 'Preferences') setNote('Done.'); return }
+    const stayOpen = (c.group === 'Preferences' && c.id !== 'tokens') || c.id === 'copy'
+    if (stayOpen) { c.run(); if (c.group === 'Preferences') setNote('Done.'); return }
     onClose()
     window.setTimeout(c.run, 0)
   }
@@ -109,15 +135,26 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
           value={query}
           onChange={e => { setQuery(e.target.value); setActive(0) }}
           onKeyDown={onKey}
-          className="h-13 w-full bg-transparent text-[15px] outline-none placeholder:text-mute"
+          className="h-13 w-full bg-transparent text-[0.9375rem] outline-none placeholder:text-mute"
         />
         <kbd className="kbd">esc</kbd>
       </div>
 
-      <div id={`${id}-list`} role="listbox" aria-label="Commands" className="max-h-[min(24rem,60vh)] overflow-y-auto p-2">
+      <div
+        ref={list}
+        id={`${id}-list`}
+        role="listbox"
+        aria-label="Commands"
+        tabIndex={-1}
+        onKeyDown={e => {
+          if (e.key.length === 1 && !e.metaKey && !e.ctrlKey && !e.altKey) { input.current?.focus(); return }
+          onKey(e)
+        }}
+        className="max-h-[min(24rem,60vh)] overflow-y-auto p-2"
+      >
         {groups.map(g => (
           <div key={g}>
-            <div aria-hidden="true" className="px-2 pb-1 pt-3 font-mono text-[10px] uppercase tracking-wider text-mute first:pt-1">{g}</div>
+            <div aria-hidden="true" className="px-2 pb-1 pt-3 font-mono text-[0.625rem] uppercase tracking-wider text-mute first:pt-1">{g}</div>
             <div role="group" aria-label={g}>
               {results.filter(r => r.group === g).map(c => {
                 const i = ++index
@@ -143,7 +180,7 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
         {results.length === 0 && <p className="px-3 py-6 text-center text-sm text-mute">Nothing matches “{query}”.</p>}
       </div>
 
-      <div className="flex items-center justify-between gap-3 border-t border-line px-4 py-2 font-mono text-[11px] text-mute">
+      <div className="flex items-center justify-between gap-3 border-t border-line px-4 py-2 font-mono text-[0.6875rem] text-mute">
         <span aria-live="polite">{note}</span>
         <span className="hidden gap-3 sm:flex"><span><kbd className="kbd">↑</kbd> <kbd className="kbd">↓</kbd> move</span><span><kbd className="kbd">↵</kbd> select</span></span>
       </div>

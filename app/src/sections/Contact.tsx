@@ -27,18 +27,18 @@ export function Contact() {
   return (
     <section id="contact" aria-labelledby="contact-title" className="sec">
       <div data-reveal className="border-t border-line pt-5">
-        <p className="eyebrow"><span aria-hidden="true">05 ✉ </span>Contact</p>
+        <p className="t-kicker"><span aria-hidden="true">05 <span className="text-accent">✉</span> </span>Contact</p>
         <h2 id="contact-title" className="mt-6 max-w-4xl font-display text-[clamp(2.4rem,7vw,5.5rem)] font-semibold leading-[.95] tracking-[-.035em]">
-          Got a role, a question or a messy dataset<span className="text-accent">?</span>
+          Let’s talk<span className="text-accent">.</span>
         </h2>
-        <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-soft sm:text-base">Email is the quickest way to reach me.</p>
+        <p className="mt-6 max-w-xl text-[0.9375rem] leading-relaxed text-soft sm:text-base">Email is the quickest way to reach me.</p>
 
         <div className="mt-8 flex flex-wrap items-center gap-3">
           <a href={`mailto:${site.email}`} className="group inline-flex items-center gap-3 font-display text-[clamp(1.25rem,4vw,2.25rem)] font-medium tracking-tight transition-colors hover:text-accent">
             <span ref={address} className="underline decoration-line-strong decoration-2 underline-offset-[6px] group-hover:decoration-accent">{site.email}</span>
             <span aria-hidden="true" className="transition-transform group-hover:translate-x-1">→</span>
           </a>
-          <button type="button" onClick={copy} className="chip border border-line-strong px-3 py-1.5 text-xs text-soft transition-colors hover:border-accent hover:text-accent">
+          <button type="button" onClick={copy} className="btn btn-secondary btn-sm">
             Copy<span className="sr-only"> email address</span>
           </button>
           <span aria-live="polite" className="text-xs text-mute">{copied}</span>

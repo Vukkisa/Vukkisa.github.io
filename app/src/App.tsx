@@ -1,5 +1,7 @@
 import { Footer, SkipLink } from './components/layout/Chrome'
 import { TopBar } from './components/TopBar'
+import { useHashLinks } from './hooks/useHashLinks'
+import { usePauseOffscreen } from './hooks/usePauseOffscreen'
 import { useReveal } from './hooks/useReveal'
 import { About } from './sections/About'
 import { Contact } from './sections/Contact'
@@ -10,6 +12,8 @@ import { Work } from './sections/Work'
 
 export default function App() {
   useReveal()
+  usePauseOffscreen()
+  useHashLinks()
   return (
     <>
       <SkipLink />

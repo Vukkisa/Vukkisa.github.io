@@ -1,0 +1,128 @@
+<!doctype html>
+<!--
+  Jayanth Vukkisa's résumé: the editable source of assests/Jayanth_Vukkisa_Resume.pdf.
+  Edit this file, then run `npm run resume` to regenerate the PDF (scripts/resume-pdf.mjs).
+
+  Rules: only facts backed by app/src/data/content.ts (the portfolio) or the previous résumé.
+  One column, real text, standard section names, no tables, icons or rating bars, so applicant
+  tracking systems read it in order. Fonts are the site's own (Bricolage for the name, Geist for text).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jayanth Vukkisa – Résumé</title>
+<style>
+  @font-face { font-family: Bricolage; src: url(../node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wght-normal.woff2) format('woff2'); font-weight: 200 800; }
+  @font-face { font-family: Geist; src: url(../node_modules/@fontsource-variable/geist/files/geist-latin-wght-normal.woff2) format('woff2'); font-weight: 100 900; }
+  @page { size: Letter; margin: 0.5in 0.6in 0.45in; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font: 400 9.6pt/1.38 Geist, Arial, sans-serif; color: #18181b; font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0; }
+  a { color: inherit; text-decoration: none; }
+  header { text-align: center; }
+  h1 { font: 600 22pt/1.1 Bricolage, Arial, sans-serif; letter-spacing: -0.01em; }
+  .headline { margin-top: 3pt; font-size: 10.2pt; color: #2b2b31; }
+  .contact { margin-top: 3pt; font-size: 9pt; color: #3f3f46; }
+  .contact a { color: #1d3fd8; }
+  h2 { margin: 10pt 0 4pt; padding-bottom: 2pt; border-bottom: 0.75pt solid #c9c9cf; font: 600 10.5pt/1.2 Bricolage, Arial, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; color: #1d3fd8; }
+  p + p { margin-top: 2pt; }
+  .entry { margin-top: 6pt; break-inside: avoid; }
+  .entry:first-of-type { margin-top: 0; }
+  .row { display: flex; justify-content: space-between; gap: 12pt; }
+  .title { font-weight: 600; }
+  .when { white-space: nowrap; color: #3f3f46; }
+  .sub { color: #52525b; }
+  ul { margin: 2pt 0 0 13pt; }
+  li { padding-left: 1pt; }
+  li + li { margin-top: 1pt; }
+  .skills p { margin: 0; }
+  .skills b, .note b { font-weight: 600; }
+  .note { color: #52525b; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Jayanth Vukkisa</h1>
+  <p class="headline">Applied AI &amp; Machine Learning · Data Engineering background</p>
+  <p class="contact">Hyderabad, India | +91-7093457687 | <a href="mailto:vukkisajayanth@gmail.com">vukkisajayanth@gmail.com</a></p>
+  <p class="contact"><a href="https://vukkisa.github.io/">vukkisa.github.io</a> | <a href="https://linkedin.com/in/jayanthvukkisa">linkedin.com/in/jayanthvukkisa</a> | <a href="https://github.com/Vukkisa">github.com/Vukkisa</a></p>
+</header>
+
+<h2>Summary</h2>
+<p>Postgraduate student in AI &amp; Data Science at Jio Institute and Associate Data Scientist intern at AiSpry, building speech-recognition, retrieval-augmented generation (RAG) and computer-vision systems. Brings two and a half years as a Data Developer at Tata Consultancy Services on enterprise telecom billing data: SQL, large-scale data migration, data validation and automation.</p>
+
+<h2>Skills</h2>
+<div class="skills">
+  <p><b>Programming:</b> Python, SQL, PL/SQL, Shell scripting</p>
+  <p><b>Data engineering:</b> Oracle, PostgreSQL, data migration, ETL, data validation, CDR processing, Power BI</p>
+  <p><b>Machine learning and vision:</b> PyTorch, scikit-learn, Hugging Face Transformers, YOLOv8, OpenCV, NumPy</p>
+  <p><b>Speech:</b> Whisper (faster-whisper), Indic-Conformer, Qwen3-ASR, Silero VAD, WER/CER evaluation with jiwer</p>
+  <p><b>Generative AI:</b> RAG, LangChain, LangGraph, Chroma, Ollama, Groq</p>
+  <p><b>Development tools:</b> Django, FastAPI, Gradio, REST APIs, Git</p>
+</div>
+
+<h2>Experience</h2>
+<div class="entry">
+  <div class="row"><p><span class="title">Associate Data Scientist Intern</span> | AiSpry</p><p class="when">Oct 2026 – Dec 2026</p></div>
+  <ul>
+    <li>Building a fully local speech-recognition pipeline for noisy, multilingual railway audio, within tight compute and disk limits.</li>
+    <li>Tested denoising methods (spectral denoising, RNNoise, DeepFilterNet) and silence- and voice-based segmentation with Silero VAD.</li>
+    <li>Benchmarked Whisper (via faster-whisper), Indic-Conformer and Qwen3-ASR side by side, and merged their outputs with a word-level ensemble.</li>
+    <li>Scoring every variant on word and character error rate (WER, CER) with jiwer; now fine-tuning a model to lower WER. Company project: code, data and results are not public.</li>
+  </ul>
+</div>
+<div class="entry">
+  <div class="row"><p><span class="title">Data Developer</span> | Tata Consultancy Services (TCS), Hyderabad</p><p class="when">Sep 2023 – Apr 2026</p></div>
+  <ul>
+    <li>Configured billing rules, rate plans and system parameters for a Kenan billing platform migration of 2M+ customer records from legacy systems.</li>
+    <li>Wrote pre-migration scripts for bulk call-detail-record (CDR) loads, improving processing speed by 25%.</li>
+    <li>Automated a billing charge-inventory report, cutting manual validation time by 40%.</li>
+    <li>Built compatible field mappings for financial feeds, reducing data-flow errors for downstream teams.</li>
+    <li>Star of the Month, TCS project excellence award (2024).</li>
+  </ul>
+</div>
+
+<h2>Projects</h2>
+<div class="entry">
+  <div class="row"><p><span class="title">KnowYourRules</span> | RAG assistant for Indian traffic law | Jio Institute team project</p><p class="when">Sep 2026</p></div>
+  <ul>
+    <li>Built the RAG pipeline, my part of the team project: LangChain chunking, local embeddings with Ollama (nomic-embed-text) and a Chroma vector store tagged by source and state.</li>
+    <li>Retrieves 4 central and 4 state-specific chunks per question; Groq (gpt-oss-120b) answers only from them through a strict prompt, cites its sources, or says the question isn’t covered.</li>
+    <li>Indexed the central Motor Vehicles Act and Rules, Gujarat and Delhi. Local prototype; answer accuracy not yet evaluated. <a href="https://github.com/DAG-21/KnowYourRules">github.com/DAG-21/KnowYourRules</a></li>
+  </ul>
+</div>
+<div class="entry">
+  <div class="row"><p><span class="title">AI Surveillance</span> | Restricted-zone intrusion detection | Jio Institute coursework</p><p class="when">2026</p></div>
+  <ul>
+    <li>Command-line tool: draw a polygon zone on any camera feed (webcam, USB, RTSP or video file); YOLOv8 detects people and each person’s feet point is tested against the zone.</li>
+    <li>Every intrusion saves a video clip, a snapshot and a CSV log entry. Packaged as an installable tool with a built-in FPS benchmark (results not yet recorded). <a href="https://github.com/Vukkisa/AI_Surveillance">github.com/Vukkisa/AI_Surveillance</a></li>
+  </ul>
+</div>
+<div class="entry">
+  <div class="row"><p><span class="title">Generative AI coursework</span> | Jio Institute</p><p class="when"></p></div>
+  <ul>
+    <li>Smart Mutual Fund Advisor: RAG over a mutual-fund dataset with Chroma and structured output, served in Gradio, then rebuilt as a LangGraph graph.</li>
+    <li>LLM extraction pipelines: LangChain and Groq pipelines that classify, summarise and extract entities from news articles and job postings.</li>
+  </ul>
+</div>
+<div class="entry">
+  <div class="row"><p><span class="title">Ez-Learn</span> | Full-stack learning platform | Django, PostgreSQL</p><p class="when">2023, updated 2025</p></div>
+  <ul>
+    <li>Email-OTP sign-up, course content, scored quizzes and certificates for learners; course and quiz management for instructors; Razorpay payments with verification. Deployed on Render: <a href="https://ez-learn.onrender.com/">ez-learn.onrender.com</a></li>
+  </ul>
+</div>
+
+<h2>Education</h2>
+<div class="entry">
+  <div class="row"><p><span class="title">PG Program in AI &amp; Data Science</span> | Jio Institute</p><p class="when">Apr 2026 – Apr 2027 (expected)</p></div>
+  <p class="sub">Coursework includes computer vision and generative AI.</p>
+</div>
+<div class="entry">
+  <div class="row"><p><span class="title">B.Tech, Computer Science &amp; Engineering</span> | B.V. Raju Institute of Technology, Hyderabad</p><p class="when">2022</p></div>
+  <p class="sub">CGPA 8.17/10</p>
+</div>
+
+<h2>Certifications</h2>
+<p>Full Stack Developer (Python), TalentSprint, 2023: 200+ hour program in Python, Django and web development (Mar – Sep 2023)</p>
+<p>SQL (Advanced), HackerRank, 2023</p>
+</body>
+</html>

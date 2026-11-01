@@ -1,0 +1,62 @@
+name: CI
+
+# Checks every pull request: types, unit tests, a fresh build (which must match the committed
+# build, since GitHub Pages serves the committed files), the size budget, then browser and
+# accessibility tests.
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: Build (includes type-check)
+        run: npm run build
+
+      - name: Committed build is up to date
+        run: |
+          changes="$(git status --porcelain -- index.html static)"
+          if [ -n "$changes" ]; then
+            echo "::error::index.html or static/ differ from a fresh build. Run 'npm run build' and commit the result."
+            echo "$changes"
+            exit 1
+          fi
+
+      - name: JavaScript size budget
+        run: npm run size
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Browser and accessibility tests
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

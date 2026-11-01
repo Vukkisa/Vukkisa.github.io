@@ -1,25 +1,21 @@
 import type { CSSProperties } from 'react'
+import { SignalFigure } from '../components/SignalFigure'
 import { intro, site } from '../data/content'
 
-const HUES = ['--h1', '--h2', '--h3', '--h4', '--h5']
-
-/** The name, one span per letter, so each can take its own colour on hover (see .ltr in index.css). */
+/** The name, one span per letter, so each can take the accent colour on hover (see .ltr in index.css). */
 function Name() {
   let i = 0
   return (
-    <h1 className="font-display text-[clamp(3.4rem,14.5vw,10.5rem)] font-semibold leading-[.86] tracking-[-.045em]">
-      <span className="sr-only">{site.name}</span>
-      <span aria-hidden="true">
-        {site.name.split(' ').map(word => (
-          <span key={word} className="block whitespace-nowrap">
-            {[...word].map(ch => {
-              const k = i++
-              return <span key={k} className="ltr ltr-in" style={{ '--h': `var(${HUES[k % HUES.length]})`, '--i': k } as CSSProperties}>{ch}</span>
-            })}
-          </span>
-        ))}
-      </span>
-    </h1>
+    <span aria-hidden="true" className="t-display block">
+      {site.name.split(' ').map(word => (
+        <span key={word} className="block whitespace-nowrap">
+          {[...word].map(ch => {
+            const k = i++
+            return <span key={k} className="ltr ltr-in" style={{ '--i': k } as CSSProperties}>{ch}</span>
+          })}
+        </span>
+      ))}
+    </span>
   )
 }
 
@@ -27,76 +23,85 @@ const LINKS = [
   { label: 'GitHub', href: site.github },
   { label: 'LinkedIn', href: site.linkedin },
   { label: 'Résumé', href: site.resume },
+  { label: 'Email', href: `mailto:${site.email}` },
 ]
 
+/**
+ * First screen: what I do (focus line), who I am (name), the one-line statement, a short factual
+ * summary, the two main ways in (projects and the Lab), and one technical visual. Everything is
+ * readable without animation; the entrance motion only runs with prefers-reduced-motion: no-preference.
+ */
 export function Hero() {
   const [lead, ...clauses] = intro.tagline
   return (
-    <section id="top" aria-label="Introduction" className="relative">
-      {/* Full-bleed glow: wider than the content column so it never shows an edge. */}
-      <div aria-hidden="true" className="hero-glow pointer-events-none absolute -top-24 left-1/2 h-[38rem] w-screen -translate-x-1/2" />
-      <div className="relative pb-6 pt-10 sm:pt-16 lg:pt-20">
-        <p className="eyebrow rise flex flex-wrap items-center gap-x-3 gap-y-1">
-          <span className="inline-flex items-center gap-2 text-fg">
-            <span aria-hidden="true" className="pulse size-2 rounded-full bg-live" />
-            {intro.now}
-          </span>
-          <span aria-hidden="true">·</span>
-          <span>{site.location}</span>
-        </p>
-
-        <div className="mt-8 flex items-end justify-between gap-6">
-          <Name />
-          <a href="#about" className="avatar group relative mb-1 block shrink-0 sm:mb-2" aria-label="About me">
-            <img
-              src={`${import.meta.env.BASE_URL}images/jayanth-320.webp`}
-              width={176}
-              height={176}
-              alt=""
-              fetchPriority="high"
-              decoding="async"
-              className="size-20 rounded-(--r) object-cover sm:size-28 lg:size-44"
-            />
-            <span aria-hidden="true" className="smile absolute -right-3 -top-3 grid size-10 place-items-center rounded-full bg-accent text-xl text-accent-ink">☺︎</span>
-          </a>
-        </div>
-
-        <p className="rise mt-10 max-w-3xl font-display text-[clamp(1.6rem,3.6vw,2.6rem)] font-medium leading-[1.12] tracking-tight" style={{ '--d': '250ms' } as CSSProperties}>
-          {lead} <span className="text-mute">{clauses[0]}</span> <span className="text-mute">{clauses[1]}</span>{' '}
-          <span className="text-accent">{clauses[2]}</span>
-        </p>
-
-        <div className="rise mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end" style={{ '--d': '380ms' } as CSSProperties}>
-          <p className="max-w-xl text-[15px] leading-relaxed text-soft sm:text-base">{intro.lines[0]}</p>
-          <div className="flex flex-col gap-4 lg:items-end">
-            <div className="flex flex-wrap gap-3">
-              <a href="#work" className="chip inline-flex items-center gap-2 bg-fg px-4 py-2.5 text-sm font-medium text-bg transition-opacity hover:opacity-85">
-                See the work <span aria-hidden="true">↓</span>
-              </a>
-              <a href="#journey" className="chip group inline-flex items-center gap-2 border border-line-strong px-4 py-2.5 text-sm font-medium transition-colors hover:border-accent hover:text-accent">
-                <span aria-hidden="true" className="text-accent transition-transform group-hover:translate-x-0.5">▶</span> Start the journey
-              </a>
+    <section id="top" aria-labelledby="hero-title" data-loop className="relative pb-12 pt-5 sm:pt-12 lg:pb-16 lg:pt-10">
+      <div className="grid gap-12 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] lg:items-center lg:gap-16">
+        {/* On phones the calls to action come straight after the headline (order-3) and the summary
+            follows (order-4), so the buttons are reachable on short screens; from sm up the summary
+            comes first. The summary isn't focusable, so keyboard order matches either way. */}
+        <div className="flex flex-col">
+          <div className="rise order-1 flex items-center gap-4">
+            <a href="#about" className="avatar group relative block shrink-0" aria-label="About me">
+              <img
+                src={`${import.meta.env.BASE_URL}images/jayanth-320.webp`}
+                width={64}
+                height={64}
+                alt=""
+                fetchPriority="high"
+                decoding="async"
+                className="size-14 rounded-(--r-sm) object-cover sm:size-16"
+              />
+              <span aria-hidden="true" className="smile absolute -right-2 -top-2 grid size-6 place-items-center rounded-full bg-accent text-sm text-accent-ink">☺︎</span>
+            </a>
+            <div className="min-w-0">
+              <p className="t-kicker text-fg">
+                {intro.focus.map((f, i) => <span key={f} className="whitespace-nowrap">{i > 0 && ' · '}{f}</span>)}
+              </p>
+              <p className="mt-1 text-sm text-mute">
+                <span className="mr-1.5 inline-block size-1.5 rounded-full bg-live align-middle" aria-hidden="true" />
+                {intro.now} · {site.location}
+              </p>
             </div>
-            <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
-              {LINKS.map(l => {
-                const external = l.href.startsWith('http')
-                return (
-                  <li key={l.label}>
-                    <a href={l.href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} className="link">
-                      {l.label}{external && <><span aria-hidden="true" className="nudge text-mute"> ↗</span><span className="sr-only"> (opens in a new tab)</span></>}
-                    </a>
-                  </li>
-                )
-              })}
-              <li><a href={`mailto:${site.email}`} className="link">Email</a></li>
-            </ul>
           </div>
+
+          <h1 id="hero-title" className="order-2 mt-6 sm:mt-7 lg:mt-8">
+            <span className="sr-only">{site.name}: </span>
+            <Name />
+            <span className="rise t-headline mt-5 block max-w-[36rem]" style={{ '--d': '220ms' } as CSSProperties}>
+              {lead} <span className="text-mute">{clauses[0]}</span> <span className="text-mute">{clauses[1]}</span>{' '}
+              <span className="text-accent">{clauses[2]}</span>
+            </span>
+          </h1>
+
+          <p className="rise t-lead order-4 mt-6 max-w-[36rem] sm:order-3 sm:mt-5" style={{ '--d': '320ms' } as CSSProperties}>{intro.summary}</p>
+
+          <div className="rise order-3 mt-6 flex flex-wrap items-center gap-2.5 sm:order-4 sm:mt-7" style={{ '--d': '400ms' } as CSSProperties}>
+            <a href="#work" className="btn btn-primary">
+              View projects <span aria-hidden="true" className="btn-arrow">→</span>
+            </a>
+            <a href="#lab" className="btn btn-secondary">
+              Open the Lab <span aria-hidden="true" className="btn-arrow">→</span>
+            </a>
+            <a href="#journey" className="link text-sm text-soft sm:ml-1">or start the journey</a>
+          </div>
+
+          <ul className="rise order-5 mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm" style={{ '--d': '460ms' } as CSSProperties} aria-label="Elsewhere">
+            {LINKS.map(l => {
+              const external = l.href.startsWith('http')
+              return (
+                <li key={l.label}>
+                  <a href={l.href} {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} className="link text-soft">
+                    {l.label}{external && <><span aria-hidden="true" className="nudge text-mute"> ↗</span><span className="sr-only"> (opens in a new tab)</span></>}
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
         </div>
 
-        <a href="#work" aria-hidden="true" tabIndex={-1} className="mt-12 hidden items-center gap-3 font-mono text-[11px] text-mute sm:inline-flex">
-          <span className="relative block h-10 w-px overflow-hidden bg-line"><span className="cue-line absolute inset-0 bg-accent" /></span>
-          scroll
-        </a>
+        <div className="rise max-w-[36rem] lg:max-w-none" style={{ '--d': '300ms' } as CSSProperties}>
+          <SignalFigure />
+        </div>
       </div>
     </section>
   )

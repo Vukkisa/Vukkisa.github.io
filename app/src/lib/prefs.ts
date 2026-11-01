@@ -1,36 +1,54 @@
 import { useSyncExternalStore } from 'react'
 
 /**
- * Visitor preferences: theme, text size and the live design tokens from the Lab. Each one is a
+ * Visitor preferences: theme, text size and the live design tokens (footer and ⌘K). Each one is a
  * data-* attribute on <html> that index.css reads, so a change restyles the whole page at once.
+ * Headings are always Bricolage; there's deliberately no font choice.
  * Saved to localStorage; the inline script in index.html applies them before first paint.
  */
 export const OPTIONS = {
   theme: ['dark', 'light'],
   text: ['md', 'lg'],
   accent: ['cobalt', 'ember', 'moss', 'rose', 'mono'],
-  type: ['grotesk', 'sans', 'mono'],
   density: ['compact', 'cozy', 'airy'],
   radius: ['none', 'soft', 'round'],
 } as const
 
 type Options = typeof OPTIONS
 export type Prefs = { [K in keyof Options]: Options[K][number] }
-export type TokenKey = 'accent' | 'type' | 'density' | 'radius'
+export type TokenKey = 'accent' | 'density' | 'radius'
 
-export const DEFAULTS: Prefs = { theme: 'dark', text: 'md', accent: 'cobalt', type: 'grotesk', density: 'cozy', radius: 'soft' }
+export const DEFAULTS: Prefs = { theme: 'dark', text: 'md', accent: 'cobalt', density: 'cozy', radius: 'soft' }
 const KEY = 'prefs'
 
-function read(): Prefs {
+/** The browser's own UI colour (meta theme-color) for each theme: the page background. */
+export const THEME_COLOR = { dark: '#0a0a0b', light: '#f7f7f4' } as const
+
+/**
+ * Turn the stored JSON (and the older site's lone 'theme' key) into valid preferences. Anything
+ * missing, unknown or corrupt falls back to the default. Pure, so it's unit-tested, and the
+ * pre-paint script in app/index.html is tested to give the same answer (tests/unit/prepaint.test.ts).
+ */
+export function parsePrefs(raw: string | null, legacyTheme: string | null): Prefs {
   const p = { ...DEFAULTS }
+  let saved: Record<string, unknown> = {}
   try {
-    const saved = JSON.parse(localStorage.getItem(KEY) ?? '{}') as Record<string, unknown>
-    saved.theme ??= localStorage.getItem('theme')   // the previous version of the site stored only this
-    for (const k of Object.keys(OPTIONS) as (keyof Prefs)[]) {
-      if ((OPTIONS[k] as readonly unknown[]).includes(saved[k])) (p as Record<string, unknown>)[k] = saved[k]
-    }
-  } catch { /* storage blocked or corrupt: use the defaults */ }
+    saved = JSON.parse(raw || '{}') || {}
+    if (!saved.theme) saved.theme = legacyTheme   // the previous version of the site stored only this
+  } catch { /* corrupt JSON, or not an object: use the defaults */ }
+  for (const k of Object.keys(OPTIONS) as (keyof Prefs)[]) {
+    const v = (saved as Record<string, unknown> | null)?.[k]
+    if ((OPTIONS[k] as readonly unknown[]).includes(v)) (p as Record<string, unknown>)[k] = v
+  }
   return p
+}
+
+function read(): Prefs {
+  try {
+    return parsePrefs(localStorage.getItem(KEY), localStorage.getItem('theme'))
+  } catch {
+    return { ...DEFAULTS }   // storage blocked: use the defaults
+  }
 }
 
 let prefs = read()
@@ -39,6 +57,7 @@ const listeners = new Set<() => void>()
 function apply(p: Prefs) {
   const d = document.documentElement.dataset
   for (const [k, v] of Object.entries(p)) d[k] = v
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', THEME_COLOR[p.theme])
 }
 
 export function setPref<K extends keyof Prefs>(key: K, value: Prefs[K]) {
@@ -56,7 +75,7 @@ export function setPref<K extends keyof Prefs>(key: K, value: Prefs[K]) {
 }
 
 export function resetTokens() {
-  for (const k of ['accent', 'type', 'density', 'radius'] as const) setPref(k, DEFAULTS[k])
+  for (const k of ['accent', 'density', 'radius'] as const) setPref(k, DEFAULTS[k])
 }
 
 const subscribe = (l: () => void) => { listeners.add(l); return () => { listeners.delete(l) } }

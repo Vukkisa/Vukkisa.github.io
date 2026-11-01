@@ -12,7 +12,7 @@
     "isolatedModules": true,
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["vite/client"]
+    "types": ["vite/client", "node"]
   },
-  "include": ["app/src", "vite.config.ts"]
+  "include": ["app/src", "tests", "vite.config.ts", "vitest.config.ts", "playwright.config.ts"]
 }

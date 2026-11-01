@@ -9,12 +9,12 @@ export function About() {
       <div className="mt-10 grid gap-12 lg:grid-cols-12">
         <div data-reveal className="lg:col-span-5">
           <p className="font-display text-2xl font-medium leading-snug tracking-tight sm:text-[1.7rem]">
-            Two and a half years of SQL and billing data taught me where real data breaks. Now I build the AI that has to live with it.
+            Two and a half years of SQL and billing systems at TCS, then a move into AI: retrieval, computer vision and speech recognition.
           </p>
           <dl className="mt-8 divide-y divide-line border-y border-line">
             {now.map(n => (
-              <div key={n.label} className="grid grid-cols-[5.5rem_minmax(0,1fr)] gap-3 py-3 text-[15px]">
-                <dt className="font-mono text-[11px] uppercase tracking-wider text-accent">{n.label}</dt>
+              <div key={n.label} className="grid grid-cols-[5.5rem_minmax(0,1fr)] gap-3 py-3 text-[0.9375rem]">
+                <dt className="font-mono text-[0.6875rem] uppercase tracking-wider text-accent">{n.label}</dt>
                 <dd className="text-soft">{n.text}</dd>
               </div>
             ))}

@@ -1,4 +1,5 @@
 import { site } from '../../data/content'
+import { DesignTokens } from '../DesignTokens'
 
 export function SkipLink() {
   return (
@@ -11,7 +12,17 @@ export function SkipLink() {
 export function Footer() {
   return (
     <footer className="mx-auto max-w-6xl px-5 pb-10 sm:px-6 lg:px-10">
-      <div className="flex flex-col gap-4 border-t border-line pt-6 font-mono text-[11px] text-mute sm:flex-row sm:items-center sm:justify-between">
+      <details id="design-tokens" className="case surface mb-6">
+        <summary className="flex cursor-pointer items-center justify-between gap-4 rounded-(--r) px-5 py-3.5 transition-colors hover:bg-chip/60">
+          <span>
+            <span className="block text-sm font-medium">Design tokens</span>
+            <span className="block text-xs text-mute">Colour, spacing and radius for this site, live</span>
+          </span>
+          <span aria-hidden="true" className="case-mark grid size-7 shrink-0 place-items-center rounded-full border border-line-strong leading-none text-soft">+</span>
+        </summary>
+        <div className="case-body border-t border-line px-5 py-5"><DesignTokens /></div>
+      </details>
+      <div className="flex flex-col gap-4 border-t border-line pt-6 font-mono text-[0.6875rem] text-mute sm:flex-row sm:items-center sm:justify-between">
         <p>
           © {new Date().getFullYear()} {site.name} · {site.location} · built with React & Tailwind ·{' '}
           <a href={site.source} target="_blank" rel="noopener noreferrer" className="link text-mute">
@@ -19,7 +30,7 @@ export function Footer() {
           </a>
         </p>
         <p className="flex items-center gap-4">
-          <span>press <kbd className="kbd">/</kbd> for the command menu</span>
+          <span className="pointer-coarse:hidden">press <kbd className="kbd">/</kbd> for the command menu</span>
           <a href="#top" className="link text-mute">back to top ↑</a>
         </p>
       </div>
