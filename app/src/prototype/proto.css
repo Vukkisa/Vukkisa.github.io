@@ -45,6 +45,10 @@
 
 /* ---- shared pen: hero line, portrait frame and card outlines ---- */
 :root { --pen-w: 2px; --pen-op: .8; --pen-ease: cubic-bezier(.45, 0, .2, 1); --pen-dur: 1.25s; }
+/* Mono has no hue to tell the pen from the text, so the pen is quieter there. */
+:root[data-accent="mono"] { --pen-op: .4; }
+:root[data-accent="mono"] .wave-u path, :root[data-accent="mono"] .portrait-line path { opacity: .5; }
+:root[data-theme="light"][data-accent="mono"] { --pen-op: .5; }
 .scroll-line path:first-child { stroke-width: var(--pen-w); opacity: var(--pen-op); stroke-linejoin: round; }
 
 /* ---- project cards ---- */
