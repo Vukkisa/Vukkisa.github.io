@@ -118,6 +118,9 @@ test.describe('preferences', () => {
 
   test('design tokens from the command menu', async ({ page }) => {
     await page.goto('/')
+    // the shortcut listener is attached once the page has rendered, so wait for that before typing
+    await expect(page.getByRole('navigation', { name: 'Sections' })).toBeVisible()
+    await page.waitForLoadState('networkidle')
     await page.keyboard.press('Control+k')
     await page.keyboard.type('accent: moss')
     await page.keyboard.press('Enter')

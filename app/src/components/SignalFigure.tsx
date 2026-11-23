@@ -141,7 +141,7 @@ export function SignalFigure() {
       <ol className="grid grid-cols-2 gap-px border-t border-line bg-line sm:grid-cols-4">
         {signalFigure.stages.map((s, i) => (
           <li key={s.name} className="signal-stage bg-card px-3 py-3 sm:px-4" style={{ '--k': i } as CSSProperties}>
-            <p className="font-mono text-[0.6875rem] text-mute">{String(i + 1).padStart(2, '0')}</p>
+            <p className="font-mono text-[0.6875rem] text-soft">{String(i + 1).padStart(2, '0')}</p>
             <p className="mt-0.5 text-sm font-medium text-fg">{s.name}</p>
             <p className="mt-0.5 text-xs leading-snug text-soft">{s.detail}</p>
           </li>

@@ -547,13 +547,13 @@ export function Prototype() {
           <div className="rise mt-7 flex flex-wrap items-center gap-x-3 gap-y-3" style={{ ['--d' as string]: '400ms' }}>
             <Sketched as="span" seed={21} pad={4} rad={10}><a href="#work" className="btn btn-primary">View projects <span aria-hidden="true" className="btn-arrow">→</span></a></Sketched>
             <Sketched as="span" seed={22} pad={4} rad={10}><a href="#lab" className="btn btn-secondary">Open the Lab <span aria-hidden="true" className="btn-arrow">→</span></a></Sketched>
-            <a href="#journey" className="p-link text-sm text-soft sm:ml-1">or start the journey</a>
+            <a href="#journey" className="p-link inline-block py-1.5 text-sm text-soft sm:ml-1">or start the journey</a>
           </div>
-          <ul aria-label="Elsewhere" className="rise mt-6 flex flex-wrap gap-x-5 gap-y-1 text-[0.9375rem]" style={{ ['--d' as string]: '460ms' }}>
-            <li><a href={site.github} target="_blank" rel="noopener noreferrer" className="p-link">GitHub<span aria-hidden="true" className="nudge text-mute"> ↗</span><span className="sr-only"> (opens in a new tab)</span></a></li>
-            <li><a href={site.linkedin} target="_blank" rel="noopener noreferrer" className="p-link">LinkedIn<span aria-hidden="true" className="nudge text-mute"> ↗</span><span className="sr-only"> (opens in a new tab)</span></a></li>
-            <li><a href={site.resume} className="p-link">Résumé</a></li>
-            <li><a href={`mailto:${site.email}`} className="p-link">Email</a></li>
+          <ul aria-label="Elsewhere" className="rise mt-5 flex flex-wrap gap-x-5 gap-y-0 text-[0.9375rem]" style={{ ['--d' as string]: '460ms' }}>
+            <li><a href={site.github} target="_blank" rel="noopener noreferrer" className="p-link inline-block py-1">GitHub<span aria-hidden="true" className="nudge text-mute"> ↗</span><span className="sr-only"> (opens in a new tab)</span></a></li>
+            <li><a href={site.linkedin} target="_blank" rel="noopener noreferrer" className="p-link inline-block py-1">LinkedIn<span aria-hidden="true" className="nudge text-mute"> ↗</span><span className="sr-only"> (opens in a new tab)</span></a></li>
+            <li><a href={site.resume} className="p-link inline-block py-1">Résumé</a></li>
+            <li><a href={`mailto:${site.email}`} className="p-link inline-block py-1">Email</a></li>
           </ul>
           <div data-loop data-reveal className="mt-12">
             <Sketched when="view" seed={41} pad={6} rad={14}><SignalFigure /></Sketched>
@@ -635,8 +635,8 @@ export function Prototype() {
             <a id="contact-email" href={`mailto:${site.email}`} className="p-link font-display text-[clamp(1.25rem,5vw,1.75rem)] font-medium tracking-tight">{site.email}</a>
           </p>
           <p data-reveal className="mt-6 flex flex-wrap gap-x-5 gap-y-1 text-[0.9375rem]">
-            <a href={site.github} target="_blank" rel="noopener noreferrer" className="p-link">GitHub ↗</a>
-            <a href={site.linkedin} target="_blank" rel="noopener noreferrer" className="p-link">LinkedIn ↗</a>
+            <a href={site.github} target="_blank" rel="noopener noreferrer" className="p-link inline-block py-1">GitHub ↗</a>
+            <a href={site.linkedin} target="_blank" rel="noopener noreferrer" className="p-link inline-block py-1">LinkedIn ↗</a>
             <a href={site.resume} className="p-link">Résumé (PDF)</a>
           </p>
         </section>
