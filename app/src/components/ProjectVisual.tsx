@@ -1,14 +1,16 @@
 import type { ReactNode } from 'react'
 
 /**
- * Drawn diagrams for the three AI projects, shown in place of the static covers. Each one shows
- * how the project works, using only what the project card and case study say. They are
- * illustrations: no real documents, video, audio, scores or model output.
+ * Line-drawn cartoons for three of the projects (AI Surveillance keeps its drawn camera diagram), shown in place of the static covers. Each one is a
+ * small story in two beats, like a title-card gag: the setup in the top panel, the step happening
+ * in the bottom panel, with a banner between them that names the step. The same round-headed
+ * character appears on every card and wears a cap that fits the project. They show only what the
+ * project card and case study say: no real documents, video, audio, scores or model output.
  *
  * Colours come from the theme tokens (Tailwind fill-/stroke- classes), so both themes and every
- * accent work. Motion lives in index.css (.pv-*), runs only with prefers-reduced-motion:
- * no-preference, and pauses off screen ([data-loop]). At rest each diagram shows its final state.
- * Labels are drawn at a fixed size: they scale with the diagram, not with the text-size control.
+ * accent work. Motion lives in index.css (.pv-scene): the steps take turns, only with
+ * prefers-reduced-motion: no-preference, and pause off screen ([data-loop]). At rest each cartoon
+ * shows its last step. Labels are drawn at a fixed size: they scale with the drawing.
  */
 const W = 400
 const H = 300
@@ -23,67 +25,84 @@ function Frame({ label, children }: { label: string; children: ReactNode }) {
 
 const T = 'fill-mute font-mono text-[9px]'     // small label
 const TS = 'fill-soft font-mono text-[10px]'   // stronger label
+const INK = 'fill-none stroke-fg'
+const IDLE_ARMS = 'M190 136L182 164 M210 136L218 164'
 
-/* ---- RAG: ingest → retrieve → grounded answer ------------------------------------------------ */
-function Rag() {
-  const docs = ['Central rules', 'Gujarat', 'Delhi']
-  // The Chroma store: 12 chunks; 4 central and 4 state chunks are retrieved.
-  const chunks = Array.from({ length: 12 }, (_, i) => ({ i, hit: [0, 2, 3, 5].includes(i) ? 'central' : [7, 8, 10, 11].includes(i) ? 'state' : '' }))
+type Hat = 'grad' | 'police' | 'guard' | 'railway'
+
+/** A cap for each project: a graduation cap, a traffic-police cap, a guard's cap, a railway cap. */
+function HatArt({ hat }: { hat: Hat }) {
+  if (hat === 'grad') return <g className={INK}><path d="M183 94L200 85L217 94L200 103Z" className="fill-bg stroke-fg" /><path d="M214 96V108" /></g>
+  if (hat === 'police') return <g className={INK}><path d="M187 95Q200 80 213 95Z" className="fill-bg stroke-fg" /><path d="M187 95H226" /></g>
+  if (hat === 'guard') return <g className={INK}><path d="M187 95Q200 80 213 95Z" className="fill-bg stroke-fg" /><path d="M187 95H226" /><circle cx="200" cy="90" r="2.4" className="fill-fg stroke-none" /></g>
+  return <g className={INK}><path d="M186 95Q200 78 214 95Z" className="fill-bg stroke-fg" /><path d="M186 95H214" /><circle cx="200" cy="88" r="3" /></g>
+}
+
+/** The learner at a desk. `arms` and `props` change per step; everything else is the same drawing. */
+function Toon({ hat, arms, props }: { hat: Hat; arms: string; props?: ReactNode }) {
   return (
-    <Frame label="Illustration of the KnowYourRules RAG pipeline: official documents are chunked and embedded into a Chroma store; a question retrieves 4 central and 4 state chunks; the answer is written only from them and names its sources.">
-      {/* column labels */}
-      <text x="20" y="28" className={TS}>1 · ingest</text>
-      <text x="150" y="28" className={TS}>2 · retrieve</text>
-      <text x="282" y="28" className={TS}>3 · answer</text>
+    <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <g className={INK}>
+        <circle cx="200" cy="106" r="14" className="fill-bg stroke-fg" />
+        <path d="M186 164L190 130Q200 122 210 130L214 164" />
+        <path d={arms} />
+      </g>
+      <circle cx="195" cy="106" r="1.6" className="fill-fg" />
+      <circle cx="206" cy="106" r="1.6" className="fill-fg" />
+      <path d="M196 113q5 4 10 0" className="fill-none stroke-fg" />
+      <HatArt hat={hat} />
+      {props}
+      <path d="M96 168H304 M112 168V190 M288 168V190" className="fill-none stroke-fg" />
+    </g>
+  )
+}
 
-      {/* documents */}
-      {docs.map((d, i) => (
-        <g key={d}>
-          <rect x="20" y={44 + i * 52} width="104" height="42" rx="5" className="fill-bg stroke-line-strong" />
-          <text x="28" y={60 + i * 52} className="fill-fg font-mono text-[9.5px]">{d}</text>
-          <rect x="28" y={68 + i * 52} width="70" height="3" rx="1.5" className="fill-line-strong" />
-          <rect x="28" y={75 + i * 52} width="52" height="3" rx="1.5" className="fill-line-strong" />
+type Step = { cap: string; arms: string; props: ReactNode }
+
+/** Five steps, one at a time: the waiting character above, the step happening below. */
+function Story({ label, hat, steps }: { label: string; hat: Hat; steps: Step[] }) {
+  return (
+    <Frame label={label}>
+      <g transform="translate(52 -52)"><g transform="scale(.74)"><Toon hat={hat} arms={IDLE_ARMS} /></g></g>
+      {steps.map((sc, i) => (
+        <g key={i} className="pv-scene" style={{ animationDelay: `${i * 2.4}s` }}>
+          <g transform="translate(52 76)"><g transform="scale(.74)"><Toon hat={hat} arms={sc.arms} props={sc.props} /></g></g>
+          <ellipse cx="200" cy="116" rx="156" ry="17" className="fill-accent-soft" />
+          <text x="200" y="120" textAnchor="middle" className="fill-fg font-mono text-[11.5px]">{sc.cap}</text>
         </g>
       ))}
-      <text x="20" y="214" className={T}>LangChain chunks</text>
-      <text x="20" y="227" className={T}>nomic-embed-text</text>
-      <path d="M124 65 C140 65 136 120 150 120 M124 117 H150 M124 169 C140 169 136 120 150 120" className="stroke-line-strong" fill="none" />
-
-      {/* question + store */}
-      <rect x="150" y="40" width="112" height="26" rx="13" className="fill-accent-soft stroke-accent" />
-      <text x="206" y="57" textAnchor="middle" className="fill-fg font-mono text-[9.5px]">question + state</text>
-      <path d="M206 66 V82" className="stroke-accent" />
-      <rect x="150" y="82" width="112" height="148" rx="6" className="fill-bg stroke-line-strong" />
-      <text x="158" y="98" className={T}>Chroma</text>
-      {chunks.map(c => {
-        const x = 158 + (c.i % 3) * 32
-        const y = 108 + Math.floor(c.i / 3) * 28
-        return (
-          <rect key={c.i} x={x} y={y} width="28" height="20" rx="3"
-            className={c.hit === 'central' ? 'pv-hit fill-accent' : c.hit === 'state' ? 'pv-hit fill-accent/45' : 'fill-line'}
-            style={c.hit ? { animationDelay: `${(c.i % 4) * 0.18}s` } : undefined} />
-        )
-      })}
-      <text x="150" y="246" className={TS}>top 4 + 4</text>
-      <rect x="150" y="254" width="8" height="8" rx="2" className="fill-accent" />
-      <text x="162" y="262" className={T}>central</text>
-      <rect x="208" y="254" width="8" height="8" rx="2" className="fill-accent/45" />
-      <text x="220" y="262" className={T}>your state</text>
-
-      {/* grounded answer */}
-      <path d="M262 156 C272 156 270 120 282 120" className="stroke-accent" fill="none" />
-      <rect x="282" y="44" width="100" height="186" rx="6" className="fill-bg stroke-accent" />
-      <text x="290" y="62" className="fill-fg font-mono text-[9.5px]">answer</text>
-      {[78, 88, 98, 108, 118, 128].map((y, i) => <rect key={y} x="290" y={y} width={i % 3 === 2 ? 52 : 82} height="4" rx="2" className="pv-line fill-soft" style={{ animationDelay: `${0.9 + i * 0.12}s` }} />)}
-      <text x="290" y="152" className={T}>only from the</text>
-      <text x="290" y="164" className={T}>retrieved text</text>
-      <rect x="290" y="178" width="84" height="18" rx="9" className="fill-accent-soft" />
-      <text x="332" y="190" textAnchor="middle" className="fill-fg font-mono text-[9.5px]">Source: …</text>
-      <rect x="290" y="202" width="84" height="18" rx="9" className="fill-accent-soft" />
-      <text x="332" y="214" textAnchor="middle" className="fill-fg font-mono text-[9.5px]">State: …</text>
-      <text x="282" y="246" className={T}>Groq</text>
-      <text x="282" y="258" className={T}>gpt-oss-120b</text>
     </Frame>
+  )
+}
+
+const DOWN = 'M190 136L178 164 M210 136L222 164'
+const REST = 'M190 136L182 164 M210 136L218 164'
+/* ---- KnowYourRules: read the sources, index them, take a question, answer from them or decline -- */
+function Rag() {
+  const steps: Step[] = [
+    { cap: 'Official sources', arms: DOWN, props: (
+      <g className={INK}><rect x="172" y="156" width="56" height="12" rx="1" /><rect x="176" y="146" width="48" height="10" rx="1" /><rect x="180" y="137" width="40" height="9" rx="1" /><path d="M186 162h28 M188 151h22" /></g>) },
+    { cap: 'Index by section', arms: DOWN, props: (
+      <g className={INK}>{[156, 186, 216].map(x => <g key={x}><rect x={x - 4} y="146" width="26" height="22" rx="2" /><path d={`M${x} 154h18 M${x} 160h12`} /></g>)}</g>) },
+    { cap: 'A question arrives', arms: 'M212 134L232 122 M188 134L174 162', props: (
+      <g className={INK}><ellipse cx="256" cy="96" rx="22" ry="14" /><path d="M240 106l-6 10l14-6" /><text x="256" y="102" textAnchor="middle" className="fill-fg stroke-none font-mono text-[16px]">?</text></g>) },
+    { cap: 'Answer from sources, checked', arms: 'M190 136L182 160 M210 136L224 150', props: (
+      <g className={INK}><rect x="168" y="138" width="50" height="30" rx="2" /><path d="M175 148h30 M175 156h22 M176 163l4 4 8-9" /><rect x="226" y="132" width="36" height="14" rx="7" className="fill-accent-soft stroke-accent" /><text x="244" y="142" textAnchor="middle" className="fill-fg stroke-none font-mono text-[8px]">source</text></g>) },
+    { cap: 'Unsupported? It declines', arms: 'M212 134L238 118 M188 134L174 162', props: (
+      <g className={INK}><rect x="228" y="84" width="64" height="22" rx="11" className="fill-accent-soft stroke-accent" /><text x="260" y="98" textAnchor="middle" className="fill-fg stroke-none font-mono text-[9px]">not covered</text></g>) },
+  ]
+  return <Story hat="police" steps={steps} label="Illustration of the KnowYourRules RAG pipeline as a line-drawn cartoon: the assistant reads official sources, indexes them by section, takes a question, answers only from those sources with a source label and a check, and declines when the sources don't support an answer." />
+}
+
+/** The same round-headed line figure as the other cards, standing with its feet at (x, y). */
+function Figure({ x, y }: { x: number; y: number }) {
+  return (
+    <g className="fill-none stroke-fg" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx={x} cy={y - 45} r="6.5" className="fill-bg stroke-fg" />
+      <circle cx={x - 2.4} cy={y - 45.5} r="0.9" className="fill-fg stroke-none" />
+      <circle cx={x + 2.4} cy={y - 45.5} r="0.9" className="fill-fg stroke-none" />
+      <path d={`M${x - 2} ${y - 42}q2 1.6 4 0 M${x} ${y - 38.5}V${y - 17} M${x - 9} ${y - 25}L${x} ${y - 33}L${x + 9} ${y - 25} M${x} ${y - 17}L${x - 6} ${y} M${x} ${y - 17}L${x + 6} ${y}`} />
+    </g>
   )
 }
 
@@ -107,8 +126,7 @@ function Cv() {
       {[[70, 150], [130, 128]].map(([x, y]) => (
         <g key={x}>
           <rect x={x - 14} y={y - 52} width="28" height="52" rx="2" className="stroke-mute" fill="none" strokeDasharray="3 2" />
-          <circle cx={x} cy={y - 42} r="5.5" className="fill-soft" />
-          <rect x={x - 6} y={y - 35} width="12" height="32" rx="5" className="fill-soft" />
+          <Figure x={x} y={y} />
           <circle cx={x} cy={y} r="3" className="fill-fg" />
           <text x={x - 14} y={y - 56} className={T}>person</text>
         </g>
@@ -117,8 +135,7 @@ function Cv() {
       {/* the person who walks into the zone (at rest: inside, flagged) */}
       <g className="pv-walk">
         <rect x="246" y="96" width="30" height="58" rx="2" className="pv-box stroke-accent" fill="none" strokeWidth="1.5" />
-        <circle cx="261" cy="107" r="6" className="fill-soft" />
-        <rect x="254.5" y="115" width="13" height="35" rx="5.5" className="fill-soft" />
+        <Figure x={261} y={154} />
         <circle cx="261" cy="154" r="3.5" className="pv-feet fill-accent" />
         <text x="246" y="90" className="pv-tag fill-accent font-mono text-[9px]">person · in zone</text>
       </g>
@@ -142,63 +159,44 @@ function Cv() {
   )
 }
 
-/* ---- Speech: models → word-level ensemble → scored against a reference ---------------------- */
+/* ---- Railway speech: noisy audio, cleaned, split, transcribed, scored ------------------------ */
 function Speech() {
-  // Seven word slots. Blocks stand for words; no real transcript is shown.
-  const widths = [30, 44, 24, 40, 34, 48, 30]
-  const xs = widths.reduce<number[]>((a, _, i) => [...a, i === 0 ? 112 : a[i - 1] + widths[i - 1] + 5], [])
-  // Where each model disagrees with the majority (d) or misses a word (m).
-  const models: { name: string; odd: Record<number, 'd' | 'm'> }[] = [
-    { name: 'Whisper', odd: { 1: 'd' } },
-    { name: 'Indic-Conformer', odd: { 5: 'm' } },
-    { name: 'Qwen3-ASR', odd: { 3: 'd' } },
+  const noisy = 'M214 114l4-10 4 20 4-22 4 18 4-8 4 14 4-16 4 10 4-6'
+  const clean = 'M214 114q8-16 16 0t16 0t16 0'
+  const steps: Step[] = [
+    { cap: 'Noisy railway audio', arms: 'M212 134L232 122 M188 134L174 162', props: (<g className={INK}><path d={noisy} className="stroke-mute" /></g>) },
+    { cap: 'Clean the audio', arms: 'M212 134L232 122 M188 134L174 162', props: (<g className={INK}><path d={clean} className="stroke-accent" /></g>) },
+    { cap: 'Split speech from silence', arms: 'M212 134L232 122 M188 134L174 162', props: (
+      <g className={INK}><path d={clean} /><path d="M214 124v8h18v-8 M238 124v8h22v-8" className="stroke-accent" /></g>) },
+    { cap: 'Transcribe with models', arms: REST, props: (
+      <g className={INK}><rect x="224" y="92" width="58" height="34" rx="6" className="fill-accent-soft stroke-accent" /><path d="M232 102h40 M232 110h32 M232 118h38" /><path d="M232 126l-6 8l14-6" className="stroke-accent" /></g>) },
+    { cap: 'Score: word + character errors', arms: 'M190 136L182 160 M210 136L224 150', props: (
+      <g className={INK}><rect x="168" y="138" width="50" height="30" rx="2" /><path d="M175 148h24 M175 156h30 M176 163l4 4 8-9" /><path d="M226 150l12-14" /></g>) },
   ]
-  const wave = Array.from({ length: 44 }, (_, i) => 3 + Math.abs(Math.sin(i * 0.8) * Math.cos(i * 0.31)) * 13 + ((i * 7) % 5))
-  return (
-    <Frame label="Illustration of the railway speech-recognition pipeline: denoised, segmented audio goes to three models (Whisper, Indic-Conformer and Qwen3-ASR); a word-level ensemble takes the majority word in each slot; the result is scored against a reference transcript by substitutions, deletions and insertions to give WER and CER. No real audio or results are shown.">
-      {/* audio */}
-      <text x="16" y="28" className={TS}>audio → denoise → segment</text>
-      {wave.map((h, i) => <rect key={i} x={16 + i * 8.4} y={52 - h} width="3" height={h * 2} rx="1.5" className={i > 6 && i < 38 ? 'fill-fg' : 'fill-line-strong'} />)}
-
-      {/* model hypotheses */}
-      {models.map((m, r) => (
-        <g key={m.name}>
-          <text x="16" y={98 + r * 24} className={T}>{m.name}</text>
-          {xs.map((x, c) => {
-            const odd = m.odd[c]
-            return odd === 'm'
-              ? <rect key={c} x={x} y={88 + r * 24} width={widths[c]} height="13" rx="3" className="stroke-mute" fill="none" strokeDasharray="3 2" />
-              : <rect key={c} x={x} y={88 + r * 24} width={widths[c]} height="13" rx="3" className={odd === 'd' ? 'fill-mute' : 'fill-line-strong'} />
-          })}
-        </g>
-      ))}
-      {/* the vote, column by column (hidden at rest) */}
-      {xs.map((x, c) => (
-        <rect key={c} x={x - 2} y="83" width={widths[c] + 4} height="104" rx="4" className="pv-scan fill-accent/10" style={{ animationDelay: `${c * 0.6}s` }} />
-      ))}
-
-      {/* ensemble */}
-      <text x="16" y="178" className="fill-accent font-mono text-[9.5px]">ensemble</text>
-      <text x="16" y="190" className={T}>word-level vote</text>
-      {xs.map((x, c) => <rect key={c} x={x} y="168" width={widths[c]} height="13" rx="3" className="fill-accent" />)}
-
-      {/* scored against a reference */}
-      <line x1="16" y1="206" x2="384" y2="206" className="stroke-line" />
-      <text x="16" y="230" className={T}>reference</text>
-      {xs.map((x, c) => <rect key={c} x={x} y="220" width={widths[c]} height="13" rx="3" className="fill-soft" />)}
-      {[[3, 'S'], [5, 'D'], [6, 'I']].map(([c, k]) => (
-        <text key={k} x={xs[c as number] + widths[c as number] / 2} y="250" textAnchor="middle" className="fill-accent font-mono text-[9.5px]">{k}</text>
-      ))}
-      <text x="16" y="274" className="fill-fg font-mono text-[10.5px]">WER = (S + D + I) / N</text>
-      <text x="16" y="290" className={T}>CER: the same per character · scored with jiwer</text>
-    </Frame>
-  )
+  return <Story hat="railway" steps={steps} label="Illustration of the railway speech-recognition pipeline as a line-drawn cartoon: a railway worker hears noisy audio, it is cleaned, split into speech and silence, transcribed by several models, and scored by word and character error rate." />
 }
 
-const VISUALS = { rag: Rag, cv: Cv, speech: Speech }
+/* ---- Ez-Learn: sign up, learn, quiz, pay, certificate ---------------------------------------- */
+function Learn() {
+  const steps: Step[] = [
+    { cap: 'Sign up · email code', arms: 'M212 134L238 120 M188 134L174 162', props: (
+      <g className={INK}><rect x="236" y="92" width="34" height="22" rx="2" /><path d="M236 94l17 12 17-12" /></g>) },
+    { cap: 'Learn · course content', arms: DOWN, props: (
+      <g className={INK}><path d="M166 166L200 158L234 166V148L200 140L166 148Z M200 158V140" /><path d="M174 152l20 5 M174 158l20 5 M206 157l20-5 M206 163l20-5" /></g>) },
+    { cap: 'Quiz · scored', arms: 'M190 136L182 160 M210 136L226 150', props: (
+      <g className={INK}><rect x="168" y="138" width="50" height="30" rx="2" /><path d="M175 148l3 3 5-6 M175 159l3 3 5-6 M188 148h22 M188 159h22 M226 150l14-16" /></g>) },
+    { cap: 'Pay · Razorpay', arms: 'M212 134L246 140 M188 134L174 162', props: (
+      <g className={INK}><rect x="244" y="126" width="38" height="26" rx="3" /><path d="M244 135h38 M250 145h12" /></g>) },
+    { cap: 'Certificate', arms: 'M188 134L174 146 M212 134L226 146', props: (
+      <g className={INK}><rect x="170" y="138" width="58" height="30" rx="2" /><path d="M178 148h42 M178 155h30" /><circle cx="214" cy="160" r="5" className="fill-accent-soft stroke-accent" /><path d="M244 100l10-6 M248 112h12 M240 88l4-9" /></g>) },
+  ]
+  return <Story hat="grad" steps={steps} label="Illustration of Ez-Learn as a line-drawn cartoon: a learner in a graduation cap signs up with an email code, studies the course, takes a scored quiz, pays through Razorpay and earns a certificate. It runs on Django and PostgreSQL and is deployed on Render." />
+}
+
+const VISUALS = { rag: Rag, cv: Cv, speech: Speech, learn: Learn }
 
 /** Short titles for the strip above each diagram. */
-export const VISUAL_TITLES = { rag: 'Ingest → retrieve → answer', cv: 'Zone · boxes · inference', speech: 'Models → ensemble → WER' }
+export const VISUAL_TITLES = { rag: 'Ask → check → answer', cv: 'Zone · boxes · inference', speech: 'Noise → text → score', learn: 'Sign up → learn → certify' }
 
 export function ProjectVisual({ kind }: { kind: keyof typeof VISUALS }) {
   const V = VISUALS[kind]

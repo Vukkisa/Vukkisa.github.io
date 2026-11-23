@@ -1,0 +1,128 @@
+/* Prototype-only styles. Nothing here is imported by the production site. */
+
+/* The nav indicator: a thin hand-drawn line that glides under the current section. */
+.pn-bar { position: absolute; left: 0; bottom: 2px; height: 7px; pointer-events: none; color: var(--color-accent); opacity: 0; }
+.pn-bar.on { opacity: 1; }
+.pn-bar svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.pn-bar path { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+@media (prefers-reduced-motion: no-preference) {
+  .pn-bar { transition: transform .6s cubic-bezier(.65, 0, .25, 1), width .6s cubic-bezier(.65, 0, .25, 1), opacity .3s; }
+  .pn-bar.draw svg { animation: pn-draw .7s cubic-bezier(.45, 0, .2, 1) both; }
+  @keyframes pn-draw { from { clip-path: inset(-4px 100% -4px 0); } to { clip-path: inset(-4px -4px -4px 0); } }
+}
+
+/* Hand-drawn underline under headings; draws itself when the heading scrolls into view. */
+.wave-u { position: relative; display: inline-block; }
+.wave-u svg { position: absolute; left: 0; bottom: -.18em; width: 100%; height: .3em; overflow: visible; color: var(--color-accent); }
+.wave-u path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-on .wave-u svg { clip-path: inset(-4px 100% -4px 0); }
+  .reveal-on .is-in .wave-u svg { clip-path: inset(-4px -4px -4px 0); transition: clip-path 1s cubic-bezier(.45, 0, .2, 1) .25s; }
+      .print { transition: transform .5s var(--ease); }
+  .entry:hover .print { transform: rotate(-.5deg) translateY(-2px); }
+}
+.p-link { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: var(--color-line-strong); transition: text-decoration-color .2s, color .2s; }
+.p-link:hover, .p-link:focus-visible { color: var(--color-accent); text-decoration-color: var(--color-accent); }
+
+/* The scroll-drawn line (desktop margins only) and the eyes. */
+.scroll-line { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; color: var(--color-accent); }
+.scroll-line path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; opacity: .75; }
+.scroll-line .pen-tip { fill: currentColor; stroke: none; }
+.scroll-line .plug { opacity: 0; transition: opacity .4s; }
+.scroll-line .plug rect { fill: currentColor; stroke: none; }
+.scroll-line .plug path { opacity: 1; stroke-width: 3; }
+
+
+
+/* Portrait: the outline draws once, then the photo fades in. */
+.portrait-line path { vector-effect: non-scaling-stroke; }
+@media (prefers-reduced-motion: no-preference) {
+  .portrait-line { clip-path: inset(-4px 100% -4px 0); animation: portrait-draw 1.2s cubic-bezier(.45, 0, .2, 1) .1s forwards; }
+  @keyframes portrait-draw { to { clip-path: inset(-4px -4px -4px 0); } }
+  .portrait-photo { opacity: 0; animation: portrait-fade .9s ease-out .9s forwards; }
+  @keyframes portrait-fade { to { opacity: 1; } }
+}
+
+/* ---- shared pen: hero line, portrait frame and card outlines ---- */
+:root { --pen-w: 2px; --pen-op: .8; --pen-ease: cubic-bezier(.45, 0, .2, 1); --pen-dur: 1.25s; }
+.scroll-line path:first-child { stroke-width: var(--pen-w); opacity: var(--pen-op); stroke-linejoin: round; }
+
+/* ---- project cards ---- */
+.pcard-wrap { transition: transform .5s cubic-bezier(.25, 1, .5, 1); }
+.pcard { cursor: pointer; transition: border-color .4s; }
+.pcard[data-open] { cursor: default; }
+.sketch { position: absolute; pointer-events: none; overflow: visible; color: var(--color-accent); z-index: 1; }
+.sketch path { fill: none; stroke: currentColor; stroke-width: var(--pen-w); stroke-linecap: round; stroke-linejoin: round; opacity: var(--pen-op); stroke-dasharray: 1; stroke-dashoffset: 1; }
+.pcard-panel { transform: translateY(101%); visibility: hidden; transition: transform .45s cubic-bezier(.65,0,.25,1), visibility 0s .45s; }
+.pcard-wrap[data-open] .pcard-panel { transform: none; visibility: visible; transition: transform .45s cubic-bezier(.65,0,.25,1); }
+.pcard-img-in { transition: transform .8s cubic-bezier(.25, 1, .5, 1); }
+.pcard-arrow { transition: transform .35s cubic-bezier(.25, 1, .5, 1); }
+
+/* hover-capable screens: the outline draws on hover / keyboard focus / open */
+@media (hover: hover) {
+  .sketch path { transition: stroke-dashoffset var(--pen-dur) var(--pen-ease); }
+  .sk-host[data-hover]:hover .sketch path, .sk-host[data-hover]:focus-within .sketch path, .sk-host[data-on] .sketch path, .sk-host:has(.case[open]) .sketch path { stroke-dashoffset: 0; }
+  .pcard-wrap:hover, .pcard-wrap:focus-within { transform: translateY(-3px); }
+  .pcard-wrap:hover .pcard-img-in, .pcard-wrap:focus-within .pcard-img-in { transform: scale(1.035); }
+  .pcard-wrap:hover .pcard-arrow, .pcard-wrap:focus-within .pcard-arrow { transform: translateX(4px); }
+}
+/* touch screens: no hover, so the complete outline is simply there */
+@media (hover: none) { .sk-host:is([data-hover], [data-on]) .sketch path, .pcard-wrap .sketch path { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .sk-host:is([data-hover], [data-on]) .sketch path, .pcard-wrap .sketch path { transition: none; stroke-dashoffset: 0; }
+  .pcard-wrap, .pcard-img-in, .pcard-arrow, .pcard-panel { transition: none !important; transform: none; }
+  .pcard-wrap[data-open] .pcard-panel { transform: none; }
+}
+
+/* ---- restored interactions, drawn with the same pen ---- */
+/* Header: a hand-drawn rule draws in once you scroll. */
+.hdr-rule { position: absolute; left: 0; bottom: -1px; width: 100%; height: 4px; overflow: visible; pointer-events: none; color: var(--color-accent); clip-path: inset(-2px 100% -2px 0); transition: clip-path .9s var(--pen-ease); }
+.hdr-rule path { fill: none; stroke: currentColor; stroke-width: var(--pen-w); stroke-linecap: round; opacity: .35; }
+header[data-scrolled] .hdr-rule { clip-path: inset(-2px 0 -2px 0); }
+header { position: sticky; }
+
+/* Links: the arrow nudges, and a hand-drawn squiggle draws under the text on hover. */
+.p-link { position: relative; }
+.p-link .nudge { display: inline-block; transition: transform .2s cubic-bezier(.25, 1, .5, 1); }
+.p-link:hover .nudge, .p-link:focus-visible .nudge { transform: translate(2px, -2px); }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .p-link::after { content: ''; position: absolute; left: 0; right: 0; bottom: -5px; height: 6px; background: var(--color-accent); opacity: .85; pointer-events: none;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='6' viewBox='0 0 24 6'%3E%3Cpath d='M0 3 C3 0.4 9 0.4 12 3 S21 5.6 24 3' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x 0 50% / 24px 6px;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='6' viewBox='0 0 24 6'%3E%3Cpath d='M0 3 C3 0.4 9 0.4 12 3 S21 5.6 24 3' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x 0 50% / 24px 6px;
+    clip-path: inset(0 100% 0 0); transition: clip-path .55s var(--pen-ease); }
+  .p-link:hover::after, .p-link:focus-visible::after { clip-path: inset(0 0 0 0); }
+  .p-link:hover, .p-link:focus-visible { text-decoration-color: transparent; }
+}
+
+/* Portrait: grey until you hover or focus it, then colour with a small tilt (the original avatar's behaviour). */
+@media (hover: hover) {
+  .portrait-photo img { filter: grayscale(1) contrast(1.05); transition: filter .5s ease, transform .5s cubic-bezier(.25, 1, .5, 1); }
+  .portrait:hover .portrait-photo img, .portrait:focus-visible .portrait-photo img { filter: none; }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .portrait { transition: transform .5s cubic-bezier(.25, 1, .5, 1); }
+  .portrait:hover, .portrait:focus-visible { transform: rotate(-2deg); }
+}
+
+/* Case study "+": a slightly uneven purple ring that turns when it opens. */
+.case-mark { border-color: var(--color-accent) !important; color: var(--color-accent) !important; border-radius: 54% 46% 52% 48% / 48% 54% 46% 52% !important; }
+.case { background: transparent; }
+
+/* Journey: chapter dots, stations, and the landscape drawn with a hand-shaky pen. */
+.jdot { color: var(--color-accent); overflow: visible; }
+.jdot path { fill: none; stroke: currentColor; stroke-width: var(--pen-w); stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: .45; transition: stroke-dashoffset .9s var(--pen-ease), opacity .5s; }
+.jdot .base { fill: var(--color-bg); stroke: var(--color-line-strong); stroke-width: 1.2; }
+.jdot .core { fill: transparent; transition: fill .5s; }
+.jdot.on path { stroke-dashoffset: 0; opacity: 1; }
+.jdot.on .core { fill: currentColor; }
+.scape { filter: url(#sk-wobble); }
+.scape .thread { stroke-width: var(--pen-w) !important; stroke-linecap: round; transition-duration: 1.25s; transition-timing-function: var(--pen-ease); }
+.scape .thread-base { stroke-width: 1.6px !important; opacity: .7; }
+.scape .bx polygon { stroke-width: 1.3px; stroke-linecap: round; }
+@media (prefers-reduced-motion: reduce) { .scape { filter: none; } .jdot path { transition: none; } .hdr-rule { transition: none; } }
+
+@media (min-width: 640px) { .jfig .scape { max-height: 30vh; width: auto; margin-inline: auto; } }
+
+/* A case study inside a half-width card: one column, so it reads as a column rather than two slivers. */
+.pcard-panel .case-body { grid-template-columns: minmax(0, 1fr) !important; gap: 1.5rem !important; padding: 1rem !important; }
+.pcard-panel .case > summary { padding: .75rem 1rem; }

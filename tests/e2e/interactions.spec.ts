@@ -249,7 +249,7 @@ test.describe('navigation', () => {
     await page.goto('/')
     const journey = page.locator('#journey')
     for (const text of ['Data Developer', 'Kenan billing migration of 2M+ customer records', 'improving processing speed by 25%',
-      'cutting manual validation time by 40%', 'Star of the Month', 'Associate Data Scientist (internship)', 'AiSpry · Oct 2026 – Dec 2026',
+      'cutting manual validation time by 40%', 'Star of the Month', 'Associate Data Scientist (internship)', 'AiSpry · Oct 2026 – Present',
       'PG Program in AI & Data Science', 'B.Tech, Computer Science & Engineering']) {
       await expect(journey).toContainText(text)
     }

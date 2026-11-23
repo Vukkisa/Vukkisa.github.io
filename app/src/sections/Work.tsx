@@ -7,6 +7,21 @@ export function Work() {
     <section id="work" aria-labelledby="work-title" className="sec">
       <SectionHead id="work-title" n="01" glyph="▶" title="Selected work" count={{ n: projects.length, noun: 'projects' }} note="Problem, what I built, and the evidence, without inflated numbers." />
 
+      <ul className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" aria-label="Projects at a glance">
+        {projects.map(p => (
+          <li key={p.id}>
+            <a href={`#${p.id}`} className="pad group block h-full rounded-(--r) border border-line bg-card transition-[border-color,transform] hover:border-line-strong motion-safe:hover:-translate-y-0.5">
+              <span className="flex items-baseline justify-between gap-3">
+                <span className="font-display text-lg font-semibold tracking-tight group-hover:text-accent">{p.title}</span>
+                <span aria-hidden="true" className="text-mute transition-transform group-hover:translate-y-0.5">↓</span>
+              </span>
+              <span className="mt-1 block text-sm leading-relaxed text-soft">{p.subtitle}</span>
+              <span className="mt-3 block font-mono text-[0.6875rem] text-mute">{p.status.label}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
       <div className="mt-12 space-y-20 sm:space-y-28">
         {projects.map((p, i) => (
           <div key={p.id} data-reveal>

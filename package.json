@@ -14,7 +14,9 @@
     "test:e2e": "playwright test",
     "size": "node scripts/check-size.mjs",
     "og": "node scripts/og-image.mjs",
-    "resume": "node scripts/resume-pdf.mjs"
+    "resume": "node scripts/resume-pdf.mjs",
+    "prototype": "vite --open /prototype.html",
+    "prototype:build": "vite build -c vite.prototype.config.ts"
   },
   "dependencies": {
     "@fontsource-variable/bricolage-grotesque": "^5.3.0",

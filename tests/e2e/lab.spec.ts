@@ -35,7 +35,7 @@ test.describe('Lab · RAG, step by step', () => {
     await expect(rag.locator('pre')).toContainText('[Source: Railway speech recognition')
     await rag.getByRole('button', { name: 'Next stage' }).click()
     await expect(rag).toContainText('extractive, not generated')
-    await expect(rag.locator('blockquote')).toContainText('benchmarked Indic-Conformer, Qwen3-ASR and Whisper')
+    await expect(rag.locator('blockquote')).toContainText(/Indic-Conformer, Qwen3-ASR and Whisper.*benchmarked|benchmarked Indic-Conformer, Qwen3-ASR and Whisper/)
   })
 
   test('an off-topic question is not covered, and an empty one is an error', async ({ page }) => {

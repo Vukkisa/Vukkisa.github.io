@@ -188,6 +188,14 @@
   .signal-head { animation: sweep 9s cubic-bezier(.45, 0, .55, 1) infinite; }
   .signal-stage { animation: stage 9s ease-in-out infinite; animation-delay: calc(var(--k) * 2.25s); }
 }
+@media (prefers-reduced-motion: no-preference) {
+  .signal-arc { animation: arc 1.9s ease-out infinite; animation-delay: calc(var(--k) * .25s); }
+  .signal-train { animation: bob .8s ease-in-out infinite alternate; }
+  .signal-text { animation: txt 9s linear infinite; animation-delay: var(--t); opacity: 0; }
+}
+@keyframes arc { 0% { opacity: 0; } 25% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes bob { from { transform: translateY(0); } to { transform: translateY(1px); } }
+@keyframes txt { 0%, 1% { opacity: 0; } 5%, 86% { opacity: 1; } 92%, 100% { opacity: 0; } }
 @keyframes sweep { from { transform: translateX(0); } to { transform: translateX(480px); } }
 @keyframes stage { 0%, 22% { background-color: var(--color-accent-soft); } 25%, 100% { background-color: var(--color-card); } }
 
@@ -213,15 +221,19 @@
    retrieved, the answer written, the person inside the zone and flagged. The vote highlight in the
    speech diagram only exists while moving. Loops pause off screen ([data-loop]). */
 .pv-scan { opacity: 0; }
+.pv-scene { opacity: 0; }
+.pv-scene:last-of-type { opacity: 1; }
 @media (prefers-reduced-motion: no-preference) {
   .pv-hit { animation: pv-hit 6s var(--ease) infinite; }
   .pv-line { animation: pv-line 6s ease-out infinite; }
   .pv-scan { animation: pv-scan 4.2s ease-in-out infinite; }
+  .pv-scene { animation: pv-scene 12s ease-in-out infinite both; }
   .pv-walk { animation: pv-walk 7s cubic-bezier(.4, 0, .3, 1) infinite; }
   .pv-box { animation: pv-box 7s step-end infinite; }
   .pv-feet { animation: pv-feet 7s step-end infinite; }
   .pv-tag, .pv-alert { animation: pv-show 7s step-end infinite; }
 }
+@keyframes pv-scene { 0%, 1% { opacity: 0; } 4%, 18% { opacity: 1; } 21%, 100% { opacity: 0; } }
 @keyframes pv-hit { 0%, 8% { opacity: .25; } 18%, 100% { opacity: 1; } }
 @keyframes pv-line { 0%, 12% { opacity: .15; } 22%, 100% { opacity: 1; } }
 @keyframes pv-scan { 0% { opacity: 0; } 4%, 13% { opacity: 1; } 17%, 100% { opacity: 0; } }

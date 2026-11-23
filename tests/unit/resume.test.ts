@@ -17,10 +17,10 @@ describe('résumé source', () => {
 
   it('states the same roles, organisations and dates as the Journey', () => {
     for (const title of ['Data Developer', 'Associate Data Scientist']) expect(chapters.some(c => c.title.startsWith(title))).toBe(true)
-    expect(text).toMatch(/Associate Data Scientist Intern \| AiSpry Oct 2026 – Dec 2026/)
-    expect(text).toMatch(/Data Developer \| Tata Consultancy Services \(TCS\), Hyderabad Sep 2023 – Apr 2026/)
+    expect(text).toMatch(/Associate Data Scientist Intern, AiSpry Oct 2026 – Present/)
+    expect(text).toMatch(/Data Developer, Tata Consultancy Services \(TCS\), Hyderabad Sep 2023 – Apr 2026/)
     expect(chapters.find(c => c.title === 'Data Developer')!.org).toContain('Sep 2023 – Apr 2026')
-    expect(chapters.find(c => c.title.startsWith('Associate'))!.org).toContain('Oct 2026 – Dec 2026')
+    expect(chapters.find(c => c.title.startsWith('Associate'))!.org).toContain('Oct 2026 – Present')
   })
 
   it('keeps every TCS result the portfolio states, and no number it does not', () => {
@@ -45,8 +45,8 @@ describe('résumé source', () => {
       expect(html).toContain(l.href.replace('https://', '').replace(/\/$/, ''))
     }
     // Evaluation is stated honestly: what hasn't been measured or can't be shared says so.
-    expect(text).toMatch(/answer accuracy not yet evaluated/)
-    expect(text).toMatch(/results not yet recorded/)
+    expect(text).toMatch(/not a legal review; not legal advice/)
+    expect(text).not.toMatch(/\d+\s?FPS/i)   // no benchmark numbers are claimed for AI Surveillance
     expect(text).toMatch(/code, data and results are not public/)
   })
 

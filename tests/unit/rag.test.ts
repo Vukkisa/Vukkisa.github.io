@@ -72,8 +72,8 @@ describe('the Lab’s example questions over this site’s text', () => {
   const index = buildIndex(chunkDocs(siteDocs, 60, true))
   const ask = (q: string) => extractAnswer(index, retrieve(index, q, 4), q)
   it('answers from the right project, with a whole sentence', () => {
-    expect(ask('Which models were benchmarked?')?.sentence).toMatch(/benchmarked Indic-Conformer, Qwen3-ASR and Whisper/)
-    expect(ask('What is indexed so far?')?.sentence).toMatch(/Motor Vehicles Act and Rules, Gujarat and Delhi/)
+    expect(ask('Which models were benchmarked?')?.sentence).toMatch(/benchmarked Indic-Conformer, Qwen3-ASR and Whisper|Indic-Conformer, Qwen3-ASR and Whisper \(via faster-whisper\), benchmarked side by side/)
+    expect(ask('Which sources does KnowYourRules cover?')?.sentence).toMatch(/Telangana motor-vehicle law assistant/)
     expect(ask('Where did Jayanth work as a Data Developer?')?.sentence).toMatch(/Tata Consultancy Services/)
   })
   it('says an off-topic question isn’t covered', () => {

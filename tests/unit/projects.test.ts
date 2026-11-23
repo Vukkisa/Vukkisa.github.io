@@ -13,9 +13,9 @@ describe('project case studies', () => {
     expect(c.evaluation).not.toMatch(/\d+(\.\d+)?\s?(%|fps|ms|x\b)/i)
   })
 
-  it('the three AI projects have a diagram', () => {
+  it('every project has a drawn diagram', () => {
     expect(Object.fromEntries(projects.map(p => [p.id, p.visual ?? null]))).toEqual({
-      knowyourrules: 'rag', 'ai-surveillance': 'cv', 'speech-recognition': 'speech', 'ez-learn': null,
+      knowyourrules: 'rag', 'ai-surveillance': 'cv', 'speech-recognition': 'speech', 'ez-learn': 'learn',
     })
   })
 

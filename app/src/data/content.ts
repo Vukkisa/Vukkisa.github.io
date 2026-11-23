@@ -75,7 +75,7 @@ export type Project = {
   /** Illustration basename in /images/projects (with a -dark variant). Illustrative, not a screenshot. */
   cover: string
   /** A drawn diagram of how the project works, shown instead of the cover. Illustrative, not live. */
-  visual?: 'rag' | 'cv' | 'speech'
+  visual?: 'rag' | 'cv' | 'speech' | 'learn'
   /** The expandable case study under the card. Only facts that are backed up; say so when nothing is measured. */
   caseStudy: CaseStudy
   /** A related experiment in the Lab section. */
@@ -91,33 +91,43 @@ export const projects: Project[] = [
   {
     id: 'knowyourrules',
     title: 'KnowYourRules',
-    subtitle: 'Traffic-law assistant grounded in official documents',
-    context: 'Jio Institute · team project · Sep 2026',
-    status: { label: 'Local prototype', tone: 'done' },
-    problem: 'Indian traffic rules are spread across central, state, city and court documents, so there’s no single place to look one up.',
+    subtitle: 'Telangana motor-vehicle law assistant, grounded in official sources',
+    context: 'Jio Institute · started as a team project · Sep – Nov 2026',
+    status: { label: 'Private preview', tone: 'progress' },
+    problem: 'Telangana’s motor-vehicle rules are spread across the Central Act, state rules and government orders, and a chatbot that guesses can mislead.',
     built:
-      'The RAG pipeline, my part of the team project: LangChain chunking, local Ollama embeddings in a Chroma vector store, and Groq (gpt-oss-120b) answering only from the retrieved passages, with the source shown.',
-    evidence: 'Indexed so far: the central Motor Vehicles Act and Rules, Gujarat and Delhi. Answer accuracy hasn’t been evaluated yet; a cited source shows where an answer came from, not that it’s correct.',
-    tools: ['Python', 'LangChain', 'Ollama', 'Chroma', 'Groq'],
+      'A Telangana-only RAG assistant. Hybrid retrieval (provision lookup, BM25 and vector search) feeds a model whose cited claims are checked by a validator. If the approved sources don’t support an answer, or the question asks for fines or penalties, it declines instead of guessing.',
+    evidence: 'Tried on a private Vercel Preview on 17 Nov 2026: 39 basic questions, 17 declined for lack of support. The sources are approved on the owner’s statement, not a legal review, so this is not legal advice.',
+    tools: ['Python', 'FastAPI', 'LangChain', 'Chroma', 'Ollama', 'Groq', 'Vercel'],
     cover: 'knowyourrules',
     visual: 'rag',
     lab: { label: 'Step through the pipeline', href: '#lab-rag' },
     caseStudy: {
       steps: [
-        { name: 'Ingest', detail: 'Official documents (the central Motor Vehicles Act and Rules, Gujarat and Delhi) are split into chunks with LangChain, embedded locally with Ollama (nomic-embed-text) and stored in Chroma, each chunk tagged with its source and state.' },
-        { name: 'Ask', detail: 'You ask a traffic-rules question. If the app doesn’t know your state it asks, and it rewrites a follow-up into a standalone question.' },
-        { name: 'Retrieve', detail: 'The question is embedded the same way and matched against Chroma: 4 chunks from the central rules, plus 4 from your state’s rules when that state is indexed.' },
-        { name: 'Ground', detail: 'The chunks go into a strict prompt, each labelled with its source and state, that allows answers only from that text.' },
-        { name: 'Answer', detail: 'Groq (gpt-oss-120b) answers and names its source documents, or says the knowledge base doesn’t cover the question.' },
+        { name: 'Sources', detail: 'The Telangana Motor Vehicles Rules, the Taxation Rules and Telangana government orders, plus a few Central provisions that stay labelled Central: an extract of the Motor Vehicles Act, 1988 and the 2017 Driving Regulations with their 2020 amendment. The Central Motor Vehicles Rules, 1989 are not indexed, because the only copy found is out of date. Other states get a “not covered” reply.' },
+        { name: 'Index', detail: 'Each section or rule becomes one chunk (long ones are split), embedded with nomic-embed-text into Chroma. Every cited passage has to trace back to one source file by its SHA-256 hash.' },
+        { name: 'Approve', detail: 'A source is served only if a lifecycle registry lists it as approved and active and its hash matches the indexed file. If the registry or the index changes, answers stop until it is revalidated.' },
+        { name: 'Retrieve', detail: 'Exact provision lookups, BM25 and vector search run together and are merged by reciprocal rank fusion. The vector search is exact rather than Chroma’s approximate index, which returned different results from identical copies of the same index.' },
+        { name: 'Answer', detail: 'The model returns short claims, each tied to the passages it cites. A validator checks the format, citations, identifiers and penalty wording, plus checks for changed negations, qualifiers and numbers, with at most one conflict-aware retry. An answer that fails is withheld.' },
+        { name: 'Fallback', detail: 'Groq (gpt-oss-120b) answers first, then Cerebras, then Gemini; local Ollama is for development only. Only transport failures such as quota or outages move to the next provider. A refusal is never re-asked, and if every provider fails the app says it is unavailable.' },
+        { name: 'Decline', detail: 'Questions about fines, penalties or compounding are refused in code. A separate lookup of amounts shown on the Telangana Police e-Challan website exists, switched off by default and labelled as the website’s own figures.' },
       ],
-      mine: ['The RAG pipeline: chunking, local embeddings, the Chroma store, retrieval, and the grounded prompt and answer.'],
-      team: 'Teammates built the backend around it, including asking for your state and rewriting follow-up questions.',
-      evaluation: 'Not evaluated yet. A cited source shows where an answer came from, not that the answer is correct.',
-      limitations: ['Only the central rules, Gujarat and Delhi are indexed so far.', 'Answer accuracy hasn’t been measured.', 'It runs as a local prototype, not a public service.'],
+      mine: ['The Telangana-only assistant in my own repository, from Oct 2026: the indexing profile and Telangana ingestion, hybrid and exact retrieval, the answer validator, the document lifecycle and release gates, provider fallback, and the Vercel Preview setup.'],
+      team: 'It began as a Jio Institute team project in Sep 2026. A teammate’s commits cover the government-source research, the document extraction script and the first README.',
+      evaluation: 'Tested on synthetic material, not on legal accuracy. The repository has an offline test suite of over 100 test files, and an answer-quality check of 94 synthetic cases that tests the validator, not the law. A retrieval benchmark on an invented legal corpus (72 queries) found the chosen chunking slightly ahead of the baseline, but not statistically significant, and keyword and hybrid retrieval gave no gain there. A 108-question Telangana retrieval benchmark exists, but its labels are machine-made and awaiting human review. On the private Vercel Preview run of 17 Nov 2026, 39 basic questions gave 10 answers, 17 declines, 3 restricted replies and 9 failures from provider quota or transport errors. Fixes made afterwards were tested locally, and I found no re-run on the preview in the repository.',
+      limitations: [
+        'Telangana only, plus selected Central provisions. Details the Central Motor Vehicles Rules, 1989 prescribe, such as forms, fees and test procedure, are not answered.',
+        'All 23 source versions are active on the project owner’s statement that legal review was completed. No reviewer name or signature is on file, and the texts stay unverified, so answers carry a warning and the app shows “Pending counsel”.',
+        'It is not a legal-advice system. Fine, penalty and compounding questions are blocked, and answers go no further than the approved text.',
+        'The preview declined 17 of 39 basic questions. The causes include over-cautious model refusals, strict validator rules, retrieval misses and missing sources. Some were fixed afterwards.',
+        'Hindi and Hinglish questions retrieved poorly in the synthetic benchmark, and no multilingual embedding model was tested.',
+        'The only deployment on record is a private Vercel Preview, and there is no public demo link. The Render and GitHub Pages files are deployment templates; I found no record that they were run.',
+      ],
     },
     links: [
-      { label: 'Team repository', href: 'https://github.com/DAG-21/KnowYourRules' },
-      { label: 'How it was built', href: 'https://github.com/DAG-21/KnowYourRules#the-process' },
+      { label: 'Repository', href: 'https://github.com/Vukkisa/KnowYourRules' },
+      { label: 'Approval and trust model', href: 'https://github.com/Vukkisa/KnowYourRules/blob/feature/telangana-assistant/docs/approval-trust-model.md' },
+      { label: 'Answer-quality report', href: 'https://github.com/Vukkisa/KnowYourRules/blob/feature/telangana-assistant/eval/answer-quality/REPORT.md' },
     ],
   },
   {
@@ -155,12 +165,12 @@ export const projects: Project[] = [
     id: 'speech-recognition',
     title: 'Railway speech recognition',
     subtitle: 'Transcribing noisy, multilingual railway audio',
-    context: 'AiSpry · internship · Oct 2026 – now',
+    context: 'AiSpry · internship · Oct 2026 – Present',
     status: { label: 'In progress', tone: 'progress' },
     problem: 'Railway audio recordings are noisy and multilingual, and off-the-shelf speech models struggle with them.',
     built:
       'A fully local speech-recognition pipeline. I tested denoising methods (spectral, RNNoise, DeepFilterNet) and silence- and voice-based segmentation, benchmarked Indic-Conformer, Qwen3-ASR and Whisper, and merged their outputs with a word-level ensemble, all within tight compute and disk limits.',
-    evidence: 'Every variant is scored on word and character error rate. Now fine-tuning a model to lower WER. Results not yet shareable.',
+    evidence: 'Variants are scored on word and character error rate. Indic-Conformer fine-tuning is complete; the fine-tuned model’s WER and CER haven’t been measured yet.',
     tools: ['Python', 'PyTorch', 'Hugging Face Transformers', 'faster-whisper', 'Silero VAD', 'jiwer'],
     cover: 'railway-speech',
     visual: 'speech',
@@ -172,9 +182,9 @@ export const projects: Project[] = [
         { name: 'Combine', detail: 'A word-level ensemble merges the models’ outputs.' },
         { name: 'Score', detail: 'Every variant is scored on word and character error rate (WER, CER) with jiwer.' },
       ],
-      mine: ['Built the fully local pipeline during the internship, within tight compute and disk limits.', 'Now fine-tuning a model to lower WER.'],
-      evaluation: 'Every variant is scored on WER and CER, but the results are company data and can’t be shared yet.',
-      limitations: ['Company project: the code, audio and results aren’t public.', 'Work in progress: fine-tuning is under way.'],
+      mine: ['Built the fully local pipeline during the internship, within tight compute and disk limits.', 'Fine-tuned Indic-Conformer on noisy railway audio.'],
+      evaluation: 'The fine-tuned model’s WER and CER haven’t been measured yet. The project is company work, and its code, audio and results aren’t public.',
+      limitations: ['Company project: the code, audio and results aren’t public.', 'Fine-tuning is complete, but the fine-tuned model hasn’t been evaluated yet.'],
     },
     links: [],
     privateNote: 'Company project: code and data aren’t public.',
@@ -190,6 +200,7 @@ export const projects: Project[] = [
       'A Django platform. Learners sign up with email OTP, study course content, take scored quizzes and earn certificates. Instructors manage courses and quizzes. Paid courses go through Razorpay with payment verification, on PostgreSQL.',
     evidence: 'Deployed on Render with a public demo.',
     tools: ['Python', 'Django', 'PostgreSQL', 'Razorpay', 'Render'],
+    visual: 'learn',
     cover: 'ez-learn',
     caseStudy: {
       steps: [
@@ -279,12 +290,12 @@ export const chapters = [
   {
     year: 'Sep 2026', station: 4, kind: 'Retrieval',
     title: 'KnowYourRules', org: 'Jio Institute · team project',
-    points: ['Built the RAG pipeline that answers traffic-law questions only from official documents, with the source shown.'],
+    points: ['Started as a team project and grew into a Telangana-only assistant that answers only from approved official documents, with checked citations. Tried on a private preview; not legal advice.'],
   },
   {
     year: 'Oct 2026', station: 5, kind: 'Applications',
-    title: 'Associate Data Scientist (internship)', org: 'AiSpry · Oct 2026 – Dec 2026',
-    points: ['Speech recognition for noisy railway audio: building a local speech-recognition setup and working to lower the word error rate (WER).'],
+    title: 'Associate Data Scientist (internship)', org: 'AiSpry · Oct 2026 – Present',
+    points: ['Speech recognition for noisy railway audio: a local speech-recognition setup, with Indic-Conformer fine-tuned for it. The fine-tuned model’s WER and CER haven’t been measured yet.'],
   },
   {
     year: 'Next', station: 5, kind: 'Direction',
@@ -294,7 +305,7 @@ export const chapters = [
 ] as const
 
 export const now = [
-  { label: 'Now', text: 'Lowering word error rate on noisy railway audio at AiSpry.' },
+  { label: 'Now', text: 'Speech recognition for noisy railway audio at AiSpry. Indic-Conformer is fine-tuned; its results aren’t measured yet.' },
   { label: 'Studying', text: 'PG Program in AI & Data Science at Jio Institute, until April 2027.' },
   { label: 'Next', text: 'AI agents: tool use, planning and evaluation.' },
 ]

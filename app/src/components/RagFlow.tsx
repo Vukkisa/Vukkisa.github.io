@@ -8,44 +8,44 @@ import { ChipChoice, Empty, Note } from './lab/LabUI'
  * RAG, step by step. A real (small) retrieval pipeline runs in the browser over this site's own
  * text: chunking, a TF-IDF index, cosine-similarity retrieval, context assembly and an extractive
  * answer. No language model runs and nothing is sent anywhere. Each stage also says how
- * KnowYourRules does it (facts from the team repository, as in the project's case study).
+ * KnowYourRules does it (facts from the project's repository, as in its case study).
  */
 const STAGES = [
   {
     name: 'Ingest',
     what: 'Collect the documents to search. Here: the text of this site’s projects and journey.',
-    kyr: 'Official documents: the central Motor Vehicles Act and Rules, Gujarat and Delhi.',
+    kyr: 'Telangana motor-vehicle rules and orders, plus a few selected Central provisions kept labelled Central.',
   },
   {
     name: 'Chunk',
     what: 'Split each document into pieces small enough to retrieve on their own, at sentence boundaries. Each chunk repeats the previous one’s last sentence, so a fact near a boundary stays in one piece.',
-    kyr: 'Chunked with LangChain.',
+    kyr: 'One chunk per section or rule; long ones are split.',
   },
   {
     name: 'Embed & index',
     what: 'Turn every chunk into a vector and store them for fast search. This demo uses TF-IDF keyword vectors: each word gets a weight, rarer words weigh more.',
-    kyr: 'Dense neural embeddings from Ollama (nomic-embed-text), stored in a Chroma vector store. They match meaning, not just shared words.',
+    kyr: 'Dense neural embeddings (nomic-embed-text) in a Chroma vector store. They match meaning, not just shared words.',
   },
   {
     name: 'Retrieve',
     what: 'Turn the question into a vector the same way and rank chunks by cosine similarity. The top four go forward.',
-    kyr: '4 chunks from the central rules, plus 4 from your state’s rules when that state is indexed.',
+    kyr: 'Hybrid: exact provision lookup, BM25 and an exact vector search, merged by reciprocal rank fusion.',
   },
   {
     name: 'Select context',
     what: 'Label the retrieved chunks with their source and wrap them in a prompt that allows answers only from that context.',
-    kyr: 'Chunks are labelled with source and state inside a strict prompt.',
+    kyr: 'Only chunks from approved, active documents go into a strict prompt, each labelled with its source.',
   },
   {
     name: 'Answer',
     what: 'A model writes the answer from the context. No model runs here, so this demo shows the retrieved sentence that best matches your question instead.',
-    kyr: 'Groq (gpt-oss-120b) answers and names its sources, or says the knowledge base doesn’t cover the question. Accuracy hasn’t been evaluated yet.',
+    kyr: 'Groq (gpt-oss-120b, with fallback providers) returns claims that a validator checks against the cited text. Failing answers are withheld, and unsupported questions are declined. Legal accuracy hasn’t been measured.',
   },
 ] as const
 
 const EXAMPLES = [
   'Which models were benchmarked?',
-  'What is indexed so far?',
+  'Which sources does KnowYourRules cover?',
   'Where did Jayanth work as a Data Developer?',
   'What is the capital of France?',
 ]

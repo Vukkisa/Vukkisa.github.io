@@ -10,7 +10,7 @@ const AI = [
 const ALL = ['knowyourrules', 'ai-surveillance', 'speech-recognition', 'ez-learn']
 
 test.describe('project diagrams', () => {
-  test('the three AI projects show a labelled diagram; Ez-Learn keeps its cover', async ({ page }) => {
+  test('every project shows a labelled diagram, Ez-Learn included', async ({ page }) => {
     await page.goto('/')
     for (const p of AI) {
       const card = page.locator(`#${p.id}`)
@@ -18,7 +18,9 @@ test.describe('project diagrams', () => {
       await expect(card.getByRole('img', { name: p.label })).toHaveCount(1)
       await expect(card.getByRole('img', { name: p.label })).toHaveAttribute('aria-label', /^Illustration/)
     }
-    await expect(page.locator('#ez-learn .cover img')).toHaveCount(2) // light and dark versions
+    const ez = page.locator('#ez-learn')
+    await expect(ez.locator('.cover').getByText('Illustration', { exact: true })).toBeVisible()
+    await expect(ez.getByRole('img', { name: /^Illustration of Ez-Learn/ })).toHaveCount(1)
   })
 
   test('at rest (reduced motion) each diagram shows its final state', async ({ page }) => {
@@ -26,8 +28,7 @@ test.describe('project diagrams', () => {
     await page.goto('/')
     const opacity = (sel: string) => page.locator(sel).first().evaluate(e => getComputedStyle(e).opacity)
     expect(await opacity('#ai-surveillance .pv-alert')).toBe('1')
-    expect(await opacity('#knowyourrules .pv-hit')).toBe('1')
-    expect(await opacity('#speech-recognition .pv-scan')).toBe('0') // the vote highlight only exists while moving
+    for (const id of ['knowyourrules', 'speech-recognition', 'ez-learn']) expect(await opacity(`#${id} .pv-scene:last-of-type`)).toBe('1') // the last step shows at rest
   })
 })
 
@@ -80,8 +81,8 @@ test.describe('case studies', () => {
     const work = await page.locator('#work').innerText()
     expect(work).not.toMatch(/\d+(\.\d+)?\s?%/)                 // no percentages anywhere in Work
     expect(work).not.toMatch(/accuracy of|WER of|precision|recall|F1/i)
-    await expect(page.locator('#speech-recognition-case')).toContainText('can’t be shared yet')
-    await expect(page.locator('#knowyourrules-case')).toContainText('Not evaluated yet')
+    await expect(page.locator('#speech-recognition-case')).toContainText('haven’t been measured yet')
+    await expect(page.locator('#knowyourrules-case')).toContainText('Tested on synthetic material, not on legal accuracy')
     await expect(page.locator('#ai-surveillance-case')).toContainText('No accuracy or speed results recorded yet')
   })
 
