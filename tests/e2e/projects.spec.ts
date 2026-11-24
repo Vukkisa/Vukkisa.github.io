@@ -1,6 +1,6 @@
 import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
-import { setPrefs } from './helpers'
+import { openCard, setPrefs } from './helpers'
 
 const AI = [
   { id: 'knowyourrules', label: /KnowYourRules RAG pipeline/ },
@@ -36,6 +36,7 @@ test.describe('case studies', () => {
   test('every project has a closed case study with all five parts', async ({ page }) => {
     await page.goto('/')
     for (const id of ALL) {
+      await openCard(page, id)
       const cs = page.locator(`#${id}-case`)
       await expect(cs).not.toHaveAttribute('open', '')
       await cs.locator('summary').click()
@@ -49,6 +50,7 @@ test.describe('case studies', () => {
 
   test('opens and closes from the keyboard, and the summary names the project', async ({ page }) => {
     await page.goto('/')
+    await openCard(page, 'knowyourrules')
     const summary = page.locator('#knowyourrules-case summary')
     await expect(summary).toContainText('Case study')
     expect(await summary.evaluate(e => e.textContent)).toContain('KnowYourRules') // screen-reader text
@@ -77,7 +79,7 @@ test.describe('case studies', () => {
 
   test('evaluation is stated honestly: no invented numbers', async ({ page }) => {
     await page.goto('/')
-    for (const id of ALL) await page.locator(`#${id}-case summary`).click()
+    for (const id of ALL) { await openCard(page, id); await page.locator(`#${id}-case summary`).click() }
     const work = await page.locator('#work').innerText()
     expect(work).not.toMatch(/\d+(\.\d+)?\s?%/)                 // no percentages anywhere in Work
     expect(work).not.toMatch(/accuracy of|WER of|precision|recall|F1/i)

@@ -1,4 +1,4 @@
-/* Prototype-only styles. Nothing here is imported by the production site. */
+/* The hand-drawn pen: nav indicator, scroll line, portrait, card outlines, journey dots. */
 
 /* The nav indicator: a thin hand-drawn line that glides under the current section. */
 .pn-bar { position: absolute; left: 0; bottom: 2px; height: 7px; pointer-events: none; color: var(--color-accent); opacity: 0; }

@@ -117,7 +117,8 @@ export function CommandPalette({ isOpen, onClose }: { isOpen: boolean; onClose: 
     <dialog
       ref={dialog}
       aria-label="Command menu"
-      onClose={onClose}
+      onCancel={onClose}   // Escape: the page learns it is closing before the dialog hides, so a quick Ctrl+K can reopen it
+      onClose={e => { if (!e.currentTarget.open) onClose() }}   // a close event that lands after a quick reopen is stale: ignore it
       onClick={e => { if (e.target === dialog.current) onClose() }}
       className="palette m-0 mx-auto mt-[12vh] w-[min(36rem,calc(100vw-2rem))] max-w-none overflow-hidden rounded-(--r) border border-line-strong bg-card p-0 text-fg shadow-2xl backdrop:bg-black/50"
     >

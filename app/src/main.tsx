@@ -4,6 +4,7 @@ import '@fontsource-variable/geist/index.css'
 import '@fontsource-variable/geist-mono/index.css'
 import '@fontsource-variable/bricolage-grotesque/index.css'
 import './index.css'
+import './pen.css'
 import App from './App'
 
 createRoot(document.getElementById('root')!).render(

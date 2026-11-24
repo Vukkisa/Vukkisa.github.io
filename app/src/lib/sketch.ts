@@ -1,5 +1,5 @@
 /**
- * One shared "hand" for the prototype: the hero line, the portrait frame and the project-card
+ * One shared "hand" for the site: the hero line, the portrait frame and the project-card
  * outlines are all drawn with these helpers, so they share a stroke weight, a way of wobbling
  * and (in proto.css) one easing curve and draw timing.
  */

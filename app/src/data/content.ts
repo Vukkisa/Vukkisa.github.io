@@ -19,8 +19,6 @@ export const site = {
 }
 
 export const intro = {
-  /** What the work is, in two words each. Shown above the name. */
-  focus: ['AI engineering', 'Applied ML'],
   /** The one-line hero statement. Each clause is one of the projects below (KYR, AI Surveillance, speech). */
   tagline: ['I build AI that', 'reads the rules,', 'watches the zone', 'and listens through the noise.'],
   now: 'Associate Data Scientist intern at AiSpry',

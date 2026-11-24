@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 
 test.describe('Lab · RAG, step by step', () => {
   test('starts at Ingest with real corpus figures, and steps forward and back', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/#lab-rag')
     const rag = page.locator('#lab-rag')
     await expect(rag.getByRole('heading', { level: 4 })).toContainText('Ingest')
     await expect(rag).toContainText(/11 documents · [\d,]+ words/)
@@ -15,7 +15,7 @@ test.describe('Lab · RAG, step by step', () => {
   })
 
   test('chunk size changes the number of chunks', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/#lab-rag')
     const rag = page.locator('#lab-rag')
     await rag.getByRole('button', { name: /02\s*Chunk/ }).click()
     const count = async () => Number((await rag.getByText(/\d+ chunks · first three/).textContent())!.match(/\d+/)![0])
@@ -25,7 +25,7 @@ test.describe('Lab · RAG, step by step', () => {
   })
 
   test('asking retrieves ranked chunks and answers from a real sentence of this site', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/#lab-rag')
     const rag = page.locator('#lab-rag')
     await rag.getByRole('button', { name: 'Ask', exact: true }).click()
     await expect(rag.getByRole('heading', { level: 4 })).toContainText('Retrieve')
@@ -39,7 +39,7 @@ test.describe('Lab · RAG, step by step', () => {
   })
 
   test('an off-topic question is not covered, and an empty one is an error', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/#lab-rag')
     const rag = page.locator('#lab-rag')
     await rag.getByRole('button', { name: 'What is the capital of France?' }).click()
     await expect(rag).toContainText('No chunk shares a word with this question')
@@ -52,7 +52,7 @@ test.describe('Lab · RAG, step by step', () => {
   })
 
   test('reset returns to the starting state; works from the keyboard', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/#lab-rag')
     const rag = page.locator('#lab-rag')
     await rag.getByRole('textbox', { name: 'Question' }).fill('Where did Jayanth work as a Data Developer?')
     await rag.getByRole('textbox', { name: 'Question' }).press('Enter')
@@ -66,12 +66,12 @@ test.describe('Lab · RAG, step by step', () => {
 
 test.describe('Lab · zone check', () => {
   test('is labelled a synthetic scene, with no detector', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/#lab-zone')
     await expect(page.locator('#lab-zone')).toContainText('No camera and no detector run here')
   })
 
   test('stepping along “walk through” logs entering and leaving, and the rule explains each verdict', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/#lab-zone')
     const zone = page.locator('#lab-zone')
     const status = zone.locator('[aria-live]').first()
     await expect(status).toContainText('clear')
@@ -87,7 +87,7 @@ test.describe('Lab · zone check', () => {
   })
 
   test('“walk past” never enters the zone', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/#lab-zone')
     const zone = page.locator('#lab-zone')
     await zone.locator('label', { hasText: 'Walk past' }).click()
     for (const f of ['0', '12', '24', '36', '48']) {
@@ -98,7 +98,7 @@ test.describe('Lab · zone check', () => {
   })
 
   test('play runs to the end; reset restores the start', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/#lab-zone')
     const zone = page.locator('#lab-zone')
     await zone.locator('label', { hasText: 'Stop inside' }).click()
     await zone.getByRole('button', { name: 'Play' }).click()
@@ -110,7 +110,7 @@ test.describe('Lab · zone check', () => {
   })
 
   test('the keyboard moves the person into the zone', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/#lab-zone')
     const zone = page.locator('#lab-zone')
     await zone.getByRole('button', { name: /^Person/ }).focus()
     for (let i = 0; i < 6; i++) await page.keyboard.press('Shift+ArrowRight')
@@ -121,7 +121,7 @@ test.describe('Lab · zone check', () => {
 
 test.describe('Lab · token playground', () => {
   test('before loading it shows characters and words only, labelled as not tokens', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/#lab-tokens')
     const tok = page.locator('#lab-tokens')
     await expect(tok).toContainText('(not tokens)')
     await expect(tok.getByRole('button', { name: 'Load tokenizers' })).toBeVisible()
@@ -131,7 +131,7 @@ test.describe('Lab · token playground', () => {
   test('loads the real tokenizers on request and counts with both', async ({ page }) => {
     const vocab: string[] = []
     page.on('request', r => { if (/(o200k_base|cl100k_base|GptEncoding)-/.test(r.url())) vocab.push(r.url()) })
-    await page.goto('/')
+    await page.goto('/#lab-tokens')
     const tok = page.locator('#lab-tokens')
     // Scrolling the whole page, the Lab included, downloads nothing from the tokenizers.
     for (let y = 0; y < 16000; y += 1200) await page.mouse.wheel(0, 1200)
@@ -155,7 +155,7 @@ test.describe('Lab · token playground', () => {
   for (const prefs of [{ theme: 'dark' }, { theme: 'light' }, { theme: 'light', accent: 'moss' }]) {
     test(`the loaded tokenizer with token IDs passes axe (${Object.values(prefs).join(' + ')})`, async ({ page }) => {
       await page.addInitScript(p => localStorage.setItem('prefs', JSON.stringify(p)), prefs)
-      await page.goto('/')
+      await page.goto('/#lab-tokens')
       const tok = page.locator('#lab-tokens')
       await tok.getByRole('button', { name: 'Load tokenizers' }).click()
       await tok.getByRole('button', { name: 'Telugu' }).click()   // includes partial-character pieces
@@ -166,7 +166,7 @@ test.describe('Lab · token playground', () => {
   }
 
   test('an empty text has a clear empty state; reset restores the example', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/#lab-tokens')
     const tok = page.locator('#lab-tokens')
     await tok.getByRole('button', { name: 'Load tokenizers' }).click()
     await tok.getByLabel('Text').fill('')
@@ -178,7 +178,7 @@ test.describe('Lab · token playground', () => {
   test('a failed download shows an error, and Retry recovers', async ({ page }) => {
     let block = true
     await page.route(/(o200k_base|cl100k_base)-.*\.js$/, route => (block ? route.abort() : route.continue()))
-    await page.goto('/')
+    await page.goto('/#lab-tokens')
     const tok = page.locator('#lab-tokens')
     await tok.getByRole('button', { name: 'Load tokenizers' }).click()
     await expect(tok.getByRole('alert')).toContainText('Couldn’t load the tokenizers')

@@ -4,7 +4,7 @@
  * reason, then fixed; they now guard against the bug coming back.
  */
 import { expect, test, type Page } from '@playwright/test'
-import { loopingAnimations, scrollToY, setPrefs } from './helpers'
+import { loopingAnimations, scrollToMiddle, scrollToY, setPrefs } from './helpers'
 
 /** Font size of every visible element that holds text directly, below display size. */
 async function textSizes(page: Page) {
@@ -70,20 +70,21 @@ test.describe('on a phone', () => {
 test('B4: navigation and section headings have clean accessible names', async ({ page }) => {
   await page.goto('/')
   const nav = page.getByRole('navigation', { name: 'Sections' })
-  for (const name of ['work (4 projects)', 'journey', 'lab (3 experiments)', 'about', 'contact']) {
+  for (const name of ['work', 'journey', 'lab', 'about', 'contact']) {
     await expect(nav.getByRole('link', { name, exact: true })).toHaveCount(1)
   }
-  await expect(page.getByRole('heading', { level: 2, name: 'Selected work (4 projects)', exact: true })).toHaveCount(1)
-  await expect(page.getByRole('heading', { level: 2, name: 'Lab (3 experiments)', exact: true })).toHaveCount(1)
+  await expect(page.getByRole('heading', { level: 2, name: 'Selected work', exact: true })).toHaveCount(1)
+  await expect(page.getByRole('heading', { level: 2, name: 'Lab', exact: true })).toHaveCount(1)
 })
 
 test('B6: looping animations pause when they are off screen', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await page.goto('/')
-  await expect.poll(async () => (await loopingAnimations(page)).some(a => a.state === 'running')).toBe(true) // still alive at the top
+  await scrollToMiddle(page, '#top figure') // the figure sits below the first screen: bring it into view
+  await expect.poll(async () => (await loopingAnimations(page)).some(a => a.state === 'running')).toBe(true) // alive while it is on screen
   await scrollToY(page, 1e6) // the bottom of the page: hero and journey are far away
   await expect.poll(async () => (await loopingAnimations(page)).filter(a => a.state === 'running')).toEqual([])
-  await scrollToY(page, 0) // and they resume
+  await scrollToMiddle(page, '#top figure') // and they resume
   await expect.poll(async () => (await loopingAnimations(page)).some(a => a.state === 'running')).toBe(true)
 })
 

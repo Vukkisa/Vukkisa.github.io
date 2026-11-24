@@ -53,10 +53,11 @@ app/                     source (Vite root)
   src/
     data/content.ts      ← every word on the site; edit this to change the story
     data/corpus.ts       the RAG experiment's documents, built from content.ts
-    sections/            Hero, Work, Journey, Lab, About, Contact
-    components/          TopBar, CommandPalette, ProjectCard, CaseStudy, ProjectVisual, Landscape,
+    App.tsx              the page: nav, hand-drawn scroll line, hero, project cards, journey, Lab, about, contact
+    pen.css              the shared hand-drawn pen (outlines, scroll line, nav indicator, journey dots)
+    components/          CommandPalette, Sketched, CaseStudy, ProjectVisual, SignalFigure, Landscape,
                          RagFlow, ZoneTest, Tokenizer (the Lab), DesignTokens, layout/
-    lib/                 prefs (preferences), rag, tokenize, geometry, utils
+    lib/                 prefs (preferences), sketch (pen geometry), rag, tokenize, geometry, utils
     hooks/               active section, deep links, scroll reveal, pausing off-screen animation
 tests/unit, tests/e2e    Vitest and Playwright tests
 scripts/                 size budget, social preview image, project illustrations

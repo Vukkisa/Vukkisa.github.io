@@ -1,5 +1,5 @@
 import { createElement, useEffect, useLayoutEffect, useRef, useState, type HTMLAttributes } from 'react'
-import { sketchRect } from './sketch'
+import { sketchRect } from '../lib/sketch'
 
 /** The hand-drawn outline itself: an SVG just outside its box, drawn with the shared pen (see proto.css). */
 export function SketchFrame({ seed, w, h, pad = 7, rad = 16 }: { seed: number; w: number; h: number; pad?: number; rad?: number }) {

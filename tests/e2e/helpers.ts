@@ -39,3 +39,8 @@ export async function scrollToMiddle(page: Page, selector: string) {
     window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.47, behavior: 'instant' })
   }, selector)
 }
+
+/** Open a project card's details panel (the case study lives inside it). */
+export async function openCard(page: Page, id: string) {
+  await page.locator(`#${id}`).getByRole('button', { name: /Open details/ }).click()
+}

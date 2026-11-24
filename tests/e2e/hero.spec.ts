@@ -5,9 +5,8 @@ test.describe('hero', () => {
   test('says what the work is, by whom, with real facts', async ({ page }) => {
     await page.goto('/')
     const hero = page.locator('#top')
-    await expect(hero.getByText('AI engineering · Applied ML')).toBeVisible()
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Jayanth Vukkisa')
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('reads the rules, watches the zone and listens through the noise.')
+    await expect(hero).toContainText('I build AI that reads the rules, watches the zone and listens through the noise.')
     await expect(hero).toContainText('Associate Data Scientist intern at AiSpry')
     await expect(hero).toContainText('Jio Institute')
   })
@@ -27,12 +26,15 @@ test.describe('hero', () => {
     test.describe(`${width}×${height}`, () => {
       // Reduced motion so the entrance offsets don't count; measured once the web fonts are in.
       test.use({ viewport: { width, height }, isMobile: !!phone, hasTouch: !!phone, contextOptions: { reducedMotion: 'reduce' } })
-      test('headline and both calls to action are in the first screen', async ({ page }) => {
+      test('headline is in the first screen and both calls to action are within one more scroll', async ({ page }) => {
         await page.goto('/')
         await page.evaluate(() => document.fonts.ready.then(() => undefined))
-        for (const el of [page.getByRole('heading', { level: 1 }), page.getByRole('link', { name: 'View projects' }), page.getByRole('link', { name: 'Open the Lab' })]) {
+        const h1 = (await page.getByRole('heading', { level: 1 }).boundingBox())!
+        expect(h1.y + h1.height, 'name bottom').toBeLessThanOrEqual(height)
+        // the portrait comes first, so the buttons sit just below the first screen on the smallest windows
+        for (const el of [page.getByRole('link', { name: 'View projects' }), page.getByRole('link', { name: 'Open the Lab' })]) {
           const box = (await el.boundingBox())!
-          expect(box.y + box.height, `${await el.textContent()} bottom`).toBeLessThanOrEqual(height)
+          expect(box.y + box.height, `${await el.textContent()} bottom`).toBeLessThanOrEqual(height * 2)
         }
       })
     })

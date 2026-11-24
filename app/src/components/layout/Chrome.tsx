@@ -25,7 +25,7 @@ export function Footer() {
       <div className="flex flex-col gap-4 border-t border-line pt-6 font-mono text-[0.6875rem] text-mute sm:flex-row sm:items-center sm:justify-between">
         <p>
           © {new Date().getFullYear()} {site.name} · {site.location} · built with React & Tailwind ·{' '}
-          <a href={site.source} target="_blank" rel="noopener noreferrer" className="link text-mute">
+          <a href={site.source} target="_blank" rel="noopener noreferrer" className="link inline-block py-1.5 text-mute">
             source<span className="sr-only"> (opens in a new tab)</span>
           </a>
         </p>

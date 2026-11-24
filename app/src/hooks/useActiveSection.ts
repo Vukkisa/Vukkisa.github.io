@@ -6,6 +6,9 @@ export const SCROLL_KEYS = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home'
 /** Dispatched on window by goTo (CommandPalette) before it scrolls. */
 export const NAVIGATE = 'site:navigate'
 
+/** Dispatched on window by the one scroll listener below, so other parts of the page (the hand-drawn scroll line) can follow the scroll without adding listeners of their own. */
+export const SCROLLED = 'site:scrolled'
+
 /**
  * Which of the given sections is "current": the first one (in page order) crossing a band in the
  * upper part of the viewport, or the last section once the page is scrolled to the bottom. Also
@@ -32,6 +35,7 @@ export function useActiveSection(ids: readonly string[]) {
     const atBottom = () => window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2
     const update = () => {
       setScrolled(window.scrollY > 8)
+      window.dispatchEvent(new Event(SCROLLED))
       if (pinned.current || !('IntersectionObserver' in window)) return
       setActive(atBottom() ? ids[ids.length - 1] : (ids.find(id => visible.get(id)) ?? ''))
     }

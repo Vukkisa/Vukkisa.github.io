@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { scrollToMiddle, setPrefs } from './helpers'
+import { openCard, scrollToMiddle, setPrefs } from './helpers'
 
 test.describe('command menu', () => {
   test('opens with Ctrl+K and "/", filters, and Enter goes to the result and focuses it', async ({ page }) => {
@@ -76,8 +76,8 @@ test.describe('preferences', () => {
 
   test('larger text scales body copy, headings, Lab inputs and controls alike', async ({ page }) => {
     // (The very large fluid display type, like the hero name, follows the window size instead.)
-    await page.goto('/')
-    const sels = ['#journey li[data-i="1"] ul li', '#journey li[data-i="1"] h3', '#lab-rag input', '#lab-tokens textarea', '#lab-rag button[type=submit]', 'header nav a', '#design-tokens summary']
+    await page.goto('/#lab-rag')
+    const sels = ['#journey li[data-i="1"] ul li', '#journey li[data-i="1"] h3', '#lab-rag input', '#lab-rag button[type=submit]', 'header nav a', '#design-tokens summary']
     const sizes = () => page.evaluate(ss => ss.map(s => parseFloat(getComputedStyle(document.querySelector(s)!).fontSize)), sels)
     const before = await sizes()
     await page.getByRole('button', { name: 'Larger text' }).click()
@@ -92,7 +92,7 @@ test.describe('preferences', () => {
     await panel.locator('label', { hasText: 'Ember' }).click()
     await expect(page.locator('html')).toHaveAttribute('data-accent', 'ember')
     await panel.locator('label', { hasText: 'Square' }).click()
-    expect(await page.locator('#lab-rag').evaluate(e => getComputedStyle(e).borderTopLeftRadius)).toBe('0px')
+    expect(await page.locator('#knowyourrules').evaluate(e => getComputedStyle(e).borderTopLeftRadius)).toBe('0px')
     await panel.getByRole('button', { name: 'Reset' }).click()
     await expect(page.locator('html')).toHaveAttribute('data-accent', 'cobalt')
     await expect(page.locator('html')).toHaveAttribute('data-radius', 'soft')
@@ -103,7 +103,7 @@ test.describe('preferences', () => {
     await page.goto('/')
     await expect(page.locator('html')).toHaveAttribute('data-accent', 'moss')
     await expect(page.locator('html')).not.toHaveAttribute('data-type', /.*/)
-    for (const sel of ['#hero-title .t-display', '#hero-title .t-headline', '#work-title', '#knowyourrules h3', '#contact-title']) {
+    for (const sel of ['#hero-title', '#work-title', '#knowyourrules h3', '#contact-title']) {
       const font = await page.locator(sel).first().evaluate(el => getComputedStyle(el).fontFamily)
       expect(font).toMatch(/^"?Bricolage Grotesque Variable/)
     }
@@ -138,7 +138,7 @@ test.describe('preferences', () => {
 
 test.describe('lab', () => {
   test('zone check: dragging a corner with the pointer moves it', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/#lab-zone')
     const corner = page.locator('#lab-zone').getByRole('button', { name: /^Zone corner 1/ })
     await corner.scrollIntoViewIfNeeded()
     const box = (await corner.boundingBox())!
@@ -224,6 +224,7 @@ test.describe('navigation', () => {
     // an in-page link outside the nav
     await page.locator('nav[aria-label=Sections] a[href="#contact"]').click()
     await expect(current).toContainText('contact')
+    await openCard(page, 'knowyourrules')
     await page.locator('#knowyourrules a[href="#lab-rag"]').click()
     await expect(current).toContainText('lab')
   })
