@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 
 /**
  * Line-drawn cartoons for three of the projects (AI Surveillance keeps its drawn camera diagram), shown in place of the static covers. Each one is a
@@ -15,9 +15,10 @@ import type { ReactNode } from 'react'
 const W = 400
 const H = 300
 
-function Frame({ label, children }: { label: string; children: ReactNode }) {
+/** `h` is the drawing's height; the cards show a 16:10 window, so a diagram that must show everything uses 250. */
+function Frame({ label, children, h = H }: { label: string; children: ReactNode; h?: number }) {
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label} className="block aspect-[4/3] h-auto w-full bg-card">
+    <svg viewBox={`0 0 ${W} ${h}`} role="img" aria-label={label} style={{ aspectRatio: `${W} / ${h}` }} className="block h-auto w-full bg-card">
       {children}
     </svg>
   )
@@ -76,7 +77,6 @@ function Story({ label, hat, steps }: { label: string; hat: Hat; steps: Step[] }
 }
 
 const DOWN = 'M190 136L178 164 M210 136L222 164'
-const REST = 'M190 136L182 164 M210 136L218 164'
 /* ---- KnowYourRules: read the sources, index them, take a question, answer from them or decline -- */
 function Rag() {
   const steps: Step[] = [
@@ -159,21 +159,69 @@ function Cv() {
   )
 }
 
-/* ---- Railway speech: noisy audio, cleaned, split, transcribed, scored ------------------------ */
+/* ---- Railway speech: a person speaks into a handset, the audio is cleaned and transcribed, the words appear ---- */
+/** Words as short pen strokes, three lines. Not real text: no transcript is shown or implied. */
+const TRANSCRIPT: number[][] = [[30, 22, 40, 26, 34, 24], [36, 28, 20, 42, 30], [26, 38, 24, 32]]
+const word = (x: number, y: number, w: number) => `M${x} ${y}q${w / 4} -3 ${w / 2} 0t${w / 2} 0`
+
 function Speech() {
-  const noisy = 'M214 114l4-10 4 20 4-22 4 18 4-8 4 14 4-16 4 10 4-6'
-  const clean = 'M214 114q8-16 16 0t16 0t16 0'
-  const steps: Step[] = [
-    { cap: 'Noisy railway audio', arms: 'M212 134L232 122 M188 134L174 162', props: (<g className={INK}><path d={noisy} className="stroke-mute" /></g>) },
-    { cap: 'Clean the audio', arms: 'M212 134L232 122 M188 134L174 162', props: (<g className={INK}><path d={clean} className="stroke-accent" /></g>) },
-    { cap: 'Split speech from silence', arms: 'M212 134L232 122 M188 134L174 162', props: (
-      <g className={INK}><path d={clean} /><path d="M214 124v8h18v-8 M238 124v8h22v-8" className="stroke-accent" /></g>) },
-    { cap: 'Transcribe with models', arms: REST, props: (
-      <g className={INK}><rect x="224" y="92" width="58" height="34" rx="6" className="fill-accent-soft stroke-accent" /><path d="M232 102h40 M232 110h32 M232 118h38" /><path d="M232 126l-6 8l14-6" className="stroke-accent" /></g>) },
-    { cap: 'Score: word + character errors', arms: 'M190 136L182 160 M210 136L224 150', props: (
-      <g className={INK}><rect x="168" y="138" width="50" height="30" rx="2" /><path d="M175 148h24 M175 156h30 M176 163l4 4 8-9" /><path d="M226 150l12-14" /></g>) },
-  ]
-  return <Story hat="railway" steps={steps} label="Illustration of the railway speech-recognition pipeline as a line-drawn cartoon: a railway worker hears noisy audio, it is cleaned, split into speech and silence, transcribed by several models, and scored by word and character error rate." />
+  return (
+    <Frame h={250} label="Illustration of the railway speech-recognition pipeline as a line-drawn cartoon: a person speaks into a handset, the noisy railway audio travels through a cleaning stage and a speech-to-text stage, and the spoken words appear line by line as a text transcript. The fine-tuned model's word and character error rates have not been measured yet.">
+      <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="fill-none stroke-fg">
+        {/* locomotive cabin */}
+        <rect x="16" y="34" width="130" height="100" rx="6" className="fill-bg stroke-line-strong" />
+        <path d="M16 122H146" className="stroke-line-strong" />
+        <rect x="96" y="42" width="40" height="22" rx="3" className="fill-card" />
+        <path d="M104 60L112 46 M128 60L120 46" className="stroke-mute" strokeWidth="1.4" />
+        {/* the radio on the wall */}
+        <rect x="100" y="70" width="38" height="26" rx="3" className="fill-card" />
+        <path d="M106 78h14 M106 83h14 M106 88h14" />
+        <circle cx="129" cy="80" r="4" /><circle cx="129" cy="89" r="2.2" />
+        {/* the employee: railway cap, handset to the mouth, cord to the radio */}
+        <circle cx="52" cy="92" r="6.5" className="fill-bg" />
+        <path d="M46 88Q52 80 58 88Z M46 88H60 M52 98V112 M52 112L46 122 M52 112L58 122 M52 101L43 111 M52 101L63 99L64 100" />
+        <rect x="60" y="86" width="7" height="14" rx="3" className="fill-bg" />
+        <path d="M64 100q6 12 22 4t22-8" className="stroke-mute" strokeWidth="1.6" />
+        <circle cx="50" cy="91" r="1" className="fill-fg stroke-none" />
+        <circle cx="55" cy="91" r="1" className="fill-fg stroke-none" />
+        {/* two small gauges on the control panel */}
+        <circle cx="122" cy="108" r="5" className="stroke-mute" /><circle cx="136" cy="108" r="5" className="stroke-mute" />
+      </g>
+      <text x="24" y="130" className={T}>railway audio</text>
+
+      {/* sound leaving the radio */}
+      <g className="fill-none stroke-accent" strokeWidth="1.8" strokeLinecap="round">
+        {['M144 77q5 6 0 12', 'M150 73q8 10 0 20', 'M156 69q11 14 0 28'].map((d, k) => <path key={k} d={d} className="signal-arc" style={{ '--k': k } as CSSProperties} />)}
+      </g>
+
+      {/* the pipeline: cleaning, then speech-to-text */}
+      <rect x="198" y="66" width="60" height="34" rx="5" className="sp-n1 fill-bg stroke-line-strong" />
+      <text x="228" y="86" textAnchor="middle" className="fill-fg font-mono text-[9px]">denoise</text>
+      <rect x="276" y="66" width="76" height="34" rx="5" className="sp-n2 fill-bg stroke-line-strong" />
+      <text x="314" y="86" textAnchor="middle" className="fill-fg font-mono text-[9px]">transcribe</text>
+      <text x="162" y="112" className={T}>noisy audio</text>
+      <text x="322" y="126" className={T}>text</text>
+
+      {/* the audio's route, drawn with the pen: noisy at the radio, clean after the denoiser, down to the transcript */}
+      <path pathLength={1} className="sp-route fill-none stroke-accent" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+        d="M162 83l4-7 4 14 4-16 4 14 4-9 4 10 4-6 4 4 H198 M258 83H264q3-6 6 0t6 0 M314 100V152 M308 146l6 6 6-6" />
+
+      {/* the transcript card; the words appear a line at a time */}
+      <rect x="16" y="156" width="368" height="86" rx="6" className="fill-bg stroke-line-strong" />
+      <text x="28" y="171" className={T}>transcript</text>
+      <g className="fill-none stroke-fg" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        {TRANSCRIPT.map((ws, li) => {
+          let x = 28
+          return (
+            <g key={li} className={`sp-line sp-l${li + 1}`}>
+              {ws.map((w, wi) => { const d = word(x, 188 + li * 15, w); x += w + 9; return <path key={wi} d={d} /> })}
+            </g>
+          )
+        })}
+      </g>
+      <text x="28" y="234" className={T}>fine-tuned model: error rates not measured yet</text>
+    </Frame>
+  )
 }
 
 /* ---- Ez-Learn: sign up, learn, quiz, pay, certificate ---------------------------------------- */

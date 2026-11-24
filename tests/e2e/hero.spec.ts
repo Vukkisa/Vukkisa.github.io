@@ -11,6 +11,17 @@ test.describe('hero', () => {
     await expect(hero).toContainText('Jio Institute')
   })
 
+  test('shows target roles, current affiliations and the résumé link', async ({ page }) => {
+    await page.goto('/')
+    const hero = page.locator('#top')
+    for (const r of ['Applied AI / ML', 'Speech AI', 'NLP', 'Generative AI']) await expect(hero.getByRole('list', { name: /Roles/ }).getByText(r, { exact: true })).toBeVisible()
+    const where = hero.getByRole('list', { name: 'Where I study and work' })
+    await expect(where).toContainText('PG Programme in AI & DS')
+    await expect(where).toContainText('Associate Data Scientist Intern')
+    await expect(where).toContainText('2.5 years of experience')
+    await expect(hero.getByRole('link', { name: /^Résumé/ })).toHaveAttribute('href', /Resume\.pdf$/)
+  })
+
   test('the two calls to action go to Projects and the Lab', async ({ page }) => {
     await page.goto('/')
     await expect(page.locator('#top').getByRole('link', { name: 'View projects' })).toHaveAttribute('href', '#work')

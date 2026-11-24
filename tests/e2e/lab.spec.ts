@@ -6,7 +6,7 @@ test.describe('Lab · RAG, step by step', () => {
     await page.goto('/#lab-rag')
     const rag = page.locator('#lab-rag')
     await expect(rag.getByRole('heading', { level: 4 })).toContainText('Ingest')
-    await expect(rag).toContainText(/11 documents · [\d,]+ words/)
+    await expect(rag).toContainText(/10 documents · [\d,]+ words/)
     await expect(rag.getByRole('button', { name: 'Back' })).toBeDisabled()
     await rag.getByRole('button', { name: 'Next stage' }).click()
     await expect(rag.getByRole('heading', { level: 4 })).toContainText('Chunk')

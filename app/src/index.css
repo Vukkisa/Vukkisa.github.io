@@ -242,6 +242,25 @@
 @keyframes pv-feet { 0% { fill: var(--color-fg); } 24% { fill: var(--color-accent); } }
 @keyframes pv-show { 0% { opacity: 0; } 24% { opacity: 1; } }
 
+/* Railway speech diagram: the route is drawn with the pen (dash offset), the words wipe in a line at a
+   time, the two stages light up in turn. At rest everything is simply there. One 11 s loop. */
+.sp-route { stroke-dasharray: 1; stroke-dashoffset: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .sp-route { animation: sp-route 11s ease-in-out infinite both; }
+  .sp-n1 { animation: sp-n1 11s linear infinite both; }
+  .sp-n2 { animation: sp-n2 11s linear infinite both; }
+  .sp-line { animation-duration: 11s; animation-iteration-count: infinite; animation-fill-mode: both; animation-timing-function: steps(7, end); }
+  .sp-l1 { animation-name: sp-l1; }
+  .sp-l2 { animation-name: sp-l2; }
+  .sp-l3 { animation-name: sp-l3; }
+}
+@keyframes sp-route { 0%, 3% { stroke-dashoffset: 1; opacity: 1; } 40%, 94% { stroke-dashoffset: 0; opacity: 1; } 98%, 100% { stroke-dashoffset: 0; opacity: 0; } }
+@keyframes sp-n1 { 0%, 10% { fill: var(--color-bg); } 14%, 24% { fill: var(--color-accent-soft); } 28%, 100% { fill: var(--color-bg); } }
+@keyframes sp-n2 { 0%, 24% { fill: var(--color-bg); } 28%, 38% { fill: var(--color-accent-soft); } 42%, 100% { fill: var(--color-bg); } }
+@keyframes sp-l1 { 0%, 40% { clip-path: inset(-3px 100% -3px 0); opacity: 1; } 54%, 94% { clip-path: inset(-3px 0 -3px 0); opacity: 1; } 98%, 100% { clip-path: inset(-3px 0 -3px 0); opacity: 0; } }
+@keyframes sp-l2 { 0%, 54% { clip-path: inset(-3px 100% -3px 0); opacity: 1; } 67%, 94% { clip-path: inset(-3px 0 -3px 0); opacity: 1; } 98%, 100% { clip-path: inset(-3px 0 -3px 0); opacity: 0; } }
+@keyframes sp-l3 { 0%, 67% { clip-path: inset(-3px 100% -3px 0); opacity: 1; } 79%, 94% { clip-path: inset(-3px 0 -3px 0); opacity: 1; } 98%, 100% { clip-path: inset(-3px 0 -3px 0); opacity: 0; } }
+
 /* Case studies (CaseStudy.tsx): the disclosure marker turns, the body fades in. */
 .case > summary { list-style: none; }
 .case > summary::-webkit-details-marker { display: none; }

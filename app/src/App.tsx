@@ -390,8 +390,12 @@ function Entry({ p, i }: { p: (typeof projects)[number]; i: number }) {
               </p>
               <h3 id={`${p.id}-t`} className="mt-1.5 font-display text-xl font-semibold tracking-tight">{p.title}</h3>
               <p className="mt-1 text-sm leading-relaxed text-soft">{p.subtitle}</p>
-              <ul aria-label="Tools" className="mt-3 flex flex-wrap gap-1.5">
-                {p.tools.slice(0, 4).map(t => <li key={t} className="rounded-full border border-line px-2 py-0.5 font-mono text-[0.6875rem] text-mute">{t}</li>)}
+              <dl className="mt-3 space-y-2 text-[0.8125rem] leading-snug text-soft">
+                <div><dt className="inline font-mono text-[0.6875rem] text-accent">Problem </dt><dd className="inline">{p.problem}</dd></div>
+                <div><dt className="inline font-mono text-[0.6875rem] text-accent">My part </dt><dd className="inline">{p.contribution}</dd></div>
+              </dl>
+              <ul aria-label="Technologies" className="mt-3 flex flex-wrap gap-1.5">
+                {p.tools.map(t => <li key={t} className="rounded-full border border-line px-2 py-0.5 font-mono text-[0.6875rem] text-mute">{t}</li>)}
               </ul>
               <button type="button" aria-expanded={open} onClick={() => setOpen(o => !o)} className="p-link mt-auto flex items-center gap-1.5 self-start pt-4 font-mono text-xs text-mute">
                 Open details <span aria-hidden="true" className="pcard-arrow inline-block">→</span>
@@ -531,7 +535,7 @@ function Journey() {
             <p className="eyebrow flex flex-wrap items-center gap-x-2">
               <span className="text-fg">{c.year}</span>
               <span aria-hidden="true">·</span>
-              <span className={c.kind === 'Direction' ? 'text-accent' : ''}>{c.kind === 'Direction' ? '▸ next, not done yet' : c.kind}</span>
+              <span>{c.kind}</span>
             </p>
             <h3 className="mt-2 font-display text-2xl font-semibold tracking-tight">{c.title}</h3>
             <p className="mt-1 text-sm text-mute">{c.org}</p>
@@ -577,18 +581,32 @@ export default function App() {
           <p className="rise mt-8 font-display text-[clamp(1.5rem,5vw,2rem)] font-medium leading-[1.2] tracking-tight" style={{ ['--d' as string]: '200ms' }}>
             {lead} <span className="text-mute">{clauses[0]}</span> <span className="text-mute">{clauses[1]}</span> <span className="text-accent">{clauses[2]}</span>
           </p>
-          <p className="rise mt-6 text-[1.0625rem] leading-relaxed text-soft" style={{ ['--d' as string]: '300ms' }}>{intro.summary}</p>
+          <div className="rise mt-6" style={{ ['--d' as string]: '260ms' }}>
+            <p className="font-mono text-[0.6875rem] text-mute">Roles I’m aiming for</p>
+            <ul aria-label="Roles I’m aiming for" className="mt-2 flex flex-wrap gap-1.5">
+              {intro.roles.map(r => <li key={r} className="rounded-full border border-line-strong px-2.5 py-1 font-mono text-xs text-fg">{r}</li>)}
+            </ul>
+          </div>
+          <ul aria-label="Where I study and work" className="rise mt-5 grid gap-x-5 gap-y-2.5 sm:grid-cols-3" style={{ ['--d' as string]: '300ms' }}>
+            {intro.affiliations.map(a => (
+              <li key={a.org} className="border-l-2 border-accent pl-3 leading-snug">
+                <span className="block font-medium text-fg">{a.org}</span>
+                <span className="block text-sm text-soft">{a.what}</span>
+              </li>
+            ))}
+          </ul>
           <div className="rise mt-7 flex flex-wrap items-center gap-x-3 gap-y-3" style={{ ['--d' as string]: '400ms' }}>
             <Sketched as="span" seed={21} pad={4} rad={10}><a href="#work" className="btn btn-primary">View projects <span aria-hidden="true" className="btn-arrow">→</span></a></Sketched>
+            <Sketched as="span" seed={23} pad={4} rad={10}><a href={site.resume} className="btn btn-secondary">Résumé <span aria-hidden="true" className="text-mute">(PDF)</span></a></Sketched>
             <Sketched as="span" seed={22} pad={4} rad={10}><a href="#lab" className="btn btn-secondary">Open the Lab <span aria-hidden="true" className="btn-arrow">→</span></a></Sketched>
             <a href="#journey" className="p-link inline-block py-1.5 text-sm text-soft sm:ml-1">or start the journey</a>
           </div>
           <ul aria-label="Elsewhere" className="rise mt-5 flex flex-wrap gap-x-5 gap-y-0 text-[0.9375rem]" style={{ ['--d' as string]: '460ms' }}>
             <li><a href={site.github} target="_blank" rel="noopener noreferrer" className="p-link inline-block py-1">GitHub<span aria-hidden="true" className="nudge text-mute"> ↗</span><span className="sr-only"> (opens in a new tab)</span></a></li>
             <li><a href={site.linkedin} target="_blank" rel="noopener noreferrer" className="p-link inline-block py-1">LinkedIn<span aria-hidden="true" className="nudge text-mute"> ↗</span><span className="sr-only"> (opens in a new tab)</span></a></li>
-            <li><a href={site.resume} className="p-link inline-block py-1">Résumé</a></li>
             <li><a href={`mailto:${site.email}`} className="p-link inline-block py-1">Email</a></li>
           </ul>
+          <p className="rise mt-8 text-[1.0625rem] leading-relaxed text-soft" style={{ ['--d' as string]: '520ms' }}>{intro.summary}</p>
           <div data-loop data-reveal className="mt-12">
             <Sketched when="view" seed={41} pad={6} rad={14}><SignalFigure /></Sketched>
           </div>

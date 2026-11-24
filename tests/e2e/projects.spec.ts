@@ -28,7 +28,21 @@ test.describe('project diagrams', () => {
     await page.goto('/')
     const opacity = (sel: string) => page.locator(sel).first().evaluate(e => getComputedStyle(e).opacity)
     expect(await opacity('#ai-surveillance .pv-alert')).toBe('1')
-    for (const id of ['knowyourrules', 'speech-recognition', 'ez-learn']) expect(await opacity(`#${id} .pv-scene:last-of-type`)).toBe('1') // the last step shows at rest
+    for (const id of ['knowyourrules', 'ez-learn']) expect(await opacity(`#${id} .pv-scene:last-of-type`)).toBe('1') // the last step shows at rest
+    // speech: the route is fully drawn and every transcript line is fully shown
+    expect(await page.locator('#speech-recognition .sp-route').evaluate(e => getComputedStyle(e).strokeDashoffset)).toBe('0px')
+    for (const l of ['sp-l1', 'sp-l2', 'sp-l3']) {
+      const st = await page.locator(`#speech-recognition .${l}`).evaluate(e => ({ o: getComputedStyle(e).opacity, c: getComputedStyle(e).clipPath }))
+      expect(st.o).toBe('1'); expect(st.c).toBe('none')
+    }
+  })
+
+  test('the speech illustration tells the story: speaker, audio route, transcript', async ({ page }) => {
+    await page.goto('/')
+    const svg = page.locator('#speech-recognition').getByRole('img', { name: /railway speech-recognition pipeline/ })
+    await expect(svg).toContainText('noisy audio')
+    await expect(svg).toContainText('transcript')
+    await expect(svg).toContainText('error rates not measured yet')
   })
 })
 
@@ -41,7 +55,7 @@ test.describe('case studies', () => {
       await expect(cs).not.toHaveAttribute('open', '')
       await cs.locator('summary').click()
       await expect(cs).toHaveAttribute('open', '')
-      for (const h of ['How it works', 'My part', 'Evaluation so far', 'Limitations', 'Code and demo']) {
+      for (const h of ['Problem', 'My work', 'Technical implementation', 'Evaluation and evidence', 'Limitations and current status', 'Code and demo']) {
         await expect(cs.getByRole('heading', { level: 4, name: h })).toBeVisible()
       }
       expect(await cs.locator('ol > li').count()).toBeGreaterThanOrEqual(4)
@@ -65,7 +79,7 @@ test.describe('case studies', () => {
     await page.goto('/#ai-surveillance-case')
     const cs = page.locator('#ai-surveillance-case')
     await expect(cs).toHaveAttribute('open', '')
-    await expect(cs.getByRole('heading', { name: 'How it works' })).toBeInViewport()
+    await expect(cs.getByRole('heading', { name: 'Technical implementation' })).toBeInViewport()
   })
 
   test('the command menu opens a case study and focuses it', async ({ page }) => {

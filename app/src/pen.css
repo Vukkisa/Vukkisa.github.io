@@ -128,5 +128,7 @@ header { position: sticky; }
 @media (min-width: 640px) { .jfig .scape { max-height: 30vh; width: auto; margin-inline: auto; } }
 
 /* A case study inside a half-width card: one column, so it reads as a column rather than two slivers. */
-.pcard-panel .case-body { grid-template-columns: minmax(0, 1fr) !important; gap: 1.5rem !important; padding: 1rem !important; }
+.pcard-panel .case-body { padding: 1rem !important; }
+.pcard-panel .case-body .grid { grid-template-columns: minmax(0, 1fr) !important; gap: 1.5rem !important; }
+.pcard-panel .case-body > .grid + .grid { margin-top: 1.5rem !important; }
 .pcard-panel .case > summary { padding: .75rem 1rem; }

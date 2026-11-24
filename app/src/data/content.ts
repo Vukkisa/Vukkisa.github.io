@@ -22,6 +22,14 @@ export const intro = {
   /** The one-line hero statement. Each clause is one of the projects below (KYR, AI Surveillance, speech). */
   tagline: ['I build AI that', 'reads the rules,', 'watches the zone', 'and listens through the noise.'],
   now: 'Associate Data Scientist intern at AiSpry',
+  /** The areas I'm aiming at, shown under the tagline. */
+  roles: ['Applied AI / ML', 'Speech AI', 'NLP', 'Generative AI'],
+  /** Where I am and where I've been, in one glance. Dates match `education` and `chapters`. */
+  affiliations: [
+    { org: 'Jio Institute', what: 'PG Programme in AI & DS' },
+    { org: 'AiSpry', what: 'Associate Data Scientist Intern' },
+    { org: 'TCS', what: '2.5 years of experience' },
+  ],
   summary:
     'Postgraduate student in AI & Data Science at Jio Institute and Associate Data Scientist intern at AiSpry, after two and a half years as a Data Developer at TCS working on telecom billing systems. I build retrieval, computer-vision and speech-recognition systems.',
 }
@@ -64,6 +72,8 @@ export type Project = {
   context: string
   status: { label: string; tone: 'done' | 'progress' | 'live' }
   problem: string
+  /** One line: what I personally did. */
+  contribution: string
   built: string
   evidence: string
   tools: string[]
@@ -81,11 +91,39 @@ export type Project = {
 }
 
 /**
- * Homepage order: inspectable evidence and relevance to AI/ML roles first, then recency.
- * Public code (KnowYourRules, AI Surveillance) comes before the internship work that can't be
- * shown, and Ez-Learn (full-stack, older) comes last.
+ * Homepage order: the current internship work first (Railway speech AI), then KnowYourRules and
+ * AI Surveillance, with Ez-Learn (full-stack, older) last.
  */
 export const projects: Project[] = [
+  {
+    id: 'speech-recognition',
+    title: 'Railway speech recognition',
+    subtitle: 'Transcribing noisy, multilingual railway audio',
+    context: 'AiSpry · internship · Oct 2026 – Present',
+    status: { label: 'In progress · evaluation pending', tone: 'progress' },
+    problem: 'Railway audio recordings are noisy and multilingual, and off-the-shelf speech models struggle with them.',
+    contribution: 'Built the local pipeline and fine-tuned Indic-Conformer on noisy railway audio.',
+    built:
+      'A fully local speech-recognition pipeline. I tested denoising methods (spectral, RNNoise, DeepFilterNet) and silence- and voice-based segmentation, benchmarked Indic-Conformer, Qwen3-ASR and Whisper, and merged their outputs with a word-level ensemble, all within tight compute and disk limits.',
+    evidence: 'Variants are scored on word and character error rate. Indic-Conformer fine-tuning is complete; the fine-tuned model’s WER and CER haven’t been measured yet.',
+    tools: ['Python', 'PyTorch', 'Hugging Face Transformers', 'faster-whisper', 'Silero VAD', 'jiwer'],
+    cover: 'railway-speech',
+    visual: 'speech',
+    caseStudy: {
+      steps: [
+        { name: 'Denoise', detail: 'Spectral denoising, RNNoise and DeepFilterNet, each tested.' },
+        { name: 'Segment', detail: 'Silence-based and voice-based segmentation, using Silero VAD.' },
+        { name: 'Transcribe', detail: 'Indic-Conformer, Qwen3-ASR and Whisper (via faster-whisper), benchmarked side by side.' },
+        { name: 'Combine', detail: 'A word-level ensemble merges the models’ outputs.' },
+        { name: 'Score', detail: 'Every variant is scored on word and character error rate (WER, CER) with jiwer.' },
+      ],
+      mine: ['Built the fully local pipeline during the internship, within tight compute and disk limits.', 'Fine-tuned Indic-Conformer on noisy railway audio.'],
+      evaluation: 'The fine-tuned model’s WER and CER haven’t been measured yet. The project is company work, and its code, audio and results aren’t public.',
+      limitations: ['Company project: the code, audio and results aren’t public.', 'Fine-tuning is complete, but the fine-tuned model hasn’t been evaluated yet.'],
+    },
+    links: [],
+    privateNote: 'Company project: code and data aren’t public.',
+  },
   {
     id: 'knowyourrules',
     title: 'KnowYourRules',
@@ -93,6 +131,7 @@ export const projects: Project[] = [
     context: 'Jio Institute · started as a team project · Sep – Nov 2026',
     status: { label: 'Private preview', tone: 'progress' },
     problem: 'Telangana’s motor-vehicle rules are spread across the Central Act, state rules and government orders, and a chatbot that guesses can mislead.',
+    contribution: 'Built the Telangana-only assistant: retrieval, answer validator and provider fallback. It began as a team project.',
     built:
       'A Telangana-only RAG assistant. Hybrid retrieval (provision lookup, BM25 and vector search) feeds a model whose cited claims are checked by a validator. If the approved sources don’t support an answer, or the question asks for fines or penalties, it declines instead of guessing.',
     evidence: 'Tried on a private Vercel Preview on 17 Nov 2026: 39 basic questions, 17 declined for lack of support. The sources are approved on the owner’s statement, not a legal review, so this is not legal advice.',
@@ -135,6 +174,7 @@ export const projects: Project[] = [
     context: 'Jio Institute · coursework · 2026',
     status: { label: 'Complete', tone: 'done' },
     problem: 'Guarding a restricted area shouldn’t depend on someone watching a screen all day.',
+    contribution: 'Built the tool as coursework and packaged it as an installable command-line tool.',
     built:
       'Draw a zone on any camera feed (webcam, USB, RTSP or video file). YOLOv8 detects people, each person’s feet point is tested against the zone, and every intrusion saves a clip, a snapshot and a CSV log entry.',
     evidence: 'Packaged as an installable command-line tool with a built-in FPS benchmark; benchmark results not yet recorded. Hidden feet or crowded scenes can cause missed or false alerts.',
@@ -160,40 +200,13 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: 'speech-recognition',
-    title: 'Railway speech recognition',
-    subtitle: 'Transcribing noisy, multilingual railway audio',
-    context: 'AiSpry · internship · Oct 2026 – Present',
-    status: { label: 'In progress', tone: 'progress' },
-    problem: 'Railway audio recordings are noisy and multilingual, and off-the-shelf speech models struggle with them.',
-    built:
-      'A fully local speech-recognition pipeline. I tested denoising methods (spectral, RNNoise, DeepFilterNet) and silence- and voice-based segmentation, benchmarked Indic-Conformer, Qwen3-ASR and Whisper, and merged their outputs with a word-level ensemble, all within tight compute and disk limits.',
-    evidence: 'Variants are scored on word and character error rate. Indic-Conformer fine-tuning is complete; the fine-tuned model’s WER and CER haven’t been measured yet.',
-    tools: ['Python', 'PyTorch', 'Hugging Face Transformers', 'faster-whisper', 'Silero VAD', 'jiwer'],
-    cover: 'railway-speech',
-    visual: 'speech',
-    caseStudy: {
-      steps: [
-        { name: 'Denoise', detail: 'Spectral denoising, RNNoise and DeepFilterNet, each tested.' },
-        { name: 'Segment', detail: 'Silence-based and voice-based segmentation, using Silero VAD.' },
-        { name: 'Transcribe', detail: 'Indic-Conformer, Qwen3-ASR and Whisper (via faster-whisper), benchmarked side by side.' },
-        { name: 'Combine', detail: 'A word-level ensemble merges the models’ outputs.' },
-        { name: 'Score', detail: 'Every variant is scored on word and character error rate (WER, CER) with jiwer.' },
-      ],
-      mine: ['Built the fully local pipeline during the internship, within tight compute and disk limits.', 'Fine-tuned Indic-Conformer on noisy railway audio.'],
-      evaluation: 'The fine-tuned model’s WER and CER haven’t been measured yet. The project is company work, and its code, audio and results aren’t public.',
-      limitations: ['Company project: the code, audio and results aren’t public.', 'Fine-tuning is complete, but the fine-tuned model hasn’t been evaluated yet.'],
-    },
-    links: [],
-    privateNote: 'Company project: code and data aren’t public.',
-  },
-  {
     id: 'ez-learn',
     title: 'Ez-Learn',
     subtitle: 'Full-stack learning platform',
     context: 'TalentSprint · 2023, updated 2025',
     status: { label: 'Live demo', tone: 'live' },
     problem: 'Learners need one place to sign up, pay, study, take quizzes and earn a certificate, and instructors need a way to run their courses.',
+    contribution: 'Built it in the TalentSprint program, then updated it and deployed it on Render.',
     built:
       'A Django platform. Learners sign up with email OTP, study course content, take scored quizzes and earn certificates. Instructors manage courses and quizzes. Paid courses go through Razorpay with payment verification, on PostgreSQL.',
     evidence: 'Deployed on Render with a public demo.',
@@ -295,15 +308,9 @@ export const chapters = [
     title: 'Associate Data Scientist (internship)', org: 'AiSpry · Oct 2026 – Present',
     points: ['Speech recognition for noisy railway audio: a local speech-recognition setup, with Indic-Conformer fine-tuned for it. The fine-tuned model’s WER and CER haven’t been measured yet.'],
   },
-  {
-    year: 'Next', station: 5, kind: 'Direction',
-    title: 'AI agents', org: 'Where I’m heading',
-    points: ['Systems that plan, call tools and check their own work. I’ve rebuilt one coursework RAG project as a LangGraph graph; agents are the next step.'],
-  },
 ] as const
 
 export const now = [
   { label: 'Now', text: 'Speech recognition for noisy railway audio at AiSpry. Indic-Conformer is fine-tuned; its results aren’t measured yet.' },
   { label: 'Studying', text: 'PG Program in AI & Data Science at Jio Institute, until April 2027.' },
-  { label: 'Next', text: 'AI agents: tool use, planning and evaluation.' },
 ]
