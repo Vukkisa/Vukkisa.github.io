@@ -100,12 +100,12 @@ export const projects: Project[] = [
     title: 'Railway speech recognition',
     subtitle: 'Transcribing noisy, multilingual railway audio',
     context: 'AiSpry · internship · Oct 2026 – Present',
-    status: { label: 'In progress · evaluation pending', tone: 'progress' },
+    status: { label: 'In progress', tone: 'progress' },
     problem: 'Railway audio recordings are noisy and multilingual, and off-the-shelf speech models struggle with them.',
-    contribution: 'Built the local pipeline and fine-tuned Indic-Conformer on noisy railway audio.',
+    contribution: 'Built the local pipeline and am fine-tuning Indic-Conformer on noisy railway audio.',
     built:
       'A fully local speech-recognition pipeline. I tested denoising methods (spectral, RNNoise, DeepFilterNet) and silence- and voice-based segmentation, benchmarked Indic-Conformer, Qwen3-ASR and Whisper, and merged their outputs with a word-level ensemble, all within tight compute and disk limits.',
-    evidence: 'Variants are scored on word and character error rate. Indic-Conformer fine-tuning is complete; the fine-tuned model’s WER and CER haven’t been measured yet.',
+    evidence: 'Variants are scored on word and character error rate. Indic-Conformer fine-tuning is in progress; the fine-tuned model’s WER and CER haven’t been measured yet.',
     tools: ['Python', 'PyTorch', 'Hugging Face Transformers', 'faster-whisper', 'Silero VAD', 'jiwer'],
     cover: 'railway-speech',
     visual: 'speech',
@@ -117,9 +117,9 @@ export const projects: Project[] = [
         { name: 'Combine', detail: 'A word-level ensemble merges the models’ outputs.' },
         { name: 'Score', detail: 'Every variant is scored on word and character error rate (WER, CER) with jiwer.' },
       ],
-      mine: ['Built the fully local pipeline during the internship, within tight compute and disk limits.', 'Fine-tuned Indic-Conformer on noisy railway audio.'],
-      evaluation: 'The fine-tuned model’s WER and CER haven’t been measured yet. The project is company work, and its code, audio and results aren’t public.',
-      limitations: ['Company project: the code, audio and results aren’t public.', 'Fine-tuning is complete, but the fine-tuned model hasn’t been evaluated yet.'],
+      mine: ['Built the fully local pipeline during the internship, within tight compute and disk limits.', 'Fine-tuning Indic-Conformer on noisy railway audio (in progress).'],
+      evaluation: 'Fine-tuning is still in progress, so the fine-tuned model’s WER and CER haven’t been measured yet. The project is company work, and its code, audio and results aren’t public.',
+      limitations: ['Company project: the code, audio and results aren’t public.', 'Fine-tuning is still in progress, so the fine-tuned model hasn’t been evaluated yet.'],
     },
     links: [],
     privateNote: 'Company project: code and data aren’t public.',
@@ -129,7 +129,7 @@ export const projects: Project[] = [
     title: 'KnowYourRules',
     subtitle: 'Telangana motor-vehicle law assistant, grounded in official sources',
     context: 'Jio Institute · started as a team project · Sep – Nov 2026',
-    status: { label: 'Private preview', tone: 'progress' },
+    status: { label: 'Live demo', tone: 'live' },
     problem: 'Telangana’s motor-vehicle rules are spread across the Central Act, state rules and government orders, and a chatbot that guesses can mislead.',
     contribution: 'Built the Telangana-only assistant: retrieval, answer validator and provider fallback. It began as a team project.',
     built:
@@ -158,10 +158,11 @@ export const projects: Project[] = [
         'It is not a legal-advice system. Fine, penalty and compounding questions are blocked, and answers go no further than the approved text.',
         'The preview declined 17 of 39 basic questions. The causes include over-cautious model refusals, strict validator rules, retrieval misses and missing sources. Some were fixed afterwards.',
         'Hindi and Hinglish questions retrieved poorly in the synthetic benchmark, and no multilingual embedding model was tested.',
-        'The only deployment on record is a private Vercel Preview, and there is no public demo link. The Render and GitHub Pages files are deployment templates; I found no record that they were run.',
+        'The 17 Nov test figures come from an earlier private Vercel Preview, before the public demo went live. The Render and GitHub Pages files are deployment templates; I found no record that they were run.',
       ],
     },
     links: [
+      { label: 'Live demo', href: 'https://knowyourrules-api.vercel.app/' },
       { label: 'Repository', href: 'https://github.com/Vukkisa/KnowYourRules' },
       { label: 'Approval and trust model', href: 'https://github.com/Vukkisa/KnowYourRules/blob/feature/telangana-assistant/docs/approval-trust-model.md' },
       { label: 'Answer-quality report', href: 'https://github.com/Vukkisa/KnowYourRules/blob/feature/telangana-assistant/eval/answer-quality/REPORT.md' },
@@ -306,11 +307,11 @@ export const chapters = [
   {
     year: 'Oct 2026', station: 5, kind: 'Applications',
     title: 'Associate Data Scientist (internship)', org: 'AiSpry · Oct 2026 – Present',
-    points: ['Speech recognition for noisy railway audio: a local speech-recognition setup, with Indic-Conformer fine-tuned for it. The fine-tuned model’s WER and CER haven’t been measured yet.'],
+    points: ['Speech recognition for noisy railway audio: a local speech-recognition setup, with Indic-Conformer being fine-tuned for it. The fine-tuned model’s WER and CER haven’t been measured yet.'],
   },
 ] as const
 
 export const now = [
-  { label: 'Now', text: 'Speech recognition for noisy railway audio at AiSpry. Indic-Conformer is fine-tuned; its results aren’t measured yet.' },
+  { label: 'Now', text: 'Speech recognition for noisy railway audio at AiSpry. Indic-Conformer is being fine-tuned; no results are measured yet.' },
   { label: 'Studying', text: 'PG Program in AI & Data Science at Jio Institute, until April 2027.' },
 ]

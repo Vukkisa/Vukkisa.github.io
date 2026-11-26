@@ -166,7 +166,7 @@ const word = (x: number, y: number, w: number) => `M${x} ${y}q${w / 4} -3 ${w / 
 
 function Speech() {
   return (
-    <Frame h={250} label="Illustration of the railway speech-recognition pipeline as a line-drawn cartoon: a person speaks into a handset, the noisy railway audio travels through a cleaning stage and a speech-to-text stage, and the spoken words appear line by line as a text transcript. The fine-tuned model's word and character error rates have not been measured yet.">
+    <Frame h={250} label="Illustration of the railway speech-recognition pipeline as a line-drawn cartoon: a person speaks into a handset, the noisy railway audio travels through a cleaning stage and a speech-to-text stage, and the spoken words appear line by line as a text transcript. Indic-Conformer is still being fine-tuned; word and character error rates have not been measured yet.">
       <g strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="fill-none stroke-fg">
         {/* locomotive cabin */}
         <rect x="16" y="34" width="130" height="100" rx="6" className="fill-bg stroke-line-strong" />
@@ -219,7 +219,7 @@ function Speech() {
           )
         })}
       </g>
-      <text x="28" y="234" className={T}>fine-tuned model: error rates not measured yet</text>
+      <text x="28" y="234" className={T}>fine-tuning ongoing: error rates not measured yet</text>
     </Frame>
   )
 }
